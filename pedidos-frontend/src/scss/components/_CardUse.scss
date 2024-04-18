@@ -1,0 +1,27 @@
+.cardUse {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // height: 100%;
+    border: 1px solid #ccc; /* Agrega un borde para mayor claridad */
+    border-radius: 10px; /* Redondea las esquinas de las tarjetas */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra para resaltar las tarjetas */
+  }
+  
+  .titleUsecard {
+    font-size: 0.8rem;
+    font-weight: bold;
+    max-height: 80px;
+  }
+  
+  .hrDiv {
+    margin: 10px 0; /* Espacio entre el título y la línea horizontal */
+    border: none;
+    border-top: 1px solid #ccc; /* Línea horizontal */
+  }
+  
+  .descriptionUse {
+    font-size: 0.6rem; /* Tamaño del texto de descripción */
+    color: #666; /* Color del texto */
+  }

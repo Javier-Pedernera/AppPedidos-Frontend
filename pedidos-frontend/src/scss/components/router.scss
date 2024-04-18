@@ -1,0 +1,16 @@
+.loader{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 200px;
+}
+.divLoader{
+    width: 100vw;
+    height: 100vh;
+    // filter: blur(6px);
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}

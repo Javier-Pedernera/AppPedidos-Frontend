@@ -1,0 +1,45 @@
+.landing {
+    text-align: center;
+    background-color: var(--black-color);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    justify-content: center;
+
+//     button {
+//         width: 150px;
+//         min-width: 150px;
+//         padding: 10px;
+//         font-size: 13px;
+//         // background-color: #007bff;
+//         background-color: var(--secundary-color);
+//         color: white;
+//         border-radius: 5px;
+//         margin-bottom: 10px;
+//         text-align: center;
+//         text-decoration: none;
+//         height: 40px;
+//         &:hover {
+//           // background-color: #0056b3;
+//           cursor: url(../../assets/images/cursor3.png),pointer;
+//           background-color: var(--greenSoft-color)
+         
+//         }
+//   }
+    .landing-title {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .landing-description {
+        font-size: 1.2rem;
+        color: #666;
+    }
+}
+.logo-landing{
+    max-width: 300px;
+}
+  

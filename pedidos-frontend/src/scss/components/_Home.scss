@@ -1,0 +1,284 @@
+.home {
+  padding-top: 5%;
+  background-color: var(--tertiary-color);
+  // background-image: url(../../assets/images/fodoBody.png);
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & .titulo {
+    font-family: var(--font-robotoFlex);
+    font-size: 1rem;
+    padding: 20px;
+    
+  }
+  p{
+    font-family: var(--font-poppins);
+  }
+
+  .sectionCaract {
+    max-width: 100%;
+    font-family: var(--font-poppins);
+    background-image: url("../../assets/images/imagen1.png");
+    background-size: cover; 
+    background-position: center;
+    border-radius: 10px;
+    margin-top: 40px;
+    padding: 20px;
+    border: 1px solid rgb(192, 191, 191);
+    box-shadow: 1px 1px rgb(213, 213, 213);
+    background-attachment: fixed;
+    background-position: center;
+   
+  }
+.acordion{
+  border-radius: 3px;
+  background-color: #e2e2e24f;
+}
+.titleAcordion{
+  // color: #272626;
+  font-family: var(--font-poppins);
+}
+  .section {
+    margin-top: 40px;
+    padding: 10px;
+
+   
+
+    p {
+      font-size: 16px;
+      color: #272626;
+      line-height: 1.5;
+    }
+  }
+ & .sectionUse{
+display: flex;
+flex-direction: column;
+align-items: center;
+margin-bottom: 50px;
+
+& hr{
+  align-self: center;
+  width: 90%;
+  border-bottom: none;
+  border-top: 1px solid #f0f0f0c6;
+}
+  }
+  // @media (min-width: 1350px) {
+  //   .sectionUse {
+  //     width: 80%;
+  //     margin: 0 auto; /* Centra el contenedor horizontalmente */
+  //   }
+  // }
+  .cardUse{
+    display: flex;
+    height: 200px;
+    // width: 20%;
+    background-color: var(--black-color);
+    flex-direction: column;
+  }
+  
+  .css-mhc70k-MuiGrid-root>.MuiGrid-item{
+    display: flex;
+    
+    // padding-left: 0px;
+  }
+  .hrDiv{
+    width: 80%;
+    border-bottom: none;
+    border-top: 1px solid #dbdbdb;
+  }
+  .aspect_banner{
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+  }
+  .conteinerCardsUse{
+    display: flex;
+    justify-content: space-around;
+    border-radius: 10px;
+    background-color: var(--black-color);
+    padding: 20px;
+    margin: 0px;
+    border-radius: 0px 0px 10px 10px;
+    width: 100%;
+    box-shadow: 2px 2px rgba(142, 142, 142, 0.373);
+  }
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiAccordion-root.MuiAccordion-rounded.MuiAccordion-gutters.css-1086bdv-MuiPaper-root-MuiAccordion-root{
+background-color: transparent ;
+color: #dbdbdb;
+& h6{
+  color: var(--tertiary-color);
+}
+  }
+  .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-6.MuiGrid-grid-md-2.css-wqan3a-MuiGrid-root{
+    max-width: 250px;
+  }
+  .MuiCardHeader-root.css-185gdzj-MuiCardHeader-root{
+    & img{
+      width: 50px;
+    }
+  }
+  .titleUsecard{
+    font-size: auto;
+    color: white;
+  }
+
+  .sectionDescription{
+    transform: translate(-0%, -0%); z-index: 2;
+    padding: 5%;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d0d0d0c2;
+  }
+  .comoFunciona_title{
+    font-family: var(--font-poppins);
+    font-weight: 600;
+    font-size: large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:var(--tertiary-color);
+  }
+  .sectioncomoFunciona{
+    transform: translate(-0%, -0%); z-index: 2;
+    padding: 5%;
+    margin-bottom: 20px;
+    box-shadow: 1px grey;
+    // border-bottom: 1px solid #d0d0d075;
+  }
+  .titleUse{
+    // color: rgb(222, 222, 222);
+    color: var(--tertiary-color);
+    display: flex;
+    justify-content: center;
+    background-color: var(--secundary-color);
+    padding: 10px;
+    width: 100%;
+    margin: 0px;
+    border-radius: 10px 10px 0px 0px
+  }
+
+  
+  .iconTitle{
+    font-family: var(--font-robotoFlex);
+    color: white;
+    height: 30px;
+    width: 30px;
+  }
+  .descriptionUse{
+    font-size: small;
+    font-family: var(--font-robotoFlex);
+    color: white;
+  }
+  .stepsList{
+display: flex;
+
+& li{
+  height: 200px;
+
+}
+  }
+  .form_contact {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    color: #272626;
+    padding: 2%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    label {
+      font-weight: bold;
+      color: #272626;
+    }
+    & button{
+      width: 150px;
+    // display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+      padding: 8px 8px;
+      border: none;
+      border-radius: 4px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      min-width: 80px;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+  
+      &:hover {
+        background-color: var(--redSoft-color);
+        font-weight: 500;
+      }
+    }
+    .MuiGrid-item {
+      margin-bottom: 20px;
+
+    }
+  }
+
+  .sectionAbout {
+      position: relative;
+   
+    
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    h4 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .contentSection_about{
+      display: flex;
+      border-radius: 10px 100px / 120px;
+      
+    }
+ 
+
+.about-image {
+  display: block;
+  max-height: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 0px 120px 0px 0px;
+  box-shadow: 0px 3px 0px 0px rgb(201, 199, 199);
+}
+  }
+}
+.sectionForm{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 3%;
+  justify-content: space-around;
+  & img{
+    border-radius: 20px;
+    width:40%;
+    height: auto;
+  }
+}
+
+.css-a5rdam-MuiGrid-root.MuiGrid-item{
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.css-1idn90j-MuiGrid-root{
+  display: flex;
+  justify-content: center;
+}
+.ico_tec{
+  height: 50px;
+  width: auto;
+}
+.fondodescription{
+  overflow: hidden;
+  background-size: unset;
+    background-repeat: no-repeat;
+ 
+}

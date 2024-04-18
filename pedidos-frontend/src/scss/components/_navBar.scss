@@ -1,0 +1,114 @@
+.navbar {
+    background-color: var(--black-color);
+    padding: 20px;
+    // width: 100%;
+    display: flex;
+    box-shadow: 2px 2px 2px 0px rgba(186,171,186,1);
+    // flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    @media (max-width: 500px) {
+      flex-direction: column;
+    }
+  }
+  .divLogo{
+    width: 15%;
+    img{
+      width: 100%;
+      &:hover {
+        cursor: url(../../assets/images/cursor3.png),pointer;
+    }
+    }
+    @media (max-width: 500px) {
+      width: 50%;
+    }
+    &:hover {
+    cursor: url(../../assets/images/cursor3.png),pointer;
+}
+  }
+  .navbar-list {
+    font-family: var(--font-robotoFlex);
+    width: 70%;
+    color: #fff;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    li{
+      // margin-left: 30px;
+      margin-right: 20px;
+      @media (max-width: 500px) {
+        margin-left: 0px;
+      }
+          }
+          @media (max-width: 500px) {
+            margin-left: 10px;
+            width: 100%;
+            justify-content: space-around;
+          }
+          
+        }
+        
+        .navbar-item { 
+          display: inline-block;
+          margin-right: 10px;
+          color: #fff;
+          
+        }
+        
+        .navbar-item a:hover {
+          background-color: red;
+  }
+  .route{
+    color: #fff;
+    font-size: 1.3rem;
+    &:hover {
+      text-shadow: 0.5px 0.5px 1px white;
+      cursor: url(../../assets/images/cursor3.png),pointer;
+  }
+  }
+  .userName{
+    color: #fff;
+    font-size: 1rem;
+    &:hover {
+      text-shadow: 0.5px 0.5px 2px white;
+      cursor: url(../../assets/images/cursor3.png),pointer;
+  }
+  }
+  .divUser{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 60px;
+    justify-content: space-between;
+  }
+  .imageUser{
+ 
+    color: #ffff;
+    background-color: var(--yellow-color);
+    border-radius: 50px;
+    height: 50px;
+    width: 50px;
+    @media (max-width: 500px) {
+      margin-left: 5px;
+    }
+  }
+  .logOut{
+    --balloon-font-color: var(--primary-color);
+    --balloon-color: var(--black-color);
+    --balloon-move: 20px;
+    --balloon-font-size: 10px;
+    // width: 18px;
+    // height: 18px;
+    // background-size: cover;
+  }
+  .divUser {
+    position: relative;
+  }
+  
+  
+  

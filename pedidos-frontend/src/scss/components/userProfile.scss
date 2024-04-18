@@ -1,0 +1,89 @@
+.userPContainer{
+  height: 100vh;
+    width: 100%;
+}
+.user-profile {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    .profile-info {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+  
+      p {
+        margin-bottom: 10px;
+  
+        strong {
+          font-weight: bold;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .user_copied{
+    display: flex;
+    align-items: center;
+    transition: color 0.5s;
+    &:hover{
+      color: rgba(52, 172, 52, 0.842);
+      & span {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out; 
+        animation: fadeOut 3s ease-in-out 1s forwards; 
+      }
+  }
+  }
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .ico_copied{
+    right: 0; 
+    opacity: 0; 
+    margin-left: 5px;
+    transition: opacity 0.3s; 
+    height: 13px;
+    width: 13px;
+    color: rgba(52, 172, 52, 0.842);
+
+  }
+  .ico_copy{
+    right: 0; 
+    opacity: 0; 
+    transition: opacity 0.3s; 
+    height: 12px;
+    width: 12px;
+    margin-left: 5px;
+
+  }
+  .IdUser_content{
+    & .textcopiedid{
+      opacity: 0;
+    }
+  }
+  .textcopiedid{
+    opacity: 0;
+  }
+  .IdUser_content:hover .ico_copy {
+    opacity: 1;
+  }
+  .IdUser_content:hover .ico_copied {
+    opacity: 1;
+  }
+  .IdUser_content:hover span{
+    opacity: 1;
+  }
+.IdUser_content:hover .ico_copied{
+cursor: pointer;
+}
+span{
+  cursor: pointer;
+}
