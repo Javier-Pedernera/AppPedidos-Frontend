@@ -128,7 +128,7 @@ const exampleGroups: Group[] = [
         <div className="dashboard-header">
             <CustomButton2 onClick={createNewGroup} titulo="crear grupo" color1="var(--greenSoft-color)" color2="var(--greenSoft-color)"/>
             <CustomButton2 onClick={createNewOrder} titulo="crear pedido" color1="var(--primary-color)" color2="var(--primary-color)"/>
-          {/* <button className="create-order-btn" onClick={createNewOrder}>Crear Pedido</button> */}
+          
           <button className="toggle-btn" onClick={toggleShowOnlyOpenGroups}>
           {showOnlyOpenGroups ? <FaEye /> : <FaList />}
           {showOnlyOpenGroups ? 'Ver Todos los Grupos' : 'Ver Solo Grupos Activos'}

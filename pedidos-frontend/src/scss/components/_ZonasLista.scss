@@ -1,0 +1,33 @@
+.zones-list {
+    font-family: Arial, sans-serif;
+  
+    .zone-list {
+      list-style-type: none;
+      padding: 0;
+      width: 100%;
+      .zone-item {
+        margin-bottom: 10px;
+  
+        .zone-number {
+          font-weight: bold;
+        }
+  
+        .zone-details {
+          display: flex;
+          align-items: center;
+  
+          .zone-title {
+            margin-left: 10px;
+            width: 50%;
+          }
+  
+          .zone-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }

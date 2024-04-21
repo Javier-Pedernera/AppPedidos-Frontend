@@ -20,7 +20,10 @@ const Sidebar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // const isSidebarOpen = true
   const userActive: UserState = useAppSelector((state: any) => state.user);
-  if (userActive) { console.log(userActive.accessToken); }
+  // if (userActive) 
+  //   { console.log(userActive.accessToken); 
+
+  //   }
   const [routes, setRoutes] = useState<Route[]>([]);
   const dispatch= useAppDispatch()
   
@@ -56,7 +59,7 @@ const Sidebar: React.FC = () => {
         style: "reportes"
         },
         {
-        path: "/config",
+        path: "/config_maps",
         name: "Configurar zonas",
         style: "zonas"
         },
@@ -70,7 +73,6 @@ const Sidebar: React.FC = () => {
           name: "Salir",
           style: "salir"
           },
-
         {
           path: "/faq",
           name: "FAQ",
