@@ -1,0 +1,72 @@
+.draw-map-container {
+    height: 100vh;
+    width: 100%;
+    background-image: url("../../assets/images/fondo2.png");
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    .leaflet-container {
+      width: 90%;
+      height: 100%;
+    }
+    
+  }
+
+  .leaflet-top.leaflet-right{
+        width: 100px;
+    }
+.leaflet-draw.leaflet-control{
+    // width: 100%;
+    & a{
+background-color: rgba(210, 210, 210, 0.826);
+// min-width: 100px;
+    }
+}
+
+.divZonaColor{
+    display: flex;
+    width: 90%;
+    align-content: center;
+    align-items: center;
+    justify-content: space-around;
+
+.color-picker-container{
+    display: flex;
+    justify-content: space-around;
+    width: 200px;
+    opacity: 0;
+    transition: opacity 1s ease;
+    &.colorselect{
+        opacity: 1;
+    }
+}
+}
+.cancelBtn{
+    opacity: 0;
+    transition: opacity 1s ease;
+    &.activecancel{
+        opacity: 1;
+    }
+}
+.botones{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+
+.creandoZonaCont{
+    display: flex;
+    &.editandozona{
+        display: none;
+    }
+}
+.editandoZonaCont{
+    display: flex;
+    &.creandozona{
+        display: none;
+    }
+}
