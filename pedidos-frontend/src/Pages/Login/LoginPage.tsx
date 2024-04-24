@@ -5,7 +5,7 @@ import '../../scss/components/login.scss';
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "../../Redux/Store/hooks";
-import { userLogIn } from "../../Redux/Actions/UserGet";
+import { userLogIn } from "../../Redux/Actions/UserActions";
 // import { UserState } from "../../Redux/Actions/UserSlice";
 // import { useEffect } from "react";
 // import { useEffect } from "react";
@@ -36,7 +36,7 @@ const Login = () => {
     },
   });
 
- 
+
   const onSubmit = (data: any) => {
 
     // axios
@@ -75,7 +75,7 @@ const Login = () => {
   //   return isAuthenticated ? redirect ("/home") : null;
   // };
 
-  
+
   // console.log(userActive);
   // useEffect(() => {
   //   if(userActive.accessToken?.length){
@@ -89,7 +89,7 @@ const Login = () => {
 
         <div className="content">
           <div className="form-container">
-            
+
             <div className="logo">
               {/* <div className="google-button" onClick={handleGoogle}>
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="google-img" alt="google logo" loading="lazy" />
@@ -97,12 +97,12 @@ const Login = () => {
               </div> */}
 
               <form onSubmit={handleSubmit(onSubmit)} className="form">
-                
+
                 <div className="logoCapitan">
-              <Link className="logoCapitan" to="/faq">
-                <img className="capitan" src={logo} alt="logo" />
-              </Link>
-            </div>
+                  <Link className="logoCapitan" to="/faq">
+                    <img className="capitan" src={logo} alt="logo" />
+                  </Link>
+                </div>
                 <input
                   type="email"
                   placeholder="Correo Eléctronico"

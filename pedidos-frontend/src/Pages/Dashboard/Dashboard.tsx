@@ -2,70 +2,70 @@ import { useState } from 'react';
 import '../../scss/components/_Dashboard.scss';
 import GroupCard from '../../Components/GroupCard/GroupCard';
 import { FaEye, FaList } from 'react-icons/fa';
-import CustomButton2 from '../../Components/Button/CustomButton2';
+import CustomButton2 from '../../Components/Button2/CustomButton2';
 // import Swal from 'sweetalert2';
 // import { useAppDispatch } from '../../Redux/Store/hooks';
 
 const exampleGroups: Group[] = [
-    {
-      id: 1,
-      id_zona: 1,
-      fecha_hora_creacion: new Date("2024-04-16T09:00:00"),
-      fecha_hora_cierre: null,
-      fecha_hora_envio: null,
-      id_estado: 1,
-      id_cadete: 1,
-    },
-    {
-      id: 2,
-      id_zona: 2,
-      fecha_hora_creacion: new Date("2024-04-16T10:30:00"),
-      fecha_hora_cierre: null,
-      fecha_hora_envio: null,
-      id_estado: 1,
-      id_cadete: 2,
-    },
-    {
-      id: 3,
-      id_zona: 1,
-      fecha_hora_creacion: new Date("2024-04-16T11:45:00"),
-      fecha_hora_cierre: null,
-      fecha_hora_envio: null,
-      id_estado: 1,
-      id_cadete: 3,
-    },
-    {
-        id: 4,
-        id_zona: 1,
-        fecha_hora_creacion: new Date("2024-04-16T09:00:00"),
-        fecha_hora_cierre: new Date("2024-04-16T12:00:00"),
-        fecha_hora_envio: null,
-        id_estado: 1,
-        id_cadete: 1,
-      },
-      {
-        id: 5,
-        id_zona: 2,
-        fecha_hora_creacion: new Date("2024-04-16T10:30:00"),
-        fecha_hora_cierre: new Date("2024-04-16T13:30:00"),
-        fecha_hora_envio: null,
-        id_estado: 1,
-        id_cadete: 2,
-      },
-  ];
-  
-  // Componente Dashboard con ejemplo de datos
-  const Dashboard = () => {
-    const [groups, setGroups] = useState<Group[]>(exampleGroups);
-    const [showOnlyOpenGroups, setShowOnlyOpenGroups] = useState(false);
-    const filteredGroups = showOnlyOpenGroups ? groups.filter(group => group.fecha_hora_cierre !== null) : groups;
-    // const dispatch = useAppDispatch()
-// console.log("grupos",groups);
+  {
+    id: 1,
+    id_zona: 1,
+    fecha_hora_creacion: new Date("2024-04-16T09:00:00"),
+    fecha_hora_cierre: null,
+    fecha_hora_envio: null,
+    id_estado: 1,
+    id_cadete: 1,
+  },
+  {
+    id: 2,
+    id_zona: 2,
+    fecha_hora_creacion: new Date("2024-04-16T10:30:00"),
+    fecha_hora_cierre: null,
+    fecha_hora_envio: null,
+    id_estado: 1,
+    id_cadete: 2,
+  },
+  {
+    id: 3,
+    id_zona: 1,
+    fecha_hora_creacion: new Date("2024-04-16T11:45:00"),
+    fecha_hora_cierre: null,
+    fecha_hora_envio: null,
+    id_estado: 1,
+    id_cadete: 3,
+  },
+  {
+    id: 4,
+    id_zona: 1,
+    fecha_hora_creacion: new Date("2024-04-16T09:00:00"),
+    fecha_hora_cierre: new Date("2024-04-16T12:00:00"),
+    fecha_hora_envio: null,
+    id_estado: 1,
+    id_cadete: 1,
+  },
+  {
+    id: 5,
+    id_zona: 2,
+    fecha_hora_creacion: new Date("2024-04-16T10:30:00"),
+    fecha_hora_cierre: new Date("2024-04-16T13:30:00"),
+    fecha_hora_envio: null,
+    id_estado: 1,
+    id_cadete: 2,
+  },
+];
 
-// console.log("grupos fitrados",filtro);
+// Componente Dashboard con ejemplo de datos
+const Dashboard = () => {
+  const [groups, setGroups] = useState<Group[]>(exampleGroups);
+  const [showOnlyOpenGroups, setShowOnlyOpenGroups] = useState(false);
+  const filteredGroups = showOnlyOpenGroups ? groups.filter(group => group.fecha_hora_cierre !== null) : groups;
+  // const dispatch = useAppDispatch()
+  // console.log("grupos",groups);
 
-    const createNewGroup = () => {
-        
+  // console.log("grupos fitrados",filtro);
+
+  const createNewGroup = () => {
+
     // (async () => {
     //     const { value: formValues } = await Swal.fire({
     //       heightAuto: false,
@@ -107,39 +107,39 @@ const exampleGroups: Group[] = [
     //   })()
 
     //////////////////////////////////////
-  const newGroup: Group = {
-    id: groups.length + 1,
-    id_zona: 1,
-    fecha_hora_creacion: new Date(),
-    id_estado: 1,
-    id_cadete: 1,
-  };
-  setGroups([...groups, newGroup]);
-};
-  
-    const createNewOrder = () => {
-      // Lógica para crear un nuevo pedido
+    const newGroup: Group = {
+      id: groups.length + 1,
+      id_zona: 1,
+      fecha_hora_creacion: new Date(),
+      id_estado: 1,
+      id_cadete: 1,
     };
-    const toggleShowOnlyOpenGroups = () => {
-        setShowOnlyOpenGroups(!showOnlyOpenGroups);
-      };
-    return (
-        <div className="dashboard">
-        <div className="dashboard-header">
-            <CustomButton2 onClick={createNewGroup} titulo="crear grupo" color1="var(--greenSoft-color)" color2="var(--greenSoft-color)"/>
-            <CustomButton2 onClick={createNewOrder} titulo="crear pedido" color1="var(--primary-color)" color2="var(--primary-color)"/>
-          
-          <button className="toggle-btn" onClick={toggleShowOnlyOpenGroups}>
+    setGroups([...groups, newGroup]);
+  };
+
+  const createNewOrder = () => {
+    // Lógica para crear un nuevo pedido
+  };
+  const toggleShowOnlyOpenGroups = () => {
+    setShowOnlyOpenGroups(!showOnlyOpenGroups);
+  };
+  return (
+    <div className="dashboard">
+      <div className="dashboard-header">
+        <CustomButton2 onClick={createNewGroup} titulo="crear grupo" color1="var(--greenSoft-color)" color2="var(--greenSoft-color)" />
+        <CustomButton2 onClick={createNewOrder} titulo="crear pedido" color1="var(--primary-color)" color2="var(--primary-color)" />
+
+        <button className="toggle-btn" onClick={toggleShowOnlyOpenGroups}>
           {showOnlyOpenGroups ? <FaEye /> : <FaList />}
           {showOnlyOpenGroups ? 'Ver Todos los Grupos' : 'Ver Solo Grupos Activos'}
         </button>
-        </div>
-        <div className="group-cards">
-          {filteredGroups.map(group => (
-            <GroupCard key={group.id} group={group} />
-          ))}
-        </div>
       </div>
-    );
-  };
+      <div className="group-cards">
+        {filteredGroups.map(group => (
+          <GroupCard key={group.id} group={group} />
+        ))}
+      </div>
+    </div>
+  );
+};
 export default Dashboard;

@@ -1,19 +1,30 @@
 .draw-map-container {
-    height: 100vh;
-    width: 100%;
+    height: 90vh;
+    width: 100vw;
     background-image: url("../../assets/images/fondo2.png");
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 50px;
+    font-family: var(--font-poppins);
+    font-size: medium;
+    color: rgb(31, 31, 31);
+    font-weight: 600;
+    .allMapContainer{
+        height: 80%;
+        width: 75%;
+    }
     .leaflet-container {
-      width: 90%;
+      width: 100%;
       height: 100%;
     }
     
   }
-
+.listZone{
+    width: 20%;
+    margin-top: 5%;
+   
+}
   .leaflet-top.leaflet-right{
         width: 100px;
     }
@@ -25,24 +36,24 @@ background-color: rgba(210, 210, 210, 0.826);
     }
 }
 
-.divZonaColor{
-    display: flex;
-    width: 90%;
-    align-content: center;
-    align-items: center;
-    justify-content: space-around;
+// .divZonaColor{
+//     display: flex;
+//     width: 90%;
+//     align-content: center;
+//     align-items: center;
+//     justify-content: space-around;
 
-.color-picker-container{
-    display: flex;
-    justify-content: space-around;
-    width: 200px;
-    opacity: 0;
-    transition: opacity 1s ease;
-    &.colorselect{
-        opacity: 1;
-    }
-}
-}
+// .color-picker-container{
+//     display: flex;
+//     justify-content: space-around;
+//     width: 200px;
+//     opacity: 0;
+//     transition: opacity 1s ease;
+//     &.colorselect{
+//         opacity: 1;
+//     }
+// }
+// }
 .cancelBtn{
     opacity: 0;
     transition: opacity 1s ease;

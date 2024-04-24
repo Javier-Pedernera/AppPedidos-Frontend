@@ -1,6 +1,7 @@
 
 
 interface ZonaLocal {
+    id: number;
   layer: any;
   properties: {
     nombre: string;

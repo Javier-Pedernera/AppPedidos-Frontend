@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import Zona from "../../Models/Zona";
-import { agregarZona, eliminarZona, getAll } from "./ZonasSlice";
+import { actualizarZona, agregarZona, eliminarZona, getAll } from "./ZonasSlice";
 
 
 
@@ -31,21 +31,34 @@ const agregarZonas = (zona: Zona) => {
   };
 };
 
-const eliminarZonaById = (id: number) => {
+const eliminarZonaById = (id: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      // Aquí realizarías la lógica para eliminar una zona por su ID
-      // Por ejemplo, haciendo una solicitud DELETE al backend
-      await axios.delete(`/api/zonas/${id}`);
-
-      // Dispatch la acción para eliminar la zona del estado por su ID
-      dispatch(eliminarZona(id));
+      let id_numero = parseInt(id);
+      const response = await axios.delete(`${URL}/api/zonas/${id}`);
+      console.log(response);
+      dispatch(eliminarZona(id_numero));
     } catch (error) {
       console.error("Error al eliminar la zona:", error);
     }
   };
 };
 
-// Otras funciones para manejar acciones relacionadas con las zonas...
 
-export { obtenerZonas, agregarZonas, eliminarZonaById };
+const editarZonaById = (id: number, Zone:any) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      console.log("idLayer, layerCoord",id, Zone);
+      
+      const responseDispatch = dispatch(actualizarZona(Zone));
+      console.log(" respuesta del dispatch",responseDispatch);
+      const response = await axios.put(`${URL}/api/zonas/${id}`,Zone);
+      console.log(response);
+      
+    } catch (error) {
+      console.error("Error al editar la zona:", error);
+    }
+  };
+};
+
+export { obtenerZonas, agregarZonas, eliminarZonaById, editarZonaById };

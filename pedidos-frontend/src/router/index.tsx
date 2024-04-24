@@ -102,6 +102,11 @@ export const routes: RouteProps[] = [
                         element: lazy(async () => await import("../Components/EditMap/EditMap")),
                         name: "UserProfile"
                     },
+                    {
+                        path: "/cadetes",
+                        element: lazy(async () => await import("../Pages/Cadetes/Cadetes")),
+                        name: "UserProfile"
+                    },
                     
                 ]
             },

@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import user from "../Actions/UserSlice"
 import zonas from "../Actions/ZonasSlice"
+import cadetes from '../Actions/CadetesSlice';
+import params from '../Actions/ParamsSlice';
 export const store = configureStore({
     reducer: {
        user: user,
-       zonas: zonas
-       
+       zonas: zonas,
+       cadetes: cadetes,
+       params: params
     //    clientes: clientes,
        
     },

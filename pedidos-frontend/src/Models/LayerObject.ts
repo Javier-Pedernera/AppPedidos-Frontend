@@ -7,7 +7,9 @@ interface LayerObject {
             nombre: string;
             descripcion: string;
             tipo: string;
-            color: string
+            color: string;
+            fill: boolean;
+            border_width: number
         };
         type: "Polygon"
 }

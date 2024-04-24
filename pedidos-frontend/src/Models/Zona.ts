@@ -4,6 +4,8 @@ interface Zona {
     id: number;
     nombre: string;
     layer: LayerObject;
+    
+
   }
 
   export default Zona;
