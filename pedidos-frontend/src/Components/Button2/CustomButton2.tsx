@@ -3,14 +3,14 @@ import { styled } from '@mui/system';
 interface CustomButtonProps {
   onClick: () => void;
   titulo: string,
-  color1:string,
+  color1: string,
   color2: string,
   disabled: boolean
 }
 
 
 const CustomButton2: React.FC<CustomButtonProps> = ({ onClick, titulo, color1, color2, disabled }) => {
-  
+
   const StyledButton = styled('button')`
     --c: goldenrod;
     color: ${color1};
@@ -72,7 +72,7 @@ const CustomButton2: React.FC<CustomButtonProps> = ({ onClick, titulo, color1, c
 
 
   return (
-    <StyledButton onClick={onClick} disabled= {disabled}>
+    <StyledButton onClick={onClick} disabled={disabled}>
       {titulo}
       <span></span>
       <span></span>

@@ -1,6 +1,7 @@
 import '../../scss/components/_GroupCard.scss';
 import openBox from '../../assets/iconos/openBox.svg';
 import closeBox from '../../assets/iconos/closeBox.svg';
+import { Group } from '../../Models/Group';
 
 interface GroupCardProps {
   group: Group;

@@ -1,28 +1,40 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ParamsModel } from '../../Models/Params';
+
+
 
 interface ParamsState {
-  maxTiempoEspera: number;
-  maxPedidos: number;
+  allParams: ParamsModel[];
 }
 
 const initialState: ParamsState = {
-  maxTiempoEspera: 10,
-  maxPedidos: 5,
+  allParams: [],
 };
 
 const paramsSlice = createSlice({
   name: 'params',
   initialState,
   reducers: {
-    setMaxTiempoEspera: (state, action: PayloadAction<number>) => {
-      state.maxTiempoEspera = action.payload;
+    setParams: (state, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        allParams: [...state.allParams , action.payload]
+    };
     },
-    setMaxPedidos: (state, action: PayloadAction<number>) => {
-      state.maxPedidos = action.payload;
+    getAllParams: (state, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        allParams: action.payload
+    };
+    },
+    deleteParams: (state, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        allParams: state.allParams.filter(param => param.id !== action.payload)
+    };
     },
   },
 });
 
-export const { setMaxTiempoEspera, setMaxPedidos } = paramsSlice.actions;
+export const { setParams, getAllParams, deleteParams } = paramsSlice.actions;
 export default paramsSlice.reducer;
-

@@ -8,3 +8,17 @@ html, body {
 //   font-size: 3.2em;
 //   line-height: 1.1;
 // }
+.swal2-confirm.swal2-styled{
+  background-color: var(--secundary-color);
+  width: 100px;
+  border: none;
+  &:focus{
+      box-shadow: none;
+  }
+}
+.swal2-icon.swal2-warning.swal2-icon-show{
+  color: var(--redSoft-color);
+  border-color: var(--redSoft-color);
+  height: 4em;
+  width: 4em;
+}

@@ -1,4 +1,4 @@
-interface Group {
+export interface Group {
     id: number;
     id_zona: number;
     fecha_hora_creacion: Date;

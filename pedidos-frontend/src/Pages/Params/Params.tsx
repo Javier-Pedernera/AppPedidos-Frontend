@@ -1,68 +1,113 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faSave } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
-import './Params.scss'; // Estilos personalizados
+import { useAppDispatch, useAppSelector } from '../../Redux/Store/hooks';
+import { crearParametros, eliminarParametros, modificarParametros, traerParametros } from '../../Redux/Actions/ParamsActions';
+import { ParamsModel } from '../../Models/Params';
+import '../../scss/components/_Params.scss';
+import Swal from 'sweetalert2';
+
+// parametros disponibles para la app
+const nombresParametros = ['MaxPedidosPorGrupo', 'MaxEsperaPorGrupo'];
 
 const Params = () => {
-  const [maxTiempoEspera, setMaxTiempoEspera] = useState('');
-  const [maxPedidosGrupo, setMaxPedidosGrupo] = useState('');
+  const dispatch = useAppDispatch();
+  const [valorParametro, setValorParametro] = useState('');
+  const params = useAppSelector((state: any) => state.params.allParams);
+  const nombresDisponibles = nombresParametros.filter(nombre => !params.find((param:any) => param.nombre === nombre));
+  const [nombreSeleccionado, setNombreSeleccionado] = useState(nombresDisponibles[0]);
 
-  // Obtener valores predeterminados del estado global
-  const defaultMaxTiempoEspera = useSelector((state:any) => state.params.maxTiempoEspera);
-  const defaultMaxPedidosGrupo = useSelector((state:any) => state.params.maxPedidosGrupo);
+  // Obtener valores de los parámetros del estado global
+  
+console.log("nombresDisponibles",  nombresDisponibles );
+console.log(nombreSeleccionado);
 
   useEffect(() => {
-    // Establecer los valores predeterminados en los estados locales al montar el componente
-    setMaxTiempoEspera(defaultMaxTiempoEspera.toString());
-    setMaxPedidosGrupo(defaultMaxPedidosGrupo.toString());
-  }, [defaultMaxTiempoEspera, defaultMaxPedidosGrupo]);
+    dispatch(traerParametros());
+  }, [dispatch]);
+console.log("a enviar",{ nombre: nombreSeleccionado, valor: valorParametro });
+useEffect(() => {
+    setNombreSeleccionado(nombresDisponibles[0])
+  }, [nombresDisponibles]);
 
-  const handleSaveConfig = async () => {
-    try {
-      // Aquí realizarías la solicitud POST al backend para guardar la configuración
-      await axios.post('/api/config', {
-        maxTiempoEspera,
-        maxPedidosGrupo
-      });
-      // Agregar cualquier lógica adicional después de guardar la configuración
-      alert('Configuración guardada correctamente.');
-    } catch (error) {
-      console.error('Error al guardar la configuración:', error);
-      alert('Ocurrió un error al guardar la configuración.');
+  const handleCrearParametro = () => {
+    dispatch(crearParametros({ nombre: nombreSeleccionado, valor: valorParametro }));
+    setValorParametro('');
+  };
+
+  const handleModificarParametro = (id: number, valor: string) => {
+    const nuevoValor = prompt(`Modificar valor de ${nombreSeleccionado}:`, valor);
+    if (nuevoValor !== null) {
+      dispatch(modificarParametros({ id, valor: nuevoValor }));
     }
+  };
+
+  const handleEliminarParametro = (id: number) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Estás seguro de eliminar este parámetro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--secundary-color)',
+      cancelButtonColor: 'var(--primary-color)',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(eliminarParametros(id));
+        Swal.fire(
+          'Eliminado',
+          'El parámetro ha sido eliminado.',
+          'success'
+        );
+      }
+    });
   };
 
   return (
     <div className="params-container">
-      <img className="params-background" src="../../assets/images/fondo2.png" alt="Fondo" />
       <div className="params-content">
         <h2>Configuración de Parámetros</h2>
-        <div className="params-inputs">
-          <div className="input-group">
-            <label htmlFor="maxTiempoEspera">Tiempo máximo de espera por grupo:</label>
-            <input
-              type="text"
-              id="maxTiempoEspera"
-              value={maxTiempoEspera}
-              onChange={(e) => setMaxTiempoEspera(e.target.value)}
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="maxPedidosGrupo">Máximo de pedidos por grupo:</label>
-            <input
-              type="text"
-              id="maxPedidosGrupo"
-              value={maxPedidosGrupo}
-              onChange={(e) => setMaxPedidosGrupo(e.target.value)}
-            />
-          </div>
+        <div className="params-list">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Valor</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {params.map((parametro: ParamsModel) => (
+                <tr key={parametro.id}>
+                  <td>{parametro.nombre}</td>
+                  <td>{parametro.valor}</td>
+                  <td>
+                    <button onClick={() => handleModificarParametro(parametro.id, parametro.valor)}>Modificar</button>
+                    <button onClick={() => handleEliminarParametro(parametro.id)}>Eliminar</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <button className="save-button" onClick={handleSaveConfig}>
-          {/* <FontAwesomeIcon icon={faSave} /> */}
-          Guardar Configuración
-        </button>
+        {
+          nombresDisponibles.length > 0?  <div className="params-form">
+          <select value={nombreSeleccionado} onChange={(e) => setNombreSeleccionado(e.target.value)}>
+            { nombresDisponibles.map((nombre) => (
+              <option key={nombre} value={nombre}>
+                {nombre}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            placeholder={"valor"}
+            value={valorParametro}
+            onChange={(e) => setValorParametro(e.target.value)}
+          />
+          <button onClick={handleCrearParametro} disabled={nombresDisponibles.length == 0? true: false } >Crear Parámetro</button>
+        </div>: <div>No puedes crear más parámetros</div> 
+        }
+        
       </div>
     </div>
   );

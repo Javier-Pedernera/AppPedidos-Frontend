@@ -1,8 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../scss/components/_Dashboard.scss';
 import GroupCard from '../../Components/GroupCard/GroupCard';
 import { FaEye, FaList } from 'react-icons/fa';
 import CustomButton2 from '../../Components/Button2/CustomButton2';
+import { Group } from '../../Models/Group';
+import PedidoModal from '../../Components/PedidoModal/PedidoModal';
+import { useAppDispatch } from '../../Redux/Store/hooks';
+import { obtenerZonas } from '../../Redux/Actions/ZonasActions';
+
 // import Swal from 'sweetalert2';
 // import { useAppDispatch } from '../../Redux/Store/hooks';
 
@@ -54,15 +59,39 @@ const exampleGroups: Group[] = [
   },
 ];
 
+// "coordinates": [-64.495, -31.417]
+const pedido: Pedido = {
+  id_grupo: 1,
+  direccion: "123 Calle Falsa, Ciudad Ficticia",
+  latitud: -64.495,
+  longitud: -31.417,
+   id_estado: 1 
+}
+
 // Componente Dashboard con ejemplo de datos
 const Dashboard = () => {
   const [groups, setGroups] = useState<Group[]>(exampleGroups);
   const [showOnlyOpenGroups, setShowOnlyOpenGroups] = useState(false);
+  const [showPedidoModal, setShowPedidoModal] = useState(false);
   const filteredGroups = showOnlyOpenGroups ? groups.filter(group => group.fecha_hora_cierre !== null) : groups;
-  // const dispatch = useAppDispatch()
+ 
   // console.log("grupos",groups);
+  const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    dispatch(obtenerZonas())
+
+  }, []);
   // console.log("grupos fitrados",filtro);
+console.log(showPedidoModal);
+
+  const handleCrearPedido = () => {
+    setShowPedidoModal(true);
+};
+
+const handleClosePedidoModal = () => {
+    setShowPedidoModal(false);
+};
 
   const createNewGroup = () => {
 
@@ -126,8 +155,16 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <CustomButton2 onClick={createNewGroup} titulo="crear grupo" color1="var(--greenSoft-color)" color2="var(--greenSoft-color)" />
-        <CustomButton2 onClick={createNewOrder} titulo="crear pedido" color1="var(--primary-color)" color2="var(--primary-color)" />
+        <CustomButton2 onClick={createNewGroup} 
+        titulo="crear grupo" 
+        color1="var(--greenSoft-color)" 
+        color2="var(--greenSoft-color)"
+        disabled={false} />
+        <CustomButton2 onClick={handleCrearPedido} 
+        titulo="crear pedido" 
+        color1="var(--primary-color)" 
+        color2="var(--primary-color)" 
+        disabled={false}/>
 
         <button className="toggle-btn" onClick={toggleShowOnlyOpenGroups}>
           {showOnlyOpenGroups ? <FaEye /> : <FaList />}
@@ -139,6 +176,7 @@ const Dashboard = () => {
           <GroupCard key={group.id} group={group} />
         ))}
       </div>
+      {showPedidoModal && <PedidoModal onClose={handleClosePedidoModal} />}
     </div>
   );
 };
