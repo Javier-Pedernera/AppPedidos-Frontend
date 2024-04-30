@@ -13,7 +13,7 @@ import buscar from '../../assets/images/buscar.png'
 import iconmarker from '../../assets/images/pin.png'
 import Swal from 'sweetalert2';
 import añadir from '../../assets/images/anadir-a-la-cesta.png'
-import loaderGeo from '../../assets/gif/loader_tierra.gif'
+import loaderGeo from '../../assets/gif/loader-tierra.gif'
 import encontrarZonasParaPunto from '../../utils/ubicacionPunto';
 import buscarGruposConZonasAsignadas from '../../utils/BuscarGruposZona';
 import { ParamsModel } from '../../Models/Params';
@@ -45,7 +45,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         pedido:'',
         telefono: ''
       });
-      const [loading, setloading] = useState(false);
+      const [loading, setloading] = useState(true);
     const [direccionPop, setdireccionPop] = useState('');
     const [latitud, setLatitud] = useState(0);
     const [longitud, setLongitud] = useState(0);
