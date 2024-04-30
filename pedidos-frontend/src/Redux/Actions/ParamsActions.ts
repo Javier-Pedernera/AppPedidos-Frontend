@@ -7,12 +7,9 @@ const URL = import.meta.env.VITE_API_URL;
 const traerParametros = ( ) => {
     return async (dispatch: Dispatch) => {
       try {
-        // Aquí realizarías la petición al backend para crear los parámetros
-      //   console.log("Parámetros creados:", maxTiempoEspera, maxPedidos);
         const response = await axios.get(`${URL}/api/parametros`);
-        console.log(response);
+        // console.log(response);
         
-        // Despachar la acción para actualizar el estado global con los nuevos parámetros
         dispatch(getAllParams(response.data));
       } catch (error) {
         console.error("Error al crear los parámetros:", error);
@@ -23,9 +20,9 @@ const traerParametros = ( ) => {
 const crearParametros = (paramsData:any) => {
   return async (dispatch: Dispatch) => {
     try {
-      console.log("Parámetros creados:", paramsData);
+      // console.log("Parámetros creados:", paramsData);
       const response = await axios.post(`${URL}/api/parametros`, paramsData);
-      console.log(response);
+      // console.log(response);
       
       dispatch(setParams(response.data));
     } catch (error) {

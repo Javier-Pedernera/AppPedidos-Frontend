@@ -1,20 +1,20 @@
-import L from 'leaflet';
+import * as turf from '@turf/turf';
+import ZonaLocal from '../Models/ZonaLocal';
 
 interface Point {
   lat: number;
   lng: number;
 }
 
-interface Zone {
-  id: number;
-  polygon: L.Polygon;
-}
-
-function encontrarZonasParaPunto(point: Point, zones: Zone[]): Zone[] {
-  const zonasEncontradas: Zone[] = [];
-
+function encontrarZonasParaPunto(point: Point, zones: ZonaLocal[]) {
+  const zonasEncontradas: ZonaLocal[] = [];
+  const turfPoint = turf.point([point.lng, point.lat]);
+  
   zones.forEach(zona => {
-    if (zona.polygon.getBounds().contains(point)) {
+    const coordinates = zona.layer.toGeoJSON().geometry.coordinates
+    
+    const zonaPolygon = turf.polygon(coordinates);
+    if (turf.inside(turfPoint, zonaPolygon)) { 
       zonasEncontradas.push(zona);
     }
   });
@@ -22,7 +22,7 @@ function encontrarZonasParaPunto(point: Point, zones: Zone[]): Zone[] {
   return zonasEncontradas;
 }
 
-export default encontrarZonasParaPunto
+export default encontrarZonasParaPunto;
 
 // Ejemplo de uso:
 // const punto: Point = { lat: 40.7128, lng: -74.0060 };

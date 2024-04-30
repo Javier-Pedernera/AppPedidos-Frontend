@@ -3,12 +3,16 @@ import user from "../Actions/UserSlice"
 import zonas from "../Actions/ZonasSlice"
 import cadetes from '../Actions/CadetesSlice';
 import params from '../Actions/ParamsSlice';
+import GruposSlice from '../Actions/GruposSlice';
+import PedidosSlice from '../Actions/PedidosSlice';
 export const store = configureStore({
     reducer: {
        user: user,
        zonas: zonas,
        cadetes: cadetes,
-       params: params
+       params: params,
+       grupos:GruposSlice,
+       pedidos: PedidosSlice
     //    clientes: clientes,
        
     },

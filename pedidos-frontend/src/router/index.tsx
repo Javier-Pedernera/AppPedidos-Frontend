@@ -13,7 +13,6 @@ interface RouteProps {
     > | null;
 }
 
-
 export const renderRoutes = (routes: RouteProps[]) => {
     return routes.map((route, index) => {
         const Component = route.element || Fragment;
@@ -97,8 +96,8 @@ export const routes: RouteProps[] = [
                         name: "UserProfile"
                     },
                     {
-                        path: "/editMap",
-                        element: lazy(async () => await import("../Components/EditMap/EditMap")),
+                        path: "/gestion",
+                        element: lazy(async () => await import("../Pages/GestionPedidos/GestionPedidos.tsx")),
                         name: "UserProfile"
                     },
                     {

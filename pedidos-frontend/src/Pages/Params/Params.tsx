@@ -6,7 +6,7 @@ import '../../scss/components/_Params.scss';
 import Swal from 'sweetalert2';
 
 // parametros disponibles para la app
-const nombresParametros = ['MaxPedidosPorGrupo', 'MaxEsperaPorGrupo'];
+const nombresParametros = ['MaxPedidosPorGrupo', 'MaxEsperaPorGrupo', 'Ciudad'];
 
 const Params = () => {
   const dispatch = useAppDispatch();

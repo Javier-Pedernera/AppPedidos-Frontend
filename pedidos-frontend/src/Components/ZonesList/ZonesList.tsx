@@ -10,6 +10,7 @@ interface ZonesListProps {
 
 const ZonesList: React.FC<ZonesListProps> = ({ zones, zoneEdi, setEditingZone }) => {
   const [selectedZone, setSelectedZone] = useState<number | null>(null);
+console.log("todas",zones,"zona editando", zoneEdi, "setzonaediting",setEditingZone);
 
   useEffect(() => {
     setSelectedZone(parseInt(zoneEdi))

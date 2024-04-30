@@ -10,7 +10,7 @@ html, body {
 // }
 .swal2-confirm.swal2-styled{
   background-color: var(--secundary-color);
-  width: 100px;
+  min-width: 100px;
   border: none;
   &:focus{
       box-shadow: none;
@@ -21,4 +21,8 @@ html, body {
   border-color: var(--redSoft-color);
   height: 4em;
   width: 4em;
+}
+.swal2-cancel.swal2-styled{
+  background-color: var(--primary-color);
+  
 }

@@ -25,7 +25,7 @@ const MapasConfig = () => {
 
 
   const zonas: Zona[] = useAppSelector((state: any) => state.zonas.zonas);
-  console.log("zonas", zonas);
+  // console.log("zonas", zonas);
 
   const [zones, setZones] = useState<any[]>([]);
   const [editarMapa, seteditarMapa] = useState(false);
@@ -34,24 +34,21 @@ const MapasConfig = () => {
   const [creandoZona, setCreandoZona] = useState(false);
   const [editando, setEditando] = useState(false);
   const [eliminando, setEliminando] = useState(true);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [editingZone, setEditingZone] = useState<string | "">("");
   const [zoneSelect, setzoneSelect] = useState<any>();
   const [noEditingZones, setNonEditingZone] = useState<ZonaLocal[] | null>(null);
   // console.log("zone Select", zoneSelect);
-  console.log("loading...", loading);
+  // console.log("loading...", loading);
   // console.log("zonesLayers", zonesLayers);
   // console.log("editingZone", editingZone);
   // console.log("noEditingZones", noEditingZones);
   // console.log("editando zonas?", editando);
   const dispatch = useAppDispatch()
-
   useEffect(() => {
     dispatch(obtenerZonas())
 
   }, []);
-
-
 
   useEffect(() => {
     const editingZoneId = editingZone ? parseInt(editingZone) : null;
@@ -81,7 +78,7 @@ const MapasConfig = () => {
         const properties = zone.layer.properties;
         const nombre = zone.nombre;
         const id = zone.id;
-        console.log("layer dentro del map", layer);
+        // console.log("layer dentro del map", layer);
         // layer.editing.disable();
         return { layer, properties, nombre, id };
       });
@@ -95,7 +92,7 @@ const MapasConfig = () => {
   ////////////////////////////////////////
   //Creando zonas
   const handleZoneCreated = (e: any) => {
-    setLoading(true);
+    // setLoading(true);
     const { layer } = e;
     // console.log("Layer enetero sin modificar", layer);
     const polygonGeoJSON = layer.toGeoJSON();
@@ -150,30 +147,19 @@ const MapasConfig = () => {
         // El usuario canceló, no hagas nada
       } else {
         dispatch(obtenerZonas())
-        setLoading(false);
+        // setLoading(false);
         setCreandoZona(false);
         seteditarMapa(false)
       }
     });
   };
-  // console.log("zones",zones);
-
   const SetViewOnClick: React.FC<{ coords: LatLngExpression }> = ({ coords }) => {
     const map = useMap();
     map.setView(coords, map.getZoom());
-    // const drawControl = new L.Control.Draw({
-    //   edit: {
-    //     featureGroup: new L.FeatureGroup([zonesLayers[0].layer])
-    //   }
-    // });
-    // map.addControl(drawControl);
     return null;
   };
 
   const carlosPazCoords: LatLngExpression = [-31.4241, -64.4978];
-  // const poligono = [[-64.490948, -31.414006], [-64.501591, -31.417958], [-64.495411, -31.424397], [-64.48494, -31.421177], [-64.490948, -31.414006]]
-  // const poligonoSur = [[-64.502964, -31.430542], [-64.499702, -31.423226], [-64.487343, -31.435956], [-64.502964, -31.430542]]
-
 
   //////// Cambiar estados del mapa //////////////
   const habilitarMapa = () => {
@@ -195,7 +181,6 @@ const MapasConfig = () => {
     layers.eachLayer((layer: any) => {
       const layerId = layer.options.attribution;
       const editedGeoJSON = layer.toGeoJSON();
-      // const layerCoord = editedGeoJSON.geometry;
       // Busca la zona correspondiente a la capa editada
       const zonaBuscada = zonas.find(zone => zone.id == layerId);
       console.log("zona buscada", zonaBuscada);
@@ -278,15 +263,10 @@ const MapasConfig = () => {
     setEliminando(true)
     setEditando(false)
   };
-  //   const handleZoneNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     setZoneName(e.target.value);
-  //   };
-  // console.log(editarMapa);
+ 
   return (
     <div className="draw-map-container">
       <div className='allMapContainer'>
-
-
         {
           !editarMapa ?
             <div className='botones'>
@@ -446,10 +426,8 @@ const MapasConfig = () => {
                   )
                 })}
               </FeatureGroup>
-
             </div>
           }
-
           <SetViewOnClick coords={carlosPazCoords} />
         </MapContainer>
       </div>

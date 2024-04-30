@@ -6,7 +6,12 @@
     background-color: var(--tertiary-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease; 
-  
+    & p{
+      font-size: small;
+      margin-bottom: 5px;
+      margin-right: 5px;
+
+    }
     &:hover {
       transform: translateY(-4px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -21,6 +26,11 @@
   
   .group-card p {
     margin-bottom: 5px;
+    & .valor{
+      color: rgb(47, 47, 47);
+      margin-left: 5px;
+      font-weight: 600;
+    }
   }
   
   .group-card .close-group-btn {
@@ -49,4 +59,17 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
+  }
+  .enviar-group-btn{
+    color: var(--secundary-color);
+    border: 1px solid var(--secundary-color);
+    background-color: var(--tertiary-color);
+    padding: 3px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 15px;
+    &:hover {
+      background-color: var(--secundary-color);
+      color: #fff;
+    }
   }
