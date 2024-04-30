@@ -45,7 +45,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         pedido:'',
         telefono: ''
       });
-      const [loading, setloading] = useState(true);
+      const [loading, setloading] = useState(false);
     const [direccionPop, setdireccionPop] = useState('');
     const [latitud, setLatitud] = useState(0);
     const [longitud, setLongitud] = useState(0);
