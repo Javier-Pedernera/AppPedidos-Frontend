@@ -12,6 +12,8 @@ import { formatDatabaseDateTime, formatLocalDateTime } from '../../utils/Formate
 import calcularMinutosHastaCierre from '../../utils/TiempoHastaCierre';
 import { fetchCadetes } from '../../Redux/Actions/CadetesActions';
 import { actualizarPedidoById } from '../../Redux/Actions/PedidosActions';
+import Pedido from '../../Models/Pedido';
+
 
 interface GroupCardProps {
   group: GrupoGet;
@@ -20,20 +22,31 @@ interface GroupCardProps {
 const GroupCard: React.FC<GroupCardProps> = ({ group }) => {
 
 const [tiempo, setTiempo] = useState(0);
+const [tiempoTotal, setTiempoTotal] = useState(0);
+const [pedidosActivos, setPedidosActivos] = useState<Pedido[]>([]);
 const dispatch = useAppDispatch();
     const cadetes = useAppSelector((state:any) => state.cadetes.cadetes);
+    const parametros = useAppSelector((state:any) => state.params.allParams);
+    
+// console.log(group.id, "pedidosActivos", pedidosActivos);
+useEffect(() => {
+  if(group){
+    const pedidos = group.pedidos.filter( p => p.estado.id !== 4);
+    setPedidosActivos(pedidos)
+  }
+}, []);
 
 useEffect(() => {
   dispatch(fetchCadetes())
-  if(group.fecha_hora_cierre){
+
     const tiempoTranscurrido = calcularMinutosHastaCierre(group.fecha_hora_creacion, group.fecha_hora_cierre)
     setTiempo(tiempoTranscurrido)
-  }else{
-    const tiempoTranscurrido = calcularMinutosTranscurridos(group.fecha_hora_creacion);
-  setTiempo(tiempoTranscurrido)
-  }
+ 
+    const tiempoTranscurridoTotal = calcularMinutosTranscurridos(group.fecha_hora_creacion);
+  setTiempoTotal(tiempoTranscurridoTotal)
   
 }, []);
+
 
 const handleCloseGroup = () => {
   Swal.fire({
@@ -44,14 +57,25 @@ const handleCloseGroup = () => {
     confirmButtonText: 'Sí, cerrar grupo',
     cancelButtonText: 'Cancelar'
   }).then((result) => {
-    if (result.isConfirmed) {
-      const fechaHoraCierre = formatDatabaseDateTime();
+    if(!pedidosActivos.length){
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "No puedes cerrar un grupo sin pedidos"
+        });
+      }else{
+        if (result.isConfirmed) {
+      
+         const fechaHoraCierre = formatDatabaseDateTime();
       
       const response = dispatch(editarGrupoById(group.id, {fecha_hora_cierre:fechaHoraCierre, id_estado: 2}))
       console.log("response al cerrar el grupo",response);
       
       Swal.fire('¡Grupo cerrado!', '', 'success');
+     
     }
+      }
+    
   });
 };
 
@@ -91,14 +115,14 @@ const handleSendGroup = () => {
       }
     }
   }).then((result) => {
-    if(!group.pedidos.length){
+    if(!pedidosActivos?.length){
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "No puedes enviar un grupo sin pedidos"
       });
-    }
-    if (result.isConfirmed) {
+    }else{
+      if (result.isConfirmed) {
       const fecha = formatDatabaseDateTime()
       const cadeteId = (document.getElementById('cadetesSelect') as HTMLSelectElement).value;
       console.log("cadeteId para enviar",cadeteId);
@@ -115,12 +139,15 @@ const handleSendGroup = () => {
       group.pedidos?.forEach(pedido => {
     dispatch(actualizarPedidoById(pedido.id, pedidoEdit)); // actuaizo pedido
   });
-      Swal.fire('¡Grupo enviado!', '', 'success');
+      Swal.fire('¡Grupo cerrado!', '', 'success');
     }
+    }
+    
   });
 };
   
-// console.log(group);
+console.log(group, pedidosActivos?.length);
+// console.log(tiempoTotal, parametros[1].valor.split(' ')[0]);
 
   return (
     <div className={`group-card ${group.estado.id == 1 ? 'open' : 'closed'}`}>
@@ -140,18 +167,18 @@ const handleSendGroup = () => {
   Zona: <span className="valor">{group.zona.nombre}</span>
 </p>
 <p>
-  Cantidad de Pedidos: <span className="valor">{group.pedidos?.length}</span>
+  Cantidad de Pedidos: <span className="valor">{pedidosActivos?.length}</span>
 </p>
 <p>
     Creado: <span className="valor">{ formatLocalDateTime(group.fecha_hora_creacion )}</span>
   </p> 
 
 <p>
-  Tiempo transcurrido: <span className="valor">{tiempo} min</span>
+  Tiempo transcurrido: <span className="valor">{tiempo? tiempo : tiempoTotal} min</span>
 </p>
 {group.fecha_hora_cierre ?
   <p>
-    Tiempo desde que se cerró: <span className="valor">{ formatLocalDateTime(group.fecha_hora_cierre) }</span>
+    Cerrado: <span className="valor">{ formatLocalDateTime(group.fecha_hora_cierre) }</span>
   </p> 
   : <p></p>
 }
@@ -159,7 +186,8 @@ const handleSendGroup = () => {
         {!group.fecha_hora_cierre && <button className="close-group-btn" onClick={handleCloseGroup} >Cerrar Grupo</button>   }
         {group.fecha_hora_cierre && !group.fecha_hora_envio && <button className="enviar-group-btn" onClick={handleSendGroup} >Enviar</button> }
       </div>
-
+     
+<div className='maxEspera' > <span className={`espera ${ pedidosActivos?.length &&  group.estado.id !== 3 && tiempoTotal > parametros[1].valor.split(' ')[0] ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> </div>
     </div>
   );
 };

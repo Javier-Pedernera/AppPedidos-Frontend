@@ -11,8 +11,7 @@
   transition: all 0.3s ease; 
     & p{
       font-size: small;
-      margin-bottom: 5px;
-      margin-right: 5px;
+      // margin-right: 5px;
 
     }
     &:hover {
@@ -28,7 +27,7 @@
   }
   
   .group-card p {
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     & .valor{
       color: rgb(47, 47, 47);
       margin-left: 5px;
@@ -103,5 +102,17 @@
     box-shadow .15s ease-in-out;
     &:hover{
       border: 1px solid var(--secundary-color);
+    }
+  }
+  .maxEspera{
+    font-size: small;
+    color: var(--primary-color);
+    margin-top: 3px;
+    font-weight: 400;
+  }
+  .espera{
+    display: none;
+    &.superada{
+      display: flex;
     }
   }

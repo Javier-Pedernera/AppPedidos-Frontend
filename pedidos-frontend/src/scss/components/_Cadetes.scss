@@ -158,7 +158,7 @@
   }
  .swal2-confirm.swal2-styled{
     background-color: var(--secundary-color);
-    width: 100px;
+    min-width: 100px;
  }
  .deleteCadBtn{
   color: var(--primary-color);

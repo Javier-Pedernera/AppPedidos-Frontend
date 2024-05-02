@@ -48,7 +48,7 @@ const actualizarPedidoById = (id: string, pedido: any) => {
       console.log('Id pedido, pedido:', id, pedido);
 const response = await axios.put(`${URL}/api/pedidos/${id}`, pedido);
       const responseDispatch = dispatch(actualizarPedido(response.data));
-      console.log('Respuesta del dispatch', responseDispatch);
+      console.log('Respuesta del dispatch actualizar pedido', response.data, responseDispatch);
       
       console.log(response);
     } catch (error) {

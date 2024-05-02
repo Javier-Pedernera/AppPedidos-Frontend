@@ -98,7 +98,7 @@ const Login = () => {
 
               <form onSubmit={handleSubmit(onSubmit)} className="form">
 
-                <div className="logoCapitan">
+                <div className="logoCapitanDiv">
                   <Link className="logoCapitan" to="/faq">
                     <img className="capitan" src={logo} alt="logo" />
                   </Link>

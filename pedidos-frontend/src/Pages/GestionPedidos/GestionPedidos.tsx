@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import '../../scss/components/_GestionPedidos.scss';
 import { useAppDispatch, useAppSelector } from "../../Redux/Store/hooks";
-import { obtenerPedidos } from "../../Redux/Actions/PedidosActions";
+import { actualizarPedidoById, obtenerPedidos } from "../../Redux/Actions/PedidosActions";
 import Pedido from "../../Models/Pedido";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { editarGrupoById, obtenerGrupos } from "../../Redux/Actions/GruposActions";
 
 
 const GestionPedidos = () => {
@@ -11,10 +12,12 @@ const GestionPedidos = () => {
   const dispatch = useAppDispatch()
 
   const pedidos: any = useAppSelector((state: any) => state.pedidos.pedidos);
+  const grupos: any = useAppSelector((state: any) => state.grupos.grupos);
   const [pedidoEditado, setPedidoEditado] = useState(null);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
   useEffect(() => {
-   dispatch(obtenerPedidos()) 
+   dispatch(obtenerPedidos());
+   dispatch(obtenerGrupos())
   }, [dispatch]);
   console.log(pedidos);
   console.log(pedidoSeleccionado);
@@ -38,10 +41,31 @@ const GestionPedidos = () => {
   };
 
   // Función para manejar la cancelación de un pedido
-  const handleCancelarPedido = (pedidoId:any) => {
-    console.log(pedidoId);
+  const handleCancelarPedido = (pedidoId:any, estadoPedido: any, grupo:any) => {
+    console.log(pedidoId, typeof(estadoPedido.id), grupo.id);
+    console.log(grupos);
     
-    // onCancelarPedido(pedidoId);
+const grupoDelpedido = grupos.find((grupoIter: any)=> grupoIter.id == grupo.id)
+console.log("grupoDelpedido",grupoDelpedido);
+
+    if(estadoPedido.id !== 3 ){
+      const pedidoCancelado ={
+            id_estado: 4,
+            id_grupo: null
+          }
+          dispatch(actualizarPedidoById(pedidoId, pedidoCancelado))
+          
+          if(grupoDelpedido.fecha_hora_cierre){
+          const grupoSinPedido = {
+                      id_estado: 1,
+                      fecha_hora_cierre: null
+                    }
+                    dispatch(editarGrupoById(grupoDelpedido.id, grupoSinPedido))
+          }
+    }else{
+      return "no se puede cancelar un pedido enviado"
+    }
+    
   };
 
   // Función para manejar el cambio de grupo de un pedido
@@ -56,7 +80,7 @@ const GestionPedidos = () => {
     // Aquí podrías cerrar el modal o componente de edición de pedido
   };
 
-//cortar pedido
+//cortar pedido cuando sea muy largo
 const truncateString = (str: string, num: number) => {
   if (str.length <= num) {
     return str;
@@ -99,7 +123,7 @@ const truncateString = (str: string, num: number) => {
               
               <td className="tdBotones">
                 <button onClick={() => handleEditarPedido(pedido.id)} className="editarBtn">Editar</button>
-                {pedido.estado.id == 1 && <button onClick={() => handleCancelarPedido(pedido.id)}className="cancelarBtn">Cancelar</button>}
+                {pedido.estado.id == 1 && <button onClick={() => handleCancelarPedido(pedido.id, pedido.estado, pedido.grupo)}className="cancelarBtn">Cancelar</button>}
                 
                 {/* <button onClick={() => handleCambiarGrupo(pedido.id)} className="cambiarBtn">Cambiar de Grupo</button> */}
                 
