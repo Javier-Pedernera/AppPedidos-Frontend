@@ -105,13 +105,14 @@
     }
   }
   .maxEspera{
-    font-size: small;
+    font-size: 0.7em;
     color: var(--primary-color);
-    margin-top: 3px;
+    margin-top: 5px;
     font-weight: 400;
   }
   .espera{
     display: none;
+    margin-top: 10px;
     &.superada{
       display: flex;
     }

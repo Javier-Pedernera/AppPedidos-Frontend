@@ -185,9 +185,11 @@ console.log(group, pedidosActivos?.length);
       <div className='contBtn'>
         {!group.fecha_hora_cierre && <button className="close-group-btn" onClick={handleCloseGroup} >Cerrar Grupo</button>   }
         {group.fecha_hora_cierre && !group.fecha_hora_envio && <button className="enviar-group-btn" onClick={handleSendGroup} >Enviar</button> }
+      
       </div>
      
 <div className='maxEspera' > <span className={`espera ${ pedidosActivos?.length &&  group.estado.id !== 3 && tiempoTotal > parametros[1].valor.split(' ')[0] ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> </div>
+
     </div>
   );
 };
