@@ -77,7 +77,7 @@ const truncateString = (str: string, num: number) => {
             <th>Teléfono</th>
             <th>Pedido</th>
             <th>Estado</th>
-            <th>Acciones</th>
+            <th className="titulo_acc">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -97,10 +97,12 @@ const truncateString = (str: string, num: number) => {
               
               <td>{pedido.estado.nombre}</td>
               
-              <td>
-                <button onClick={() => handleCancelarPedido(pedido.id)}className="cancelarBtn">Cancelar</button>
-                {/* <button onClick={() => handleCambiarGrupo(pedido.id)} className="cambiarBtn">Cambiar de Grupo</button> */}
+              <td className="tdBotones">
                 <button onClick={() => handleEditarPedido(pedido.id)} className="editarBtn">Editar</button>
+                {pedido.estado.id == 1 && <button onClick={() => handleCancelarPedido(pedido.id)}className="cancelarBtn">Cancelar</button>}
+                
+                {/* <button onClick={() => handleCambiarGrupo(pedido.id)} className="cambiarBtn">Cambiar de Grupo</button> */}
+                
               </td>
             </tr>
           ))}

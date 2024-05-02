@@ -16,11 +16,11 @@ const Dashboard = () => {
   const grupos: GrupoGet[] = useAppSelector((state: any) => state.grupos.grupos);
 
   // const [groups, setGroups] = useState<Grupo[]>(exampleGroups);
-  const [showOnlyOpenGroups, setShowOnlyOpenGroups] = useState(false);
+  const [showOnlyOpenGroups, setShowOnlyOpenGroups] = useState(true);
   const [showPedidoModal, setShowPedidoModal] = useState(false);
   // const filteredGroups = showOnlyOpenGroups ? groups.filter(group => group.fecha_hora_cierre !== null) : groups;
 
-  const filteredGroups = showOnlyOpenGroups ? grupos.filter(group => group.fecha_hora_envio !== null) : grupos;
+  const filteredGroups = showOnlyOpenGroups ? grupos.filter(group => group.fecha_hora_envio == null) : grupos;
   // console.log("grupos",groups);
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -28,10 +28,10 @@ const Dashboard = () => {
 }, []);
 useEffect(() => {
 dispatch(obtenerGrupos())
-}, []);
+}, [showPedidoModal]);
   useEffect(() => {
     dispatch(obtenerZonas())
-  }, []);
+  }, [showPedidoModal]);
 
   const handleCrearPedido = () => {
     setShowPedidoModal(true);

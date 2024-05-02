@@ -46,10 +46,10 @@ const actualizarPedidoById = (id: string, pedido: any) => {
   return async (dispatch: Dispatch) => {
     try {
       console.log('Id pedido, pedido:', id, pedido);
-
-      const responseDispatch = dispatch(actualizarPedido(pedido));
+const response = await axios.put(`${URL}/api/pedidos/${id}`, pedido);
+      const responseDispatch = dispatch(actualizarPedido(response.data));
       console.log('Respuesta del dispatch', responseDispatch);
-      const response = await axios.put(`${URL}/api/pedidos/${id}`, pedido);
+      
       console.log(response);
     } catch (error) {
       console.error('Error al editar el pedido:', error);

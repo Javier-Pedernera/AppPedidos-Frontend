@@ -4,7 +4,9 @@
     background-image: url('../../assets/images/fondo2.png');
     background-size: contain;
     height: 100vh;
-
+    .titulo_acc{
+      max-width: 200px;
+    }
     h2 {
       font-size: 1.2em;
       margin-bottom: 20px;
@@ -12,7 +14,7 @@
     }
   
     table {
-      width: 100%;
+      width: 95%;
       border-collapse: collapse;
       background-color: #fff;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -40,9 +42,10 @@
         color: #333;
       }
       td:last-child {
-        display: flex;
+        // display: flex;
         text-align: center;
-        justify-content: space-around;
+        max-width: 200px;
+        // justify-content: space-around;
       }
   
       button {
@@ -54,11 +57,13 @@
         transition: background-color 0.3s;
         &.cancelarBtn{
           background-color: var(--primary-color);
+          margin-left: 15px;
           &:hover {
             background-color: var(--redSoft-color);
           }
         }
         &.editarBtn{
+
           background-color: rgb(186, 180, 0);
           &:hover {
             background-color: rgb(231, 224, 0);
@@ -90,4 +95,9 @@
   }
  
   }
-  
+  .tdBotones{
+    // display: flex;
+    // text-align: center;
+    // justify-content: space-between ;
+    max-width: 200px;
+  }

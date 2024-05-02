@@ -50,14 +50,14 @@ const eliminarGrupoById = (id: string) => {
 };
 
 
-const editarGrupoById = (id: number, Zone:any) => {
+const editarGrupoById = (id: number, Grupo:any) => {
   return async (dispatch: Dispatch) => {
     try {
-      console.log("idLayer, layerCoord",id, Zone);
-      
-      const responseDispatch = dispatch(actualizarGrupo(Zone));
+      console.log("idLayer, layerCoord",id, Grupo);
+      const response = await axios.put(`${URL}/api/grupos-pedidos/${id}`,Grupo);
+      const responseDispatch = dispatch(actualizarGrupo(response.data));
       console.log(" respuesta del dispatch",responseDispatch);
-      const response = await axios.put(`${URL}/api/grupos-pedidos/${id}`,Zone);
+      
       console.log(response);
       
     } catch (error) {

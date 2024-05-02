@@ -33,11 +33,11 @@ const Navbar: React.FC = () => {
         ]
     } else {
         routes = [
-            {
-                path: "/faq",
-                name: "Home",
-                style: "route"
-            },
+            // {
+            //     path: "/faq",
+            //     name: "Home",
+            //     style: "route"
+            // },
             {
                 path: "/login",
                 name: "LogIn",

@@ -114,19 +114,9 @@ console.log("hay camposVacios?",camposVacios);
                     //  console.log("Grupos posibles",GruposPos);
                      
                      if(!GruposPos.length){
-                        // const fechaHoraActual = new Date();
-                        // const fechaHoraFormateada = formatearFechaHora(fechaHoraActual)
-                        // const fechaHoraFormateada = fechaHoraActual.toISOString().slice(0, 19).replace('T', ' ');
-                        // const fechaHoraUTC: Date = new Date()
                         
-                        // console.log("fechaHoraUTC",fechaHoraUTC);
-                        
-                        // const fechaReConvertida =  new Date(fechaHoraUTC).toLocaleString(undefined, { timeZone: 'America/Buenos_Aires'});
-
-                        // console.log("fechareConvertida",fechaReConvertida);
-                       //////////
                         const fechaConFuncion =formatDatabaseDateTime()
-                        console.log("fechaConFuncion",fechaConFuncion);
+                        // console.log("fechaConFuncion",fechaConFuncion);
                         // const fechaReconvertidaConFuncion = formatLocalDateTime(fechaConFuncion)
                         // console.log("fechaReconvertidaConFuncion",fechaReconvertidaConFuncion);
 
@@ -146,7 +136,7 @@ console.log("hay camposVacios?",camposVacios);
                         // console.log("grupoConMasPedidos", grupoConMasPedidos);
                         setPosiblesGrupos(GruposPos)
                         setGrupoAsignado(grupoConMasPedidos.id)          
-                        console.log("asignar grupo segun pedidos");                      
+                        // console.log("asignar grupo segun pedidos");                      
                      }
                 }
             } else {
@@ -175,13 +165,12 @@ console.log("hay camposVacios?",camposVacios);
             console.log("GrupoCompleto" ,GrupoCompleto);
             
            if(GrupoCompleto && GrupoCompleto?.pedidos.length == parseInt(parametros[0].valor )- 1 ){
+            const fechaCierre = formatDatabaseDateTime()
                         dispatch(crearPedido(pedidoNuevo))
-                        dispatch(editarGrupoById(grupoAsignado, {id_estado: 2}))
-                        dispatch(obtenerGrupos())
-                            onClose();
+                        dispatch(editarGrupoById(grupoAsignado, {id_estado: 2, fecha_hora_cierre: fechaCierre }))
+                        onClose();
                         }else{
                            dispatch(crearPedido(pedidoNuevo))
-                           dispatch(obtenerGrupos())
                             onClose();
                         }
         onClose();

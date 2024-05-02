@@ -81,8 +81,8 @@ useEffect(() => {
                   <td>{parametro.nombre}</td>
                   <td>{parametro.valor}</td>
                   <td>
-                    <button onClick={() => handleModificarParametro(parametro.id, parametro.valor)}>Modificar</button>
-                    <button onClick={() => handleEliminarParametro(parametro.id)}>Eliminar</button>
+                    <button className='btnParams' onClick={() => handleModificarParametro(parametro.id, parametro.valor)}>Modificar</button>
+                    <button className='btnParamseliminar' onClick={() => handleEliminarParametro(parametro.id)}>Eliminar</button>
                   </td>
                 </tr>
               ))}
@@ -104,7 +104,7 @@ useEffect(() => {
             value={valorParametro}
             onChange={(e) => setValorParametro(e.target.value)}
           />
-          <button onClick={handleCrearParametro} disabled={nombresDisponibles.length == 0? true: false } >Crear Parámetro</button>
+          <button className='btnParams' onClick={handleCrearParametro} disabled={nombresDisponibles.length == 0? true: false } >Crear Parámetro</button>
         </div>: <div>No puedes crear más parámetros</div> 
         }
         

@@ -4,13 +4,19 @@
     align-content: center;
     justify-content: center;
     width: 200px;
+    flex-direction: column;
 }
 .divLoader{
-    width: 100vw;
-    height: 100vh;
+    // width: 100vw;
+    height: 50vh;
     // filter: blur(6px);
     display: flex;
+    
     align-items: center;
     align-content: center;
     justify-content: center;
+    font-family: var(--font-poppins);
+    font-weight: 500;
+    color: rgb(23, 23, 23);
+    font-size: 1.2em;
 }

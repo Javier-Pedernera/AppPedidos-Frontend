@@ -1,6 +1,7 @@
 import { Outlet, Route } from "react-router-dom"
 import { Fragment, LazyExoticComponent, Suspense, lazy } from "react";
 import '../scss/components/router.scss';
+import loader from '../assets/gif/loaderBox.gif'
 
 interface RouteProps {
     path?: string;
@@ -26,8 +27,11 @@ export const renderRoutes = (routes: RouteProps[]) => {
                     <Suspense fallback=
                         {
                         <div className="divLoader">
-                            <div className="loader"></div>
-                            {/* <img className="loader" src={loader}></img> */}
+                            <div className="loader">
+                              <img className="loader" src={loader}></img>
+                              Cargando... 
+                            </div>
+                            
                             </div>
                         }
                     >

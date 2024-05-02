@@ -26,7 +26,26 @@ const Cadetes = () => {
     }, [dispatch]);
   
     const handleDeleteCadete = (id: number) => {
-      dispatch(eliminarCadete(id));
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Deseas eliminar este cadete?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'var(--secundary-color)',
+        cancelButtonColor: 'var(--primary-color)',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(eliminarCadete(id));
+          Swal.fire(
+            'Eliminado',
+            'El parámetro ha sido eliminado.',
+            'success'
+          );
+        }
+      });
+      
     };
 
     const handleToggleActivo = (id: number, activo: boolean) => {
@@ -37,13 +56,15 @@ const Cadetes = () => {
           title: 'Agregar cadete',
           confirmButtonText: 'Crear',
           html:
-            '<input id="nombre" className="swal2-input" placeholder="Nombre">',
+            '<input id="nombre" className="swal2-input" placeholder="Nombre">'+
+            '<input id="telefono" className="swal2-input" placeholder="Teléfono">',
           focusConfirm: false,
           preConfirm: () => {
             const nombre = (document.getElementById('nombre') as HTMLInputElement).value;
+            const telefono = (document.getElementById('telefono') as HTMLInputElement).value;
             console.log(nombre);
       
-            dispatch(addNewCadete({ nombre, activo: true }))
+            dispatch(addNewCadete({ nombre, activo: true, telefono }))
           }
         }).then((result) => {
           if (result.isConfirmed) {
@@ -57,19 +78,25 @@ const Cadetes = () => {
   
     return (
       <div className="cadetes-container">
-        <div className='titleconBtn'>
+      <div className='titleconBtn'>
         <h2>Cadetes</h2>
         <button className='button-crear-cadete' onClick={handleCrearCadete}>Crear Cadete</button>
-        </div>
-        <div className="cadetes-list">
+      </div>
+      <table className="cadetes-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
           {cadetes.map((cadete: Cadete) => (
-            <div key={cadete.id} className={`cadete-item ${cadete.activo? "":"inactivo"}`} >
-              <div>
-                <strong>Nombre:</strong> {cadete.nombre}
-              </div>
-              <div className='Active_btn'>
-                 <div>
-                <strong>Activo:</strong>{' '}
+            <tr key={cadete.id} className={`cadete-item ${cadete.activo ? "" : "inactivo"}`}>
+              <td>{cadete.nombre}</td>
+              <td className='telTD'>{cadete.telefono}</td>
+              <td>
                 <label className="switch">
                   <input
                     type="checkbox"
@@ -78,14 +105,15 @@ const Cadetes = () => {
                   />
                   <span className="slider"></span>
                 </label>
-              </div>
-              <button onClick={() => handleDeleteCadete(cadete.id)}>Eliminar</button>
-              </div>
-             
-            </div>
+              </td>
+              <td>
+                <button className='deleteCadBtn' onClick={() => handleDeleteCadete(cadete.id)}>Eliminar</button>
+              </td>
+            </tr>
           ))}
-        </div>
-      </div>
+        </tbody>
+      </table>
+    </div>
     );
 };
 

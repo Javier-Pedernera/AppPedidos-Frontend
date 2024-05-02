@@ -8,3 +8,4 @@ export default function calcularMinutosTranscurridos(desde: string): number {
     const diferencia: number = ahora.diff(fechaInicio, 'minutes').minutes ;
     return Math.abs(Math.floor(diferencia)); 
 }
+

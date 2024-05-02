@@ -14,7 +14,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ onClick, titulo, color1, co
     --c: goldenrod;
     color: ${color1};
     font-size: 1em;
-    border: 0.2em solid ${color1};
+    border: 0.1em solid ${color1};
     border-radius: 0.5em;
     width: 12em;
     height: 3em;

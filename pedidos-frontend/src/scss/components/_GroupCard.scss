@@ -1,11 +1,14 @@
 .group-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    background-color: var(--tertiary-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: var(--tertiary-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease; 
     & p{
       font-size: small;
       margin-bottom: 5px;
@@ -71,5 +74,34 @@
     &:hover {
       background-color: var(--secundary-color);
       color: #fff;
+    }
+  }
+  .boxestado{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    & span{
+      font-size: smaller;
+      color: rgb(70, 69, 69);
+    }
+  }
+  #cadetesSelect{
+    margin-top: 10px;
+    display: block;
+    width: 80%;
+    margin-left: 10%;
+    outline: none;
+    padding: .75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #62676b;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,
+    box-shadow .15s ease-in-out;
+    &:hover{
+      border: 1px solid var(--secundary-color);
     }
   }

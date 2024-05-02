@@ -1,76 +1,65 @@
 .cadetes-container {
-    background-image: url(../../assets/images/fondo2.png);
-    height: 100vh;
-    width: 100vw;
-    margin: 0 auto;
-    padding: 40px;
-  }
-  .titleconBtn{
-    width: 70%;
+  background-image: url(../../assets/images/fondo2.png);
+  background-size: contain;
+      height: 100vh;
+      width: 100vw;
+      margin: 0 auto;
+      padding: 40px;
+.telTD{
+  font-size: small;
+  font-weight: 500;
+  color: #535455;
+}
+  .titleconBtn {
+    color: #535455;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    align-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
-  .button-crear-cadete {
+  .button-crear-cadete{
     background-color: var(--secundary-color);
     border: none;
+    box-shadow: 1px 1px 2px rgb(81, 149, 81) ;
     color: white;
-    padding: 8px 10px;
+    padding: 5px 8px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 1em;
     margin: 4px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 5px;
   }
   
   .button-crear-cadete:hover {
     background-color: #4CAF50;
   }
-  .cadete-item {
-    display: flex;
-    justify-content: space-between;
-    width: 70%;
-    background-color: rgba(203, 203, 203, 0.7);
-    border: 1px solid #e3e3e3af;
-    border-radius: 5px;
-    padding: 10px;
-    align-items: center;
-    padding-right: 20px;
-    padding-left: 20px;
-    &.inactivo{
-        background-color: rgba(239, 152, 152, 0.605);
-    }
-  }
-  
-  .cadete-item button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .cadete-item button:hover {
-    background-color: #e10017;
-  }
-  
-  .cadetes-list {
-    display: grid;
-    grid-gap: 10px;
+  .cadetes-table {
+    width: 100%;
+    border-collapse: collapse;
   }
 
+  .cadetes-table th,
+  .cadetes-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .cadete-item {
+    transition: background-color 0.3s ease;
+  }
+
+  .cadete-item:hover {
+    background-color: #f5f5f5;
+  }
   .switch {
     position: relative;
     display: inline-block;
-    width: 52px;
-    height: 23px;
+    width: 46px;
+    height: 20px;
   }
   
   .switch input {
@@ -86,7 +75,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #e9dada;
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 34px;
@@ -95,11 +84,11 @@
   .slider:before {
     position: absolute;
     content: "";
-    height: 15px;
-    width: 15px;
+    height: 12px;
+    width: 12px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 50%;
@@ -118,14 +107,34 @@
     -ms-transform: translateX(26px);
     transform: translateX(26px);
   }
-
-  .Active_btn{
-    width: 30%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .cadete-item.inactivo {
+    background-color: #d99ca1c7;
   }
+}
   input#nombre {
+    display: block;
+    width: 100%;
+    align-self: center;
+    padding: .75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #62676b;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-bottom: 10px;
+  }
+  
+  input#nombre:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: var(--greenSoft-color);
+    outline: 0;
+    // box-shadow: 0 0 0 .2rem var(--secundary-color);
+  }
+  input#telefono {
     display: block;
     width: 100%;
     align-self: center;
@@ -140,14 +149,26 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   }
   
-  input#nombre:focus {
+  input#telefono:focus {
     color: #495057;
     background-color: #fff;
-    border-color: var(--secundary-color);
+    border-color: var(--greenSoft-color);
     outline: 0;
     // box-shadow: 0 0 0 .2rem var(--secundary-color);
   }
  .swal2-confirm.swal2-styled{
     background-color: var(--secundary-color);
     width: 100px;
+ }
+ .deleteCadBtn{
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  background-color: #f2f2f29e;
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+&:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
  }
