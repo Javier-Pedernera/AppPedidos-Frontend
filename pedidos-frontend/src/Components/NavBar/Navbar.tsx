@@ -6,7 +6,7 @@ import logo from "../../assets/logos/oaxaca.png"
 import Cookies from "js-cookie";
 import { useAppDispatch, useAppSelector } from '../../Redux/Store/hooks';
 import { UserState } from '../../Redux/Actions/UserSlice';
-import { userLogIn } from '../../Redux/Actions/UserGet';
+import { userLogIn } from '../../Redux/Actions/UserActions';
 import 'balloon-css';
 // import salida from "../../assets/gif/salida.gif"
 
@@ -33,11 +33,11 @@ const Navbar: React.FC = () => {
         ]
     } else {
         routes = [
-            {
-                path: "/faq",
-                name: "Home",
-                style: "route"
-            },
+            // {
+            //     path: "/faq",
+            //     name: "Home",
+            //     style: "route"
+            // },
             {
                 path: "/login",
                 name: "LogIn",
@@ -70,12 +70,12 @@ const Navbar: React.FC = () => {
                 ))}
                 <li>
                     {userActive.accessToken?.length ?
-                        <div className='divUser'> 
-                       <div className='divUser'>
-                        <img src={user} title='Edit' className='imageUser' alt="userImg" />
-     
-    </div>
-                            </div> : <div></div>}
+                        <div className='divUser'>
+                            <div className='divUser'>
+                                <img src={user} title='Edit' className='imageUser' alt="userImg" />
+
+                            </div>
+                        </div> : <div></div>}
                 </li>
             </ul>
         </nav>

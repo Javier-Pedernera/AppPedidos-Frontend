@@ -1,0 +1,333 @@
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+  animation: fadeIn 0.4s ease-in-out forwards;
+  font-family: var(--font-poppins);
+
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  &.show-modal {
+    display: flex;
+    align-items: center;
+  }
+
+  .modal.closed {
+    display: none;
+  }
+
+  & h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #303030;
+  }
+
+  .modal-content {
+    background-image: url('../../assets/images/fondo2.png');
+    background-size: contain;
+    border-radius: 20px 20px 20px 20px;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+
+    // height: 85%;
+    & .divLoaderGeo {
+      background-color: #ffffffab;
+      position: fixed;
+      display: flex;
+      width: 75%;
+      height: 78%;
+      padding: -20px;
+      // border-radius: 20px 20px 20px 20px;
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    & .loaderGeo {
+      align-self: center;
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+
+  .input_search {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+
+  input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px 50px 50px 10px;
+    outline: none;
+    font-size: 16px;
+    font-family: var(--font-poppins);
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #71EBA7;
+      outline: none;
+    }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  .search-icon {
+    display: flex;
+    align-items: center;
+    width: 60%;
+    height: 45px;
+    margin-left: -50px;
+    margin-left: 1px;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    & img {
+      width: 45px;
+      height: 45px;
+      margin-left: -47px;
+      border-radius: 50%;
+
+      &:hover {
+        border: 2px solid #71eba844;
+      }
+    }
+  }
+
+  .btnGuardar {
+    margin-top: 20px;
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: var(--secundary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.inactivo {
+      background-color: #999;
+
+      &:hover {
+        background-color: #999;
+      }
+    }
+
+    &:hover {
+      background-color: var(--greenSoft-color);
+    }
+  }
+}
+
+.divbtnAsign {
+  display: flex;
+  align-items: flex-start;
+  width: 90%;
+  align-content: center;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.btnAsingnar {
+  width: 10%;
+  display: flex;
+  background-color: rgb(50, 55, 60);
+  padding: 10px 10px;
+  margin-left: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 110px;
+  transition: background-color 0.3s ease;
+
+  &.inactivo {
+    background-color: #999;
+
+    &:hover {
+      background-color: #999;
+    }
+  }
+
+  &:hover {
+    background-color: rgb(54, 74, 95);
+  }
+}
+
+.imagenAñadir {
+  width: 40px;
+}
+
+.nameDirecc {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  width: 90%;
+  font-size: 0.9em;
+
+  & .NameInput {
+    border: 1px solid #ccc;
+    border-radius: 10px 10px 10px 10px;
+    margin-right: 20px;
+    font-size: 0.9em;
+  }
+
+  & .TelInput {
+    font-size: 0.9em;
+    border: 1px solid #ccc;
+    border-radius: 10px 50px 50px 10px;
+  }
+}
+
+.textpedido {
+  width: 50%;
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px 50px 50px 10px;
+  outline: none;
+  font-size: small;
+  font-family: var(--font-poppins);
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+  resize: none;
+
+  &:focus {
+    border-color: #71EBA7;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.direccpop {
+  width: 40%;
+  color: #333;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  display: flex;
+  justify-content: center;
+  font-size: small;
+  font-weight: 500;
+  margin-top: 10px;
+
+  &.acivePop {
+    opacity: 1;
+    display: flex;
+  }
+}
+
+.direccpop2 {
+  color: var(--secundary-color);
+  margin-left: 20px;
+}
+
+.GruposPos {
+  width: 40%;
+  display: flex;
+  justify-content: flex-start;
+  font-size: small;
+  justify-content: space-around;
+  flex-direction: column;
+
+  & label {
+    display: flex;
+    justify-content: center;
+    width: 95%;
+  }
+}
+
+.descriptGrupo {
+  width: 90%;
+  display: flex;
+
+  & p {
+    margin-left: 10px;
+    font-size: small;
+    font-weight: 500;
+  }
+
+}
+
+.checkBoxDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 2px;
+  border-radius: 20%;
+  width: 13px;
+  height: 13px;
+  border: 1px solid #333;
+}
+
+input.checkB {
+  appearance: none;
+  padding: 0%;
+  width: 10px;
+  height: 10px;
+  border-radius: 20%;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+
+.checkB:checked {
+  width: 5px;
+  height: 7px;
+  background-color: #00B001;
+}

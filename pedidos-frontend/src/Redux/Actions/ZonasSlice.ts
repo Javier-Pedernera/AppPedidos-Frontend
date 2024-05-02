@@ -27,7 +27,20 @@ const zonasSlice = createSlice({
       state.zonas.push(action.payload);
     },
     eliminarZona: (state, action: PayloadAction<number>) => {
-      state.zonas.splice(action.payload, 1);
+      return {
+        ...state,
+        zonas: state.zonas.filter((zona) => zona.id !== action.payload),
+      };
+
+    },
+    actualizarZona: (state, action: PayloadAction<Zona>) => {
+      const zonaActualizada = action.payload;
+      state.zonas = state.zonas.map(zona => {
+        if (zona.id === zonaActualizada.id) {
+          return zonaActualizada;
+        }
+        return zona;
+      });
     },
     limpiarZonas: (state) => {
       state.zonas = [];
@@ -41,5 +54,5 @@ const zonasSlice = createSlice({
   },
 });
 
-export const { agregarZona, eliminarZona, limpiarZonas, elegirZona, limpiarZonaElegida, getAll } = zonasSlice.actions;
+export const { agregarZona, eliminarZona, actualizarZona, limpiarZonas, elegirZona, limpiarZonaElegida, getAll } = zonasSlice.actions;
 export default zonasSlice.reducer;

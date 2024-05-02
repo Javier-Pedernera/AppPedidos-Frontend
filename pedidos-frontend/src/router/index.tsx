@@ -1,6 +1,7 @@
 import { Outlet, Route } from "react-router-dom"
 import { Fragment, LazyExoticComponent, Suspense, lazy } from "react";
 import '../scss/components/router.scss';
+import loader from '../assets/gif/loaderBox.gif'
 
 interface RouteProps {
     path?: string;
@@ -12,7 +13,6 @@ interface RouteProps {
         (props: { children: React.ReactNode }) => JSX.Element
     > | null;
 }
-
 
 export const renderRoutes = (routes: RouteProps[]) => {
     return routes.map((route, index) => {
@@ -27,8 +27,11 @@ export const renderRoutes = (routes: RouteProps[]) => {
                     <Suspense fallback=
                         {
                         <div className="divLoader">
-                            <div className="loader"></div>
-                            {/* <img className="loader" src={loader}></img> */}
+                            <div className="loader">
+                              <img className="loader" src={loader}></img>
+                              Cargando... 
+                            </div>
+                            
                             </div>
                         }
                     >
@@ -85,7 +88,6 @@ export const routes: RouteProps[] = [
                         path: "/dashboard",
                         element: lazy(async () => await import("../Pages/Dashboard/Dashboard")),
                         name: "Dashboard",
-
                     },
                     {
                         path: "/userProfile",
@@ -98,8 +100,18 @@ export const routes: RouteProps[] = [
                         name: "UserProfile"
                     },
                     {
-                        path: "/editMap",
-                        element: lazy(async () => await import("../Components/EditMap/EditMap")),
+                        path: "/gestion",
+                        element: lazy(async () => await import("../Pages/GestionPedidos/GestionPedidos.tsx")),
+                        name: "UserProfile"
+                    },
+                    {
+                        path: "/params",
+                        element: lazy(async () => await import("../Pages/Params/Params")),
+                        name: "Params"
+                    },
+                    {
+                        path: "/cadetes",
+                        element: lazy(async () => await import("../Pages/Cadetes/Cadetes")),
                         name: "UserProfile"
                     },
                     

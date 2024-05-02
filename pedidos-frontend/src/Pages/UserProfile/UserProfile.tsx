@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { userLogIn } from '../../Redux/Actions/UserGet';
+import { userLogIn } from '../../Redux/Actions/UserActions';
 import Cookies from "js-cookie";
 import { useAppDispatch, useAppSelector } from '../../Redux/Store/hooks';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -43,9 +43,9 @@ const UserProfile = () => {
               onCopy={() => {
                 handlecopyText();
               }}>
-              {IdCopy ? <span className='user_copied'>{userActive.id}<LiaClipboardCheckSolid className='ico_copied' /> <span  className='textcopiedid'>copied!</span> </span> : <span>{userActive.id}<RxClipboardCopy className='ico_copy' /></span>}
+              {IdCopy ? <span className='user_copied'>{userActive.id}<LiaClipboardCheckSolid className='ico_copied' /> <span className='textcopiedid'>copied!</span> </span> : <span>{userActive.id}<RxClipboardCopy className='ico_copy' /></span>}
             </CopyToClipboard></div> */
-            
+
           {/* /* <p> {userActive.id}</p> */}
         </div>
       </div>

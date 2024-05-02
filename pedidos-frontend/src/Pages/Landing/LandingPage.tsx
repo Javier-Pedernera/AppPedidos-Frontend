@@ -1,7 +1,7 @@
 
 import {  useNavigate } from 'react-router-dom';
 import '../../scss/components/landing.scss';
-import logo from "../../assets/logos/logo1-sinfondo.png"
+import logo from "../../assets/logos/logo3d-sinfondo.png"
 import CustomButton from '../../Components/Button/CustomButton.tsx';
 
 const Landing = () => {

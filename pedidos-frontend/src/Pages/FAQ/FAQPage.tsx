@@ -146,7 +146,7 @@ const FAQ = () => {
 
 
         <div className="sectionCaract">
-          <Typography className='comoFunciona_title' gutterBottom>
+          <Typography className='caractUse' gutterBottom>
             Características
           </Typography>
           {características.map((feature, index) => (

@@ -1,8 +1,8 @@
 .home {
   padding-top: 5%;
   background-color: var(--tertiary-color);
-  // background-image: url(../../assets/images/fodoBody.png);
-  // background-size: cover;
+  background-image: url(../../assets/images/fond2.png);
+  background-size: contain;
   // background-repeat: no-repeat;
   font-family: Arial, sans-serif;
   display: flex;
@@ -74,7 +74,7 @@ margin-bottom: 50px;
   // }
   .cardUse{
     display: flex;
-    height: 200px;
+    height: 250px;
     // width: 20%;
     background-color: var(--black-color);
     flex-direction: column;
@@ -112,6 +112,10 @@ color: #dbdbdb;
 & h6{
   color: var(--tertiary-color);
 }
+& svg{
+  color: #cac9c9;
+  font-size: large;
+}
   }
   .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-6.MuiGrid-grid-md-2.css-wqan3a-MuiGrid-root{
     max-width: 250px;
@@ -139,7 +143,7 @@ color: #dbdbdb;
     display: flex;
     align-items: center;
     justify-content: center;
-    color:var(--tertiary-color);
+    color: #272626;
   }
   .sectioncomoFunciona{
     transform: translate(-0%, -0%); z-index: 2;
@@ -281,4 +285,9 @@ display: flex;
   background-size: unset;
     background-repeat: no-repeat;
  
+}
+.caractUse{
+  color: #dbdbdb;
+  text-align: center;
+  font-size: 1.5em;
 }
