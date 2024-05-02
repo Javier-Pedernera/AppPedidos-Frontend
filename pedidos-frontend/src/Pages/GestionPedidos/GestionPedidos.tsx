@@ -13,8 +13,12 @@ const GestionPedidos = () => {
 
   const pedidos: any = useAppSelector((state: any) => state.pedidos.pedidos);
   const grupos: any = useAppSelector((state: any) => state.grupos.grupos);
-  const [pedidoEditado, setPedidoEditado] = useState(null);
+  const [pedidoEditado, setPedidoEditado] = useState<Pedido | null>(null);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
+  const [edicionPedido, setEdicionPedido] = useState<number | null>(null);
+
+console.log("edicionPedido",edicionPedido);
+
   useEffect(() => {
    dispatch(obtenerPedidos());
    dispatch(obtenerGrupos())
@@ -33,8 +37,9 @@ const GestionPedidos = () => {
 
   // Función para manejar la edición de un pedido
   const handleEditarPedido = (pedidoId:any) => {
-    console.log(pedidoId);
-    setPedidoEditado(null)
+    // console.log(pedidoId);
+    // setPedidoEditado(null)
+     setEdicionPedido(pedidoId );
     // const pedido = pedidos.find(pedido => pedido.id === pedidoId);
     // setPedidoEditado(pedido);
     // Aquí podrías abrir un modal o cualquier otro componente de edición de pedido
@@ -72,12 +77,27 @@ console.log("grupoDelpedido",grupoDelpedido);
   // const handleCambiarGrupo = (pedidoId:any) => {
   //   // onCambiarGrupo(pedidoId);
   // };
-
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    const { value } = e.target;
+    setPedidoEditado((prevState:any) => ({
+      ...prevState,
+      [field]: value
+    }));
+  };
+  console.log(pedidoEditado);
+  
   // Función para manejar la confirmación de la edición de un pedido
-  const handleConfirmarEdicion = () => {
-    // onEditarPedido(pedidoEditado.id, pedidoEditado);
-    // setPedidoEditado(null);
-    // Aquí podrías cerrar el modal o componente de edición de pedido
+  const handleConfirmarEdicion = (pedidoID:any) => {
+  // const pedidoID = edicionPedido?.toString()
+  const Editado = {
+    cliente: pedidoEditado?.cliente,
+    telefono: pedidoEditado?.telefono,
+    pedido_nuevo: pedidoEditado?.pedido
+  }
+   const res= dispatch(actualizarPedidoById(pedidoID , Editado))
+    setPedidoEditado(null);
+    setEdicionPedido(null);
+    console.log("respuesta del dispatch editar pedido", res);
   };
 
 //cortar pedido cuando sea muy largo
@@ -107,12 +127,38 @@ const truncateString = (str: string, num: number) => {
         <tbody>
           {pedidos.map((pedido:Pedido) => (
             <tr key={pedido.id}>
-              <td>{pedido.cliente}</td>
-              <td>{pedido.direccion}</td>
-              <td>{pedido.telefono}</td>
               <td>
-                {truncateString(pedido.pedido, 10)}
-                {pedido.pedido.length > 10 && (
+                {edicionPedido == pedido.id ? (
+                  <input 
+                  type="text" 
+                  value={pedidoEditado?.cliente || pedido.cliente}
+                  onChange={(e) => handleEditInputChange(e, 'cliente')}  />
+                ) : (
+                  pedido.cliente
+                )}
+              </td>
+              <td>{pedido.direccion}</td>
+              <td>
+                {edicionPedido == pedido.id? (
+                  <input 
+                  type="text" 
+                  value={pedidoEditado?.telefono || pedido.telefono}
+                  onChange={(e) => handleEditInputChange(e, 'telefono')} />
+                ) : (
+                  pedido.telefono
+                )}
+              </td>
+              <td>
+                {edicionPedido == pedido.id? (
+                  <input 
+                  type="text" 
+                  value={pedidoEditado?.pedido || pedido.pedido} 
+                  onChange={(e) => handleEditInputChange(e, 'pedido')}/>
+                ) : (
+                  truncateString(pedido.pedido, 10)
+                  
+                )}
+                {pedido.pedido.length > 10 && edicionPedido !== pedido.id && (
                   <span className="ver-mas" onClick={(e) => {e.stopPropagation(); handleVerDetallePedido(pedido);}}>
                     Ver <AiOutlinePlusCircle />
                   </span>
@@ -122,10 +168,16 @@ const truncateString = (str: string, num: number) => {
               <td>{pedido.estado.nombre}</td>
               
               <td className="tdBotones">
-                <button onClick={() => handleEditarPedido(pedido.id)} className="editarBtn">Editar</button>
-                {pedido.estado.id == 1 && <button onClick={() => handleCancelarPedido(pedido.id, pedido.estado, pedido.grupo)}className="cancelarBtn">Cancelar</button>}
+                {edicionPedido && edicionPedido == pedido.id  ? (
+                  <button onClick={() => handleConfirmarEdicion(pedido.id)} className="guardarBtn">Guardar cambios</button>
+                ) : (
+                  <button 
+                  onClick={() => handleEditarPedido(pedido.id)} className="editarBtn"
+                  disabled= {edicionPedido !==null && edicionPedido !== pedido.id}
+                  >Editar</button>
+                )}
                 
-                {/* <button onClick={() => handleCambiarGrupo(pedido.id)} className="cambiarBtn">Cambiar de Grupo</button> */}
+                {pedido.estado.id == 1 && <button onClick={() => handleCancelarPedido(pedido.id, pedido.estado, pedido.grupo)} className="cancelarBtn">Cancelar</button>}
                 
               </td>
             </tr>
@@ -134,13 +186,7 @@ const truncateString = (str: string, num: number) => {
       </table>
 
       {/* Modal o componente de edición de pedido */}
-      {pedidoEditado && (
-        <div>
-          <h3>Editar Pedido</h3>
-          {/* formulario para editar el pedido */}
-          <button onClick={handleConfirmarEdicion}>Confirmar Edición</button>
-        </div>
-      )}
+    
     </div>
   );
 };

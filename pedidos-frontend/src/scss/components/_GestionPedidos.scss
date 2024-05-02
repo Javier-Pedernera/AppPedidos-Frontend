@@ -69,6 +69,12 @@
             background-color: rgb(231, 224, 0);
           }
         }
+        &.guardarBtn{
+          background-color: rgb(113, 112, 112);
+            &:hover {
+              background-color: rgb(149, 149, 149);
+            }
+        }
         // &.cambiarBtn{
         //   background-color: rgb(113, 112, 112);
         //   &:hover {
@@ -101,3 +107,5 @@
     // justify-content: space-between ;
     max-width: 200px;
   }
+
+  

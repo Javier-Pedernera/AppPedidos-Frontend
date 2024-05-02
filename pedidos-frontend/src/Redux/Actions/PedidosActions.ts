@@ -42,7 +42,7 @@ const eliminarPedidoById = (id: string) => {
   };
 };
 
-const actualizarPedidoById = (id: string, pedido: any) => {
+const actualizarPedidoById = (id: any, pedido: any) => {
   return async (dispatch: Dispatch) => {
     try {
       console.log('Id pedido, pedido:', id, pedido);
