@@ -40,6 +40,17 @@
         font-size: small;
         font-weight: 500;
         color: #333;
+        & input{
+          height: 35px;
+          border-radius: 5px;
+          border: 1px solid var(--greenSoft-color);
+          outline: none;
+          text-align: center;
+          :focus{
+            border: 5px solid var(--secundary-color);
+            background-color: #333;
+          }
+        }
       }
       td:last-child {
         // display: flex;
@@ -65,22 +76,29 @@
         &.editarBtn{
 
           background-color: rgb(186, 180, 0);
+          &.noeditable{
+            background-color: rgb(154, 153, 110);
+            &:hover{
+              background-color: rgb(154, 153, 110);
+            }
+          }
           &:hover {
             background-color: rgb(231, 224, 0);
           }
         }
         &.guardarBtn{
-          background-color: rgb(113, 112, 112);
+          background-color: var(--secundary-color);
             &:hover {
-              background-color: rgb(149, 149, 149);
+              background-color: var(--greenSoft-color);
             }
         }
-        // &.cambiarBtn{
-        //   background-color: rgb(113, 112, 112);
-        //   &:hover {
-        //     background-color: rgb(149, 149, 149);
-        //   }
-        // }
+        &.CancelarCambiosBtn{
+          margin-left: 10px;
+          background-color: rgb(113, 112, 112);
+          &:hover {
+            background-color: rgb(149, 149, 149);
+          }
+        }
         
       }
     }
@@ -108,4 +126,6 @@
     max-width: 200px;
   }
 
-  
+  .divBtns{
+    display: flex;
+  }

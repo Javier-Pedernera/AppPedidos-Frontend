@@ -44,11 +44,11 @@ console.log("edicionPedido",edicionPedido);
 
   // Función para manejar la cancelación de un pedido
   const handleCancelarPedido = (pedidoId:any, estadoPedido: any, grupo:any) => {
-    console.log(pedidoId, typeof(estadoPedido.id), grupo.id);
-    console.log(grupos);
+    // console.log(pedidoId, typeof(estadoPedido.id), grupo.id);
+    // console.log(grupos);
     
 const grupoDelpedido = grupos.find((grupoIter: any)=> grupoIter.id == grupo.id)
-console.log("grupoDelpedido",grupoDelpedido);
+// console.log("grupoDelpedido",grupoDelpedido);
 
     if(estadoPedido.id !== 3 ){
       const pedidoCancelado ={
@@ -105,7 +105,11 @@ const truncateString = (str: string, num: number) => {
   return str.slice(0, num) + "...";
 
 }
-
+const handleCancelarEdicion = () => {
+  setPedidoEditado(null)
+  setEdicionPedido(null)
+  setPedidoSeleccionado(null)
+}
   return (
     <div className="gestion-pedidos">
       <h2>Gestión de Pedidos</h2>
@@ -164,16 +168,22 @@ const truncateString = (str: string, num: number) => {
               <td>{pedido.estado.nombre}</td>
               
               <td className="tdBotones">
-                {edicionPedido && edicionPedido == pedido.id  ? (
-                  <button onClick={() => handleConfirmarEdicion(pedido.id)} className="guardarBtn">Guardar cambios</button>
-                ) : (
-                  <button 
-                  onClick={() => handleEditarPedido(pedido.id)} className="editarBtn"
-                  disabled= {edicionPedido !==null && edicionPedido !== pedido.id}
-                  >Editar</button>
-                )}
+                <div className="divBtns">
+                  {edicionPedido && edicionPedido == pedido.id ? (
+                    <div className="divBtns">
+                    <button onClick={() => handleConfirmarEdicion(pedido.id)} className="guardarBtn">Guardar</button>
+                    <button onClick={() => handleCancelarEdicion()} className="CancelarCambiosBtn">No guardar</button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleEditarPedido(pedido.id)} className={`editarBtn ${edicionPedido && edicionPedido !== pedido.id ? "noeditable" : ""}`}
+                      disabled={edicionPedido !== null && edicionPedido !== pedido.id}
+                    >Editar</button>
+                  )}
+
+                  {pedido.estado.id == 1 && <button onClick={() => handleCancelarPedido(pedido.id, pedido.estado, pedido.grupo)} className="cancelarBtn">Cancelar</button>}
+                </div>
                 
-                {pedido.estado.id == 1 && <button onClick={() => handleCancelarPedido(pedido.id, pedido.estado, pedido.grupo)} className="cancelarBtn">Cancelar</button>}
                 
               </td>
             </tr>
