@@ -37,12 +37,9 @@ console.log("edicionPedido",edicionPedido);
 
   // Función para manejar la edición de un pedido
   const handleEditarPedido = (pedidoId:any) => {
-    // console.log(pedidoId);
-    // setPedidoEditado(null)
+  
      setEdicionPedido(pedidoId );
-    // const pedido = pedidos.find(pedido => pedido.id === pedidoId);
-    // setPedidoEditado(pedido);
-    // Aquí podrías abrir un modal o cualquier otro componente de edición de pedido
+ 
   };
 
   // Función para manejar la cancelación de un pedido
@@ -108,7 +105,6 @@ const truncateString = (str: string, num: number) => {
   return str.slice(0, num) + "...";
 
 }
-
 
   return (
     <div className="gestion-pedidos">
