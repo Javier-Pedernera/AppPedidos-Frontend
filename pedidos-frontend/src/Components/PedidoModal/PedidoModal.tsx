@@ -37,15 +37,15 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     const zonas: Zona[] = useAppSelector((state: any) => state.zonas.zonas);
     const parametros: ParamsModel[] = useAppSelector((state: any) => state.params.allParams);
     const grupos: GrupoGet[] = useAppSelector((state: any) => state.grupos.grupos);
-// console.log("grupos", grupos);
-// console.log("parametros", parametros);
+    // console.log("grupos", grupos);
+    // console.log("parametros", parametros);
     const [inputs, setInputs] = useState({
         direccion: '',
         nombre: '',
-        pedido:'',
+        pedido: '',
         telefono: ''
-      });
-      const [loading, setloading] = useState(false);
+    });
+    const [loading, setloading] = useState(false);
     const [direccionPop, setdireccionPop] = useState('');
     const [latitud, setLatitud] = useState(0);
     const [longitud, setLongitud] = useState(0);
@@ -57,7 +57,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     const [camposVacios, setCamposVacios] = useState(true);
     console.log("posibles zonas para ese pedido ", posiblesZonasPedido);
     // console.log(zonas);
-    
+
     useEffect(() => {
         if (zonas.length) {
             const zoneLayer = zonas.map(zone => {
@@ -67,23 +67,23 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                 const id = zone.id;
                 return { layer, properties, nombre, id };
             });
-            
+
             setZonesLayers(zoneLayer)
         }
     }, []);
     ////////////////////////////////////////
 
- 
 
-    const handleInputChange = (event:any) => {
+
+    const handleInputChange = (event: any) => {
         const { name, value } = event.target;
         setInputs(inputs => ({ ...inputs, [name]: value }));
 
         const { nombre, pedido, telefono } = inputs;
         const algunCampoVacio = nombre.trim() === '' || pedido.trim() === '' || telefono.trim() === '';
         setCamposVacios(algunCampoVacio);
-      };
-console.log("hay camposVacios?",camposVacios);
+    };
+    console.log("hay camposVacios?", camposVacios);
 
     const handleBuscarClick = async () => {
         try {
@@ -110,34 +110,34 @@ console.log("hay camposVacios?",camposVacios);
 
                 if (zonasParaPedido.length) {
                     setposiblesZonasPedido(zonasParaPedido)
-                     const GruposPos =  buscarGruposConZonasAsignadas(zonasParaPedido, gruposAbiertos )// revisar esta funcion
+                    const GruposPos = buscarGruposConZonasAsignadas(zonasParaPedido, gruposAbiertos)// revisar esta funcion
                     //  console.log("Grupos posibles",GruposPos);
-                     
-                     if(!GruposPos.length){
-                        
-                        const fechaConFuncion =formatDatabaseDateTime()
+
+                    if (!GruposPos.length) {
+
+                        const fechaConFuncion = formatDatabaseDateTime()
                         // console.log("fechaConFuncion",fechaConFuncion);
                         // const fechaReconvertidaConFuncion = formatLocalDateTime(fechaConFuncion)
                         // console.log("fechaReconvertidaConFuncion",fechaReconvertidaConFuncion);
 
-                        const nuevoGrupo: Grupo = { id_zona: zonasParaPedido[0].id, fecha_hora_creacion: fechaConFuncion, id_estado: 1, id_cadete: null}
+                        const nuevoGrupo: Grupo = { id_zona: zonasParaPedido[0].id, fecha_hora_creacion: fechaConFuncion, id_estado: 1, id_cadete: null }
                         const resp = await dispatch(crearGrupo(nuevoGrupo)) as GrupoGet;
                         console.log(resp);
                         setPosiblesGrupos([resp])
                         setGrupoAsignado(resp.id)
                         dispatch(obtenerGrupos())
-                     }else{
+                    } else {
                         let grupoConMasPedidos = GruposPos[0];
                         for (let i = 1; i < GruposPos.length; i++) {
-                        if (GruposPos[i].pedidos.length > grupoConMasPedidos.pedidos.length) {
-                            grupoConMasPedidos = GruposPos[i];
-                        }
+                            if (GruposPos[i].pedidos.length > grupoConMasPedidos.pedidos.length) {
+                                grupoConMasPedidos = GruposPos[i];
+                            }
                         }
                         // console.log("grupoConMasPedidos", grupoConMasPedidos);
                         setPosiblesGrupos(GruposPos)
-                        setGrupoAsignado(grupoConMasPedidos.id)          
+                        setGrupoAsignado(grupoConMasPedidos.id)
                         // console.log("asignar grupo segun pedidos");                      
-                     }
+                    }
                 }
             } else {
                 console.error('No se encontraron resultados para la dirección ingresada.');
@@ -147,35 +147,35 @@ console.log("hay camposVacios?",camposVacios);
         }
         setdireccionPop(inputs.direccion)
         setInputs(inputs => ({ ...inputs, direccion: '' }));
-        
+
     };
 
     const handleGuardar = () => {
-        const pedidoNuevo ={
-                            id_grupo: grupoAsignado,
-                            direccion: direccionPop,
-                            latitud: latitud,
-                            longitud: longitud,
-                            id_estado: 1,
-                            cliente : inputs.nombre,
-                            pedido: inputs.pedido,
-                            telefono : inputs.telefono
-                        }
-            const GrupoCompleto = grupos.find(grupo => grupo.id == grupoAsignado);
-            console.log("GrupoCompleto" ,GrupoCompleto);
-            
-           if(GrupoCompleto && GrupoCompleto?.pedidos.length == parseInt(parametros[0].valor )- 1 ){
+        const pedidoNuevo = {
+            id_grupo: grupoAsignado,
+            direccion: direccionPop,
+            latitud: latitud,
+            longitud: longitud,
+            id_estado: 1,
+            cliente: inputs.nombre,
+            pedido: inputs.pedido,
+            telefono: inputs.telefono
+        }
+        const GrupoCompleto = grupos.find(grupo => grupo.id == grupoAsignado);
+        console.log("GrupoCompleto", GrupoCompleto);
+
+        if (GrupoCompleto && GrupoCompleto?.pedidos.length == parseInt(parametros[0].valor) - 1) {
             const fechaCierre = formatDatabaseDateTime()
-                        dispatch(crearPedido(pedidoNuevo))
-                        dispatch(editarGrupoById(grupoAsignado, {id_estado: 2, fecha_hora_cierre: fechaCierre }))
-                        onClose();
-                        }else{
-                           dispatch(crearPedido(pedidoNuevo))
-                            onClose();
-                        }
+            dispatch(crearPedido(pedidoNuevo))
+            dispatch(editarGrupoById(grupoAsignado, { id_estado: 2, fecha_hora_cierre: fechaCierre }))
+            onClose();
+        } else {
+            dispatch(crearPedido(pedidoNuevo))
+            onClose();
+        }
         onClose();
     };
-   
+
     const handleCloseModal = () => {
         setShowModal(false);
         onClose();
@@ -187,13 +187,13 @@ console.log("hay camposVacios?",camposVacios);
         return null;
     };
     // let polig 26 = [[-31.408301, -64.495232], [-31.398043, -64.510686],[-31.406541, -64.53215],[-31.416172, -64.533091],[-31.422026, -64.526052],[-31.428372, -64.505364]]
-    const handleCheckboxChange = (event:any) => {
+    const handleCheckboxChange = (event: any) => {
         setGrupoAsignado(event.target.value);
-      };
+    };
 
     const carlosPazCoords: LatLngExpression = [-31.4241, -64.4978];
     console.log("grupo asignado", grupoAsignado);
-    
+
 
     //   icono
     const customIcon = L.icon({
@@ -203,12 +203,12 @@ console.log("hay camposVacios?",camposVacios);
     });
 
 
-// console.log("inputs",inputs);
+    // console.log("inputs",inputs);
 
-// console.log("grupos del global",grupos);
+    // console.log("grupos del global",grupos);
     return (
         <div className={`modal ${showModal ? 'show-modal' : 'closed'}`}>
-            
+
             <div className="modal-content">
                 {loading ?
                     <div className='divLoaderGeo'>
@@ -239,7 +239,7 @@ console.log("hay camposVacios?",camposVacios);
                     <Marker icon={customIcon} position={[latitud, longitud]}>
                         <Popup>Dirección: {direccionPop}</Popup>
                     </Marker>
-                    <SetViewOnClick coords={latitud? [latitud, longitud] : carlosPazCoords} />
+                    <SetViewOnClick coords={latitud ? [latitud, longitud] : carlosPazCoords} />
                 </MapContainer>
                 <div className="form-container">
                     <div className='input_search'>
@@ -258,25 +258,25 @@ console.log("hay camposVacios?",camposVacios);
                             <div className='direccpop2'>{direccionPop}</div>
                         </div>
                     </div>
-      <div className='nameDirecc'>
-        <input
-          type="text"
-          name="nombre"
-          value={inputs.nombre}
-          onChange={handleInputChange}
-          placeholder="Nombre"
-          className='NameInput'
-        />
-        <input
-          type="text"
-          name="telefono"
-          value={inputs.telefono}
-          onChange={handleInputChange}
-          placeholder="Teléfono"
-          className='TelInput'
-        />
-       
-      </div>
+                    <div className='nameDirecc'>
+                        <input
+                            type="text"
+                            name="nombre"
+                            value={inputs.nombre}
+                            onChange={handleInputChange}
+                            placeholder="Nombre"
+                            className='NameInput'
+                        />
+                        <input
+                            type="text"
+                            name="telefono"
+                            value={inputs.telefono}
+                            onChange={handleInputChange}
+                            placeholder="Teléfono"
+                            className='TelInput'
+                        />
+
+                    </div>
 
                     <div className='divbtnAsign'>
                         <textarea
@@ -289,22 +289,22 @@ console.log("hay camposVacios?",camposVacios);
 
                         <div className='GruposPos'>
                             {posiblesGrupos.map((grupo) => (
-                            <label key={grupo.id}>
-                                <div className='checkBoxDiv'>
-                                   <input
-                                className='checkB'
-                                 type="checkbox"
-                                 value={grupo.id}
-                                 checked={grupoAsignado == grupo.id}
-                                 onChange={handleCheckboxChange}
-                                /> 
-                                </div>
-                                <div className='descriptGrupo'>
-                                    <p>Id: {grupo.id}</p>
-                                    <p>Creado: {formatLocalDateTime(grupo.fecha_hora_creacion)}</p>
-                                    <p>Pedidos: {grupo.pedidos?  grupo.pedidos.length: 0 } </p>
-                                </div>
-                            </label>
+                                <label key={grupo.id}>
+                                    <div className='checkBoxDiv'>
+                                        <input
+                                            className='checkB'
+                                            type="checkbox"
+                                            value={grupo.id}
+                                            checked={grupoAsignado == grupo.id}
+                                            onChange={handleCheckboxChange}
+                                        />
+                                    </div>
+                                    <div className='descriptGrupo'>
+                                        <p>Id: {grupo.id}</p>
+                                        <p>Creado: {formatLocalDateTime(grupo.fecha_hora_creacion)}</p>
+                                        <p>Pedidos: {grupo.pedidos ? grupo.pedidos.length : 0} </p>
+                                    </div>
+                                </label>
                             ))}
                         </div>
                         <button

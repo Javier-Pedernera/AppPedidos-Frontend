@@ -33,8 +33,15 @@ const paramsSlice = createSlice({
         allParams: state.allParams.filter(param => param.id !== action.payload)
     };
     },
+    updateParams: (state, action: PayloadAction<{ id: number; valor: string }>) => {
+      const { id, valor } = action.payload;
+      const paramIndex = state.allParams.findIndex(param => param.id === id);
+      if (paramIndex !== -1) {
+        state.allParams[paramIndex].valor = valor;
+      }
+    },
   },
 });
 
-export const { setParams, getAllParams, deleteParams } = paramsSlice.actions;
+export const { setParams, getAllParams, deleteParams,updateParams } = paramsSlice.actions;
 export default paramsSlice.reducer;

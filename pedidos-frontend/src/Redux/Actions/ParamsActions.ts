@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
-import { deleteParams, getAllParams, setParams } from "./ParamsSlice";
+import { deleteParams, getAllParams, setParams, updateParams } from "./ParamsSlice";
 
 const URL = import.meta.env.VITE_API_URL;
 
@@ -30,16 +30,16 @@ const crearParametros = (paramsData:any) => {
     }
   };
 };
-const modificarParametros = (paramsData:any) => {
+const modificarParametros = (id:any, valor:any) => {
     return async (dispatch: Dispatch) => {
+      const dataparam = {
+        valor: valor
+      }
       try {
-        // Aquí realizarías la petición al backend para crear los parámetros
-      //   console.log("Parámetros creados:", maxTiempoEspera, maxPedidos);
-        const response = await axios.post(`${URL}/api/parametros`, paramsData);
-        console.log(response);
-        
-        // Despachar la acción para actualizar el estado global con los nuevos parámetros
-        dispatch(setParams(response));
+        const response = await axios.put(`${URL}/api/parametros/${id}`, dataparam);
+        // console.log(response);
+        dispatch(updateParams({id: id, valor: valor}));
+       return response
       } catch (error) {
         console.error("Error al crear los parámetros:", error);
       }

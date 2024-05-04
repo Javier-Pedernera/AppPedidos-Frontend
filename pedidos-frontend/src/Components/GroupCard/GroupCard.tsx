@@ -28,7 +28,7 @@ const dispatch = useAppDispatch();
     const cadetes = useAppSelector((state:any) => state.cadetes.cadetes);
     const parametros = useAppSelector((state:any) => state.params.allParams);
     
-console.log(group.id, "pedidosActivos", pedidosActivos);
+// console.log(group.id, "pedidosActivos", pedidosActivos);
 useEffect(() => {
   if(group){
     const pedidos = group.pedidos?.filter( p => p.estado.id !== 4);
@@ -125,7 +125,7 @@ const handleSendGroup = () => {
       if (result.isConfirmed) {
       const fecha = formatDatabaseDateTime()
       const cadeteId = (document.getElementById('cadetesSelect') as HTMLSelectElement).value;
-      console.log("cadeteId para enviar",cadeteId);
+      // console.log("cadeteId para enviar",cadeteId);
       
       const grupoEdit = {
         fecha_hora_envio: fecha,
@@ -147,13 +147,13 @@ const handleSendGroup = () => {
 };
   
 console.log(group, pedidosActivos?.length);
-// console.log(tiempoTotal, parametros[1].valor.split(' ')[0]);
+console.log("tiepmo y max ped",tiempoTotal, parametros[1].valor.split(' ')[0]);
 
   return (
     <div className={`group-card ${group.estado.id == 1 ? 'open' : 'closed'}`}>
 
       <div className='divtitle'>
-        <h3>{`Grupo ${group.id}`}</h3>
+        <h3>{`Grupo #${group.id}`}</h3>
         <p>
   
 </p>
@@ -174,7 +174,7 @@ console.log(group, pedidosActivos?.length);
   </p> 
 
 <p>
-  Tiempo transcurrido: <span className="valor">{tiempo? tiempo : tiempoTotal} min</span>
+  Tiempo transcurrido: {pedidosActivos?.length? <span className="valor">{tiempo ? tiempo : tiempoTotal} min</span> : <span>0 min</span> } 
 </p>
 {group.fecha_hora_cierre ?
   <p>
@@ -188,7 +188,7 @@ console.log(group, pedidosActivos?.length);
       
       </div>
      
-<div className='maxEspera' > <span className={`espera ${ pedidosActivos?.length &&  group.estado.id !== 3 && tiempoTotal > parametros[1].valor?.split(' ')[0] ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> </div>
+<div className='maxEspera' > <span className={`espera ${ pedidosActivos?.length &&  group.estado.id !== 3 && tiempoTotal > parametros[1]?.valor?.split(' ').MaxPedidosPorGrupo ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> </div>
 
     </div>
   );

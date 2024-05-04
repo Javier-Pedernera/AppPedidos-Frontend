@@ -1,6 +1,8 @@
 .userPContainer{
-  height: 100vh;
+    height: 100%;
     width: 100%;
+    background-image: url('../../assets/images/fondo2.png');
+    background-size: contain;
 }
 .user-profile {
     max-width: 600px;

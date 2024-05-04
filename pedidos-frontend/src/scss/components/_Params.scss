@@ -3,7 +3,7 @@
     background-size: contain;
     display: flex;
     
-    height: 100vh;
+    height: 100%;
   }
   
   .params-content {
@@ -26,6 +26,17 @@
     padding: 10px;
     border-bottom: 1px solid #ddd;
     text-align: left;
+    & input{
+      height: 25px;
+      border-radius: 5px;
+      border: 1px solid var(--greenSoft-color);
+      outline: none;
+      text-align: center;
+      :focus{
+        border: 5px solid var(--secundary-color);
+        background-color: #333;
+      }
+    }
   }
   
   th {
@@ -45,19 +56,11 @@
     margin-right: 10px;
   }
   
-  .params-form button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+
   
-  .params-form button:hover {
-    background-color: #0056b3;
-  }
+ 
   .btnParams {
+    width: 100px;
     padding: 3px 10px;
     border: 1px solid var(--tertiary-color);
     background-color: #f2f2f29e;
@@ -66,6 +69,19 @@
     cursor: pointer;
      &:hover {
     background-color: #d9d9d9;
+  }
+  }
+  .btnParamsGdr{
+    width: 100px;
+    padding: 3px 10px;
+    border: 1px solid var(--greenSoft-color);
+    // background-color: #00b000a5;
+    color: black;
+    border-radius: 3px;
+    cursor: pointer;
+     &:hover {
+      color: #f7f7f7;
+    background-color: var(--greenSoft-color);
   }
   }
   .btnParamseliminar{
@@ -82,5 +98,21 @@
   }
 }
  
+  .btnParamsClr{
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    background-color: #f2f2f29e;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-left: 10px;
+    cursor: pointer;
+  &:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+  }
   
-  
+  .divbtnsEdit{
+    display: flex;
+    height: 27px;
+  }

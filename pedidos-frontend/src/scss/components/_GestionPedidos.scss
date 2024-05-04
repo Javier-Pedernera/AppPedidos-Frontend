@@ -3,9 +3,10 @@
     padding: 20px;
     background-image: url('../../assets/images/fondo2.png');
     background-size: contain;
-    height: 100vh;
+    height: 100%;
+    // overflow-y: scroll;
     .titulo_acc{
-      max-width: 200px;
+      min-width: 210px;
     }
     h2 {
       font-size: 1.2em;
@@ -13,10 +14,11 @@
       color: #333;
     }
   
-    table {
+   & table {
+      // min-height: 100%;
       width: 95%;
       border-collapse: collapse;
-      background-color: #fff;
+      background-color: #ffffffd8;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   
       th, td {
@@ -26,6 +28,7 @@
       }
   
       th {
+        font-size: small;
         text-align: center;
         background-color: #f5f5f5;
         font-weight: 600;
@@ -37,22 +40,24 @@
       }
       td{
         text-align: center;
-        font-size: small;
+        font-size: 0.7em;
         font-weight: 500;
         color: #333;
         & input{
           height: 35px;
           border-radius: 5px;
-          border: 1px solid var(--greenSoft-color);
+          border: none;
+          border-bottom: 2px solid #00b00063;
           outline: none;
           text-align: center;
-          :focus{
-            border: 5px solid var(--secundary-color);
-            background-color: #333;
+          caret-color: var(--greenSoft-color);
+          &:focus{
+            border-bottom: 2px solid #00b000;
           }
         }
       }
       td:last-child {
+
         // display: flex;
         text-align: center;
         max-width: 200px;
@@ -68,13 +73,17 @@
         transition: background-color 0.3s;
         &.cancelarBtn{
           background-color: var(--primary-color);
-          margin-left: 15px;
+          margin-left: 10px;
+          min-width: 100px;
+          &.nocancelable{
+            display: none
+          }
           &:hover {
             background-color: var(--redSoft-color);
           }
         }
         &.editarBtn{
-
+          min-width: 80px;
           background-color: rgb(186, 180, 0);
           &.noeditable{
             background-color: rgb(154, 153, 110);
@@ -87,13 +96,16 @@
           }
         }
         &.guardarBtn{
+          min-width: 80px;
           background-color: var(--secundary-color);
             &:hover {
               background-color: var(--greenSoft-color);
             }
         }
         &.CancelarCambiosBtn{
+          min-width: 100px;
           margin-left: 10px;
+          margin-right: 20px;
           background-color: rgb(113, 112, 112);
           &:hover {
             background-color: rgb(149, 149, 149);
@@ -128,4 +140,91 @@
 
   .divBtns{
     display: flex;
+    min-width: 190px;
+    justify-content: space-between;
   }
+
+  .selectGrupo{
+    width: 100px;
+  }
+  .btnLimpiar{
+    opacity: 0;
+    color: #f9f9f9;
+    border: 1px solid rgb(140, 140, 238);
+    background-color: rgb(140, 140, 238);
+    padding: 3px 10px;
+    border-radius: 3px;
+    transition: opacity 0.5s ease;
+    &.mostrar{
+      cursor: pointer;
+      opacity: 1;
+    }
+  &:hover {
+    background-color: rgb(97, 97, 240);
+    color: #fff;
+  }
+  }
+  .filtros{
+    min-height: 50px;
+    width: 95%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    & label{
+        font-size: .7em;
+        color:var(--secundary-color);
+        font-weight: 400;  
+        &.selecc{
+          font-weight: 700;
+        }
+    }
+    & input{
+      padding: 8px 12px;
+      border:none;
+      background-color: #ffffffb3;
+      border-bottom: 1px solid #ccc;
+      outline: none;
+    }
+    & select {
+      padding: 8px 12px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #ffffffb3;
+      font-size: 0.8em;
+      color: #333;
+      outline: none;
+      cursor: pointer;
+    }
+    & select option {
+      background-color: #fff;
+      color: #333;
+    }
+  }
+  .campofiltro{
+    width: 15%;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .btnlimpDiv{
+    width: 20%;
+  }
+  .noHayPed{
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+  tr{
+   &.trEdit{
+    background-color: #00b00028;
+    &:hover{
+      background-color: #00b00028;
+    }
+  } 
+  }
+  
