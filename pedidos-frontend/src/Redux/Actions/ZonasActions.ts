@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
-import Zona from "../../Models/Zona";
+// import Zona from "../../Models/Zona";
 import { actualizarZona, agregarZona, eliminarZona, getAll } from "./ZonasSlice";
 
 
@@ -20,11 +20,16 @@ const obtenerZonas = () => {
   };
 };
 
-const agregarZonas = (zona: Zona) => {
+const postZona = (zona: any) => {
   return async (dispatch: Dispatch) => {
     try {
+      const response= await axios.post('http://127.0.0.1:8000/api/zonas', zona);
+      console.log("response en action", response);
+       
       // Dispatch la acción para agregar las zonas al estado
-      dispatch(agregarZona(zona));
+       dispatch(agregarZona(response.data));
+      return response
+
     } catch (error) {
       console.error("Error al agregar las zonas:", error);
     }
@@ -61,4 +66,4 @@ const editarZonaById = (id: number, Zone:any) => {
   };
 };
 
-export { obtenerZonas, agregarZonas, eliminarZonaById, editarZonaById };
+export { obtenerZonas, postZona, eliminarZonaById, editarZonaById };

@@ -9,9 +9,9 @@ import "leaflet-draw/dist/leaflet.draw.css"
 import CustomButton2 from '../../Components/Button2/CustomButton2';
 import ZonesList from '../../Components/ZonesList/ZonesList';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+// import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '../../Redux/Store/hooks';
-import { editarZonaById, eliminarZonaById, obtenerZonas } from '../../Redux/Actions/ZonasActions';
+import { editarZonaById, eliminarZonaById, obtenerZonas, postZona } from '../../Redux/Actions/ZonasActions';
 import Zona from '../../Models/Zona';
 import 'leaflet-draw';
 import L from 'leaflet';
@@ -25,11 +25,9 @@ const MapasConfig = () => {
 
 
   const zonas: Zona[] = useAppSelector((state: any) => state.zonas.zonas);
-  // console.log("zonas", zonas);
+  console.log("zonas", zonas);
 
-  const [zones, setZones] = useState<any[]>([]);
   const [editarMapa, seteditarMapa] = useState(false);
-  console.log(zones);
   const [zonesLayers, setZonesLayers] = useState<ZonaLocal[]>([]);
   const [creandoZona, setCreandoZona] = useState(false);
   const [editando, setEditando] = useState(false);
@@ -40,7 +38,7 @@ const MapasConfig = () => {
   const [noEditingZones, setNonEditingZone] = useState<ZonaLocal[] | null>(null);
   // console.log("zone Select", zoneSelect);
   // console.log("loading...", loading);
-  // console.log("zonesLayers", zonesLayers);
+  console.log("zonesLayers", zonesLayers);  
   // console.log("editingZone", editingZone);
   // console.log("noEditingZones", noEditingZones);
   // console.log("editando zonas?", editando);
@@ -48,7 +46,7 @@ const MapasConfig = () => {
   useEffect(() => {
     dispatch(obtenerZonas())
 
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const editingZoneId = editingZone ? parseInt(editingZone) : null;
@@ -82,14 +80,22 @@ const MapasConfig = () => {
         // layer.editing.disable();
         return { layer, properties, nombre, id };
       });
-
       // console.log("zonelayer post deshabilitar editable", zoneLayer);
-
       setZonesLayers(zoneLayer)
     }
-
   }, [zonas]);
   ////////////////////////////////////////
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
   //Creando zonas
   const handleZoneCreated = (e: any) => {
     // setLoading(true);
@@ -101,9 +107,10 @@ const MapasConfig = () => {
       title: 'Ingrese los detalles de la zona:',
       html: `
         <input id="nombre" type="text" placeholder="Nombre de la zona" class="swal2-input">
-        <textarea id="descripcion" rows="4" cols="50" placeholder="Descripción"></textarea>
-        <input id="tipo" type="text" placeholder="Tipo de zona" class="swal2-input">
       `,
+      // por si es necesario agregr descripcion y tipo de zona
+      // <textarea id="descripcion" rows="4" cols="50" placeholder="Descripción"></textarea>
+      //   <input id="tipo" type="text" placeholder="Tipo de zona" class="swal2-input"></input>
       showCancelButton: true,
       confirmButtonText: 'Guardar',
       showLoaderOnConfirm: true,
@@ -111,12 +118,12 @@ const MapasConfig = () => {
         const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
         const nombre = (document.getElementById('nombre') as HTMLInputElement).value;
-        const descripcion = (document.getElementById('descripcion') as HTMLTextAreaElement).value;
-        const tipo = (document.getElementById('tipo') as HTMLInputElement).value;
+        // const descripcion = (document.getElementById('descripcion') as HTMLTextAreaElement).value;
+        // const tipo = (document.getElementById('tipo') as HTMLInputElement).value;
 
         polygonGeoJSON.properties.name = nombre;
-        polygonGeoJSON.properties.description = descripcion;
-        polygonGeoJSON.properties.type = tipo;
+        // polygonGeoJSON.properties.description = descripcion;
+        // polygonGeoJSON.properties.type = tipo;
         polygonGeoJSON.properties.color = randomColor;
         polygonGeoJSON.properties.fill = true;
         polygonGeoJSON.properties.border_width = 2;
@@ -131,10 +138,16 @@ const MapasConfig = () => {
           Swal.showValidationMessage('El nombre de la zona es requerido');
           return false;
         }
-        return axios.post('http://127.0.0.1:8000/api/zonas', jsonEnviar)
-          .then(response => {
-            // console.log("response", response);
-            setZones(prevZones => [...prevZones, response.data]);
+        // return axios.post('http://127.0.0.1:8000/api/zonas', jsonEnviar)
+        dispatch(postZona(jsonEnviar))
+          .then((response:any) => {
+            console.log("response", response);
+            if(response?.status == 200){
+              Toast.fire({
+                icon: "success",
+                title: "Zona creada exitosamente"
+              });
+            }
           })
           .catch(error => {
             console.error('Error al enviar la zona:', error);
@@ -142,11 +155,13 @@ const MapasConfig = () => {
           });
       },
       allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
+    }).then((result:any) => {
+      console.log("resultado de la creacion", result);
       if (result.dismiss === Swal.DismissReason.cancel) {
         // El usuario canceló, no hagas nada
-      } else {
-        dispatch(obtenerZonas())
+      } 
+      if(result.isConfirmed) {
+        // dispatch(obtenerZonas())
         // setLoading(false);
         setCreandoZona(false);
         seteditarMapa(false)

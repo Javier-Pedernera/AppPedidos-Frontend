@@ -20,7 +20,7 @@
         }
         .zone-number {
           font-weight: bold;
-          font-size: 0.7rem;
+          font-size: 0.8rem;
         }
   
         .zone-details {
@@ -29,7 +29,7 @@
   
           .zone-title {
             font-family: var(--font-poppins);
-            font-size: 0.7em;
+            font-size: 0.8em;
             margin-left: 0.5em;
             width: 50%;
           }
@@ -39,6 +39,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
+            font-size: small;
             width: 20px;
             height: 20px;
             border-radius: 50%;

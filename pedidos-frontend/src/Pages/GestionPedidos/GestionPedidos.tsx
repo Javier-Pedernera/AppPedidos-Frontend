@@ -62,7 +62,7 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
     dispatch(obtenerZonas())
     dispatch(obtenerPedidos());
     dispatch(obtenerGrupos())
-  }, [dispatch]);
+  }, [dispatch, modalOpen]);
   // console.log(pedidos);
   // console.log(pedidoSeleccionado);
 

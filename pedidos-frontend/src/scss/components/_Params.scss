@@ -23,9 +23,17 @@
   }
   
   th, td {
+    
+    width: 30%;
     padding: 10px;
     border-bottom: 1px solid #ddd;
-    text-align: left;
+    text-align: center;
+    
+&.nombreTit{
+  text-align: left;
+width: 40%;
+    }
+
     & input{
       height: 25px;
       border-radius: 5px;

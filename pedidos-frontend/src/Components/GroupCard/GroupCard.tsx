@@ -44,7 +44,7 @@ useEffect(() => {
   }
 }, []);
 
-console.log(group);
+// console.log(group);
 
 // console.log(params);
 
@@ -59,8 +59,8 @@ useEffect(() => {
   
 }, [grupos, group, dispatch]);
 
-console.log(tiempoTotal);
-console.log(tiempo);
+// console.log(tiempoTotal);
+// console.log(tiempo);
 
 
 const handleCloseGroup = () => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../Redux/Store/hooks';
-import { crearParametros, eliminarParametros, modificarParametros, traerParametros } from '../../Redux/Actions/ParamsActions';
+import { crearParametros, modificarParametros, traerParametros } from '../../Redux/Actions/ParamsActions';
 import { ParamsModel } from '../../Models/Params';
 import '../../scss/components/_Params.scss';
 import Swal from 'sweetalert2';
@@ -104,7 +104,7 @@ useEffect(() => {
           <table>
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th className='nombreTit'>Nombre</th>
                 <th>Valor</th>
                 <th>Acciones</th>
               </tr>

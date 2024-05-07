@@ -55,10 +55,12 @@ const editarGrupoById = (id: number, Grupo:any) => {
     try {
       console.log("idLayer, layerCoord",id, Grupo);
       const response = await axios.put(`${URL}/api/grupos-pedidos/${id}`,Grupo);
+
+      console.log("respuesta del backend",response);
       const responseDispatch = dispatch(actualizarGrupo(response.data));
       console.log(" respuesta del dispatch",responseDispatch);
       
-      console.log(response);
+      
       
     } catch (error) {
       console.error("Error al editar la zona:", error);

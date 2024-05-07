@@ -21,7 +21,7 @@ const Dashboard = () => {
   // const filteredGroups = showOnlyOpenGroups ? groups.filter(group => group.fecha_hora_cierre !== null) : groups;
 
   const filteredGroups = showOnlyOpenGroups ? grupos.filter(group => group.fecha_hora_envio == null) : grupos;
-  // console.log("grupos",groups);
+  console.log("grupos",grupos);
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(traerParametros())
@@ -38,6 +38,7 @@ const Dashboard = () => {
   const handleClosePedidoModal = () => {
     setShowPedidoModal(false);
   };
+console.log("grupos filtrados o no",filteredGroups);
 
   const createNewGroup = () => {
   }
