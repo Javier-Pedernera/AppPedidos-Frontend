@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import calcularMinutosTranscurridos from '../../utils/TiempoTranscurrido';
 import Swal from 'sweetalert2';
 import { useAppDispatch, useAppSelector } from '../../Redux/Store/hooks';
-import { editarGrupoById, obtenerGrupos } from '../../Redux/Actions/GruposActions';
+import { editarGrupoById } from '../../Redux/Actions/GruposActions';
 import { formatDatabaseDateTime, formatLocalDateTime } from '../../utils/FormatearFechaHora';
 import calcularMinutosHastaCierre from '../../utils/TiempoHastaCierre';
 import { fetchCadetes } from '../../Redux/Actions/CadetesActions';
