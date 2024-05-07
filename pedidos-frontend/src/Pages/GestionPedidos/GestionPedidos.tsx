@@ -4,8 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../Redux/Store/hooks";
 import { actualizarPedidoById, obtenerPedidos } from "../../Redux/Actions/PedidosActions";
 import Pedido from "../../Models/Pedido";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import {  obtenerGrupos } from "../../Redux/Actions/GruposActions";
+import { obtenerGrupos } from "../../Redux/Actions/GruposActions";
 import { obtenerZonas } from "../../Redux/Actions/ZonasActions";
+import DetallePedido from "../../Components/DetallePedido/detallepedido";
 
 
 const GestionPedidos = () => {
@@ -13,30 +14,46 @@ const GestionPedidos = () => {
   const dispatch = useAppDispatch()
 
   const pedidos: any = useAppSelector((state: any) => state.pedidos.pedidos);
-  const gruposSelect: any = useAppSelector((state: any) => state.grupos.grupos).map((g:any) => g.id);
+  const gruposSelect: any = useAppSelector((state: any) => state.grupos.grupos);
   const zonasSelect: any = useAppSelector((state: any) => state.zonas.zonas);
   const [pedidosMap, setPedidosMap] = useState<Pedido[] | []>([]);
   // const [filteredPedidos, setFilteredPedidos] = useState<Pedido[] | []>([]);
   const [pedidoEditado, setPedidoEditado] = useState<Pedido | null>(null);
   // const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
   const [edicionPedido, setEdicionPedido] = useState<number | null>(null);
-  const [filtros, setFiltros] = useState<{ grupo: string, fecha: string, zona: string, estado: string }>({
+  const [descripcionPedido, setDescripcionPedido] = useState<string>("");
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [grupoSeleccionado, setGrupoSeleccionado] = useState<number |undefined> ( undefined );
+
+  const [filtros, setFiltros] = useState<{ grupo: string, fechaDesde: string, fechaHasta: string, zona: string, estado: string }>({
     grupo: '',
-    fecha: '',
+    fechaDesde: '',
+    fechaHasta: '',
     zona: '',
     estado: ''
   });
   console.log("pedidos", pedidos);
-useEffect(() => {
-  if(pedidos.length){
-    setPedidosMap(pedidos)
-  }
-}, [pedidos]);
+  // Función para abrir el modal
+  const handleVerDetallePedido = (descripcion: string) => {
+    setDescripcionPedido(descripcion);
+    setModalOpen(true);
+  };
+console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == "Abierto"));
+
+  // Función para cerrar el modal
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+  useEffect(() => {
+    if (pedidos.length) {
+      setPedidosMap(pedidos)
+    }
+  }, [pedidos]);
   // console.log(gruposSelect);
   useEffect(() => {
-    if(filtros.grupo !== '' || filtros.fecha !== '' || filtros.zona !== '' || filtros.estado !== '' ){
-        setPedidosMap(filteredPedidos)
-    }else{
+    if (filtros.grupo !== '' || filtros.fechaDesde !== '' || filtros.fechaHasta !== '' || filtros.zona !== '' || filtros.estado !== '') {
+      setPedidosMap(filteredPedidos)
+    } else {
       setPedidosMap(pedidos)
     }
   }, [filtros]);
@@ -48,15 +65,6 @@ useEffect(() => {
   }, [dispatch]);
   // console.log(pedidos);
   // console.log(pedidoSeleccionado);
-
-  const handleVerDetallePedido = (pedido: any) => {
-    console.log("ver detalle", pedido);
-
-    // setPedidoSeleccionado(pedido);
-  };
-  // const handleCloseModal = () => {
-  //   setPedidoSeleccionado(null);
-  // };
 
   // Función para manejar la edición de un pedido
   const handleEditarPedido = (pedidoId: any) => {
@@ -96,19 +104,26 @@ useEffect(() => {
   // const handleCambiarGrupo = (pedidoId:any) => {
   //   // onCambiarGrupo(pedidoId);
   // };
-  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: string) => {
     const { value } = e.target;
-    setPedidoEditado((prevState: any) => ({
-      ...prevState,
-      [field]: value
-    }));
+    if (field === 'grupo') {
+      // console.log(value);
+      setGrupoSeleccionado(parseInt(value));
+    } else {
+      setPedidoEditado((prevState: any) => ({
+        ...prevState,
+        [field]: value
+      }));
+    }
   };
-  console.log(pedidoEditado);
-
+  // console.log(pedidoEditado);
+  console.log(grupoSeleccionado);
+  
   // Función para manejar la confirmación de la edición de un pedido
   const handleConfirmarEdicion = (pedidoID: any) => {
     // const pedidoID = edicionPedido?.toString()
     const Editado = {
+      id_grupo:grupoSeleccionado,
       cliente: pedidoEditado?.cliente,
       telefono: pedidoEditado?.telefono,
       pedido_nuevo: pedidoEditado?.pedido
@@ -133,7 +148,7 @@ useEffect(() => {
     setEdicionPedido(null)
     // setPedidoSeleccionado(null)
   }
-  
+
   // Función para filtrar la lista de pedidos
   const handleFiltroChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, filtro: string) => {
     setFiltros({
@@ -141,69 +156,80 @@ useEffect(() => {
       [filtro]: e.target.value
     });
   };
-  const filteredPedidos = pedidos.filter((pedido:any) => {
+  const filteredPedidos = pedidos.filter((pedido: any) => {
+    const fechaCreacionPedido = new Date(pedido.grupo.fecha_hora_creacion.split('T')[0]);
+    const fechaDesde = filtros.fechaDesde !== '' ? new Date(filtros.fechaDesde) : null;
+    const fechaHasta = filtros.fechaHasta !== '' ? new Date(filtros.fechaHasta) : null;
     return (
-      (filtros.grupo === '' || pedido.grupo.id.toString() == filtros.grupo) 
+      (filtros.grupo === '' || pedido.grupo.id.toString() == filtros.grupo)
       &&
-      (filtros.fecha === '' || pedido.grupo.fecha_hora_creacion.split('T')[0].split('-').reverse().join('-') == filtros.fecha) &&
-      (filtros.zona === '' || pedido.grupo.zona.id == filtros.zona) 
+      (!fechaDesde || fechaCreacionPedido >= fechaDesde) &&
+    (!fechaHasta || fechaCreacionPedido <= fechaHasta) &&
+      // (filtros.fechaDesde === '' || pedido.grupo.fecha_hora_creacion.split('T')[0].split('-').reverse().join('-') > filtros.fechaDesde) &&
+      // (filtros.fechaHasta === '' || pedido.grupo.fecha_hora_creacion.split('T')[0].split('-').reverse().join('-') < filtros.fechaHasta) &&
+      (filtros.zona === '' || pedido.grupo.zona.id == filtros.zona)
       &&
       (filtros.estado === '' || pedido.estado.nombre === filtros.estado)
     );
   });
-const handleLimpiarFiltros = () =>{
-  setFiltros({
-    grupo: '',
-    fecha: '',
-    zona: '',
-    estado: ''
-  })
-}
-console.log("edicion pedido", edicionPedido);
+  const handleLimpiarFiltros = () => {
+    setFiltros({
+      grupo: '',
+      fechaDesde: '',
+      fechaHasta: '',
+      zona: '',
+      estado: ''
+    })
+  }
+  // console.log("edicion pedido", edicionPedido);
 
   return (
     <div className="gestion-pedidos">
       <h2>Gestión de Pedidos</h2>
-      {!edicionPedido? <div className="filtros">
+      {!edicionPedido ? <div className="filtros">
+      <div className="campofiltro">
+        <label>Fecha Desde</label>
+        <input type="date" value={filtros.fechaDesde} onChange={(e) => handleFiltroChange(e, 'fechaDesde')} />
+      </div>
+      <div className="campofiltro">
+        <label>Fecha Hasta</label>
+        <input type="date" value={filtros.fechaHasta} onChange={(e) => handleFiltroChange(e, 'fechaHasta')} />
+      </div>
         <div className="campofiltro">
-          <label className={filtros.fecha !== ''? "selecc":"" }>Fecha</label>
-        <input type="text" value={filtros.fecha} onChange={(e) => handleFiltroChange(e, 'fecha')} placeholder="dd-mm-yyyy" />
+          <label className={filtros.estado !== '' ? "selecc" : ""}>Estado</label>
+          <select value={filtros.estado} onChange={(e) => handleFiltroChange(e, 'estado')}>
+            <option value={''}> todos </option>
+            <option value={'Abierto'}> Abierto </option>
+            <option value={'Cancelado'}> Cancelado </option>
+            <option value={'Enviado'}> Enviado </option>
+          </select>
         </div>
         <div className="campofiltro">
-          <label className={filtros.estado !== ''? "selecc":"" }>Estado</label>
-        <select value={filtros.estado} onChange={(e) => handleFiltroChange(e, 'estado')}>
-        <option value={''}> todos </option>
-        <option value={'Abierto'}> Abierto </option>
-        <option value={'Cancelado'}> Cancelado </option>
-        <option value={'Enviado'}> Enviado </option>
-        </select>
+          <label className={filtros.grupo !== '' ? "selecc" : ""}>Grupo</label>
+          <select value={filtros.grupo} onChange={(e) => handleFiltroChange(e, 'grupo')}>
+            <option value={''}> todos </option>
+            {gruposSelect?.map((grupo: any) =>
+              <option value={grupo.id}> {grupo.id} </option>
+            )}
+          </select>
         </div>
         <div className="campofiltro">
-          <label className={filtros.grupo !== ''? "selecc":"" }>Grupo</label>
-        <select value={filtros.grupo} onChange={(e) => handleFiltroChange(e, 'grupo')}>
-        <option value={''}> todos </option>
-          {gruposSelect?.map((grupo:any )=> 
-          <option value={grupo}> {grupo} </option>
-          )}
-        </select>
-        </div>
-        <div className="campofiltro">
-          <label className={filtros.zona !== ''? "selecc":"" }>Zona</label> 
+          <label className={filtros.zona !== '' ? "selecc" : ""}>Zona</label>
           <select value={filtros.zona} onChange={(e) => handleFiltroChange(e, 'zona')}>
-        <option value={''}> todas </option>
-        {zonasSelect?.map((zona:any )=> 
-          <option value={zona.id}> {zona.nombre} </option>
-          )}
-        </select>
+            <option value={''}> todas </option>
+            {zonasSelect?.map((zona: any) =>
+              <option value={zona.id}> {zona.nombre} </option>
+            )}
+          </select>
         </div>
-        
-        
+
+
         <div className="btnlimpDiv">
-        <button onClick={() => handleLimpiarFiltros()} className={`btnLimpiar /div>
-        ${filtros.grupo !== '' || filtros.fecha !== '' || filtros.zona !== '' || filtros.estado !== ''? "mostrar" : ""}`}>Limpiar filtros</button>
+          <button onClick={() => handleLimpiarFiltros()} className={`btnLimpiar /div>
+        ${filtros.grupo !== '' || filtros.fechaDesde !== ''|| filtros.fechaHasta !== '' || filtros.zona !== '' || filtros.estado !== '' ? "mostrar" : ""}`}>Limpiar filtros</button>
         </div>
       </div> : <div className="filtros"></div>}
-      
+
       <table>
         <thead>
           <tr>
@@ -218,8 +244,8 @@ console.log("edicion pedido", edicionPedido);
           </tr>
         </thead>
         <tbody>
-          
-          {pedidosMap.length? pedidosMap.map((pedido: Pedido) => (
+
+          {pedidosMap.length ? pedidosMap.map((pedido: Pedido) => (
             <tr key={pedido.id} className={edicionPedido == pedido.id ? "trEdit" : ""}>
               <td>{pedido.grupo.fecha_hora_creacion.split('T')[0].split('-').reverse().join('-')}</td>
               <td>
@@ -254,14 +280,36 @@ console.log("edicion pedido", edicionPedido);
 
                 )}
                 {pedido.pedido.length > 10 && edicionPedido !== pedido.id && (
-                  <span className="ver-mas" onClick={(e) => { e.stopPropagation(); handleVerDetallePedido(pedido); }}>
+                  <span className="ver-mas" onClick={(e) => { e.stopPropagation(); handleVerDetallePedido(pedido.pedido); }}>
                     Ver <AiOutlinePlusCircle />
                   </span>
                 )}
+
               </td>
 
               <td>{pedido.estado.nombre}</td>
-              <td>{pedido.grupo.id} / {pedido.grupo.zona.nombre}</td>
+              <td>
+  {edicionPedido === pedido.id ? (
+    <div className="grupoSelect">
+      <label>Grupo:</label>
+      <select value={grupoSeleccionado}  onChange={(e) => handleEditInputChange(e, 'grupo')}>
+        <option value="">Seleccionar grupo</option>
+        {gruposSelect.filter((g:any)=> g.estado.nombre === "Abierto").length? gruposSelect.filter((g:any)=> g.estado.nombre == "Abierto").map((grupo: any) => (
+          <option key={grupo.id} value={grupo.id}>
+            {grupo.id}/ {grupo.zona.nombre}
+          </option>
+        )): <p>No hay grupos abiertos</p> }
+      </select>
+    </div>
+  ) : (
+    // Mostrar nombre del grupo y zona si no se está editando
+    <span>
+      {pedido.grupo.id} / {pedido.grupo.zona.nombre}
+    </span>
+  )}
+</td>
+              {/* <td>{pedido.grupo.id} / {pedido.grupo.zona.nombre}</td> */}
+
               <td className="tdBotones">
                 <div className="divBtns">
                   {edicionPedido && edicionPedido == pedido.id ? (
@@ -270,22 +318,31 @@ console.log("edicion pedido", edicionPedido);
                       <button onClick={() => handleCancelarEdicion()} className="CancelarCambiosBtn">No guardar</button>
                     </div>
                   ) : (
-                    <button
+                       pedido.estado.nombre !== "Abierto"? <div className="finaliz"> pedido finalizado</div> :  <button
                       onClick={() => handleEditarPedido(pedido.id)} className={`editarBtn ${edicionPedido && edicionPedido !== pedido.id ? "noeditable" : ""}`}
                       disabled={edicionPedido !== null && edicionPedido !== pedido.id}
                     >Editar</button>
+                    
                   )}
                   {/* Preguntar si para cancelar un pedido es necesario que el grupo  no este ccerrado */}
-                  {pedido.estado.id == 1 && <button disabled={edicionPedido !== null }  onClick={() => handleCancelarPedido(pedido.id, pedido.estado)} 
-                  className={`cancelarBtn ${edicionPedido? "nocancelable" : ""}`}
+                  {pedido.estado.id == 1 && <button disabled={edicionPedido !== null} onClick={() => handleCancelarPedido(pedido.id, pedido.estado)}
+                    className={`cancelarBtn ${edicionPedido ? "nocancelable" : ""}`}
                   >Cancelar</button>}
                 </div>
 
 
               </td>
             </tr>
-          )) : <div className="noHayPed">No hay coincidencias o no se crearon pedidos aún.</div> }
+          )) : <div className="noHayPed">No hay coincidencias o no se crearon pedidos aún.</div>}
         </tbody>
+        {modalOpen && (
+          <div className="detallePedido">
+            <DetallePedido
+              descripcion={descripcionPedido}
+              onClose={handleCloseModal}
+            />
+          </div>
+        )}
       </table>
     </div>
   );

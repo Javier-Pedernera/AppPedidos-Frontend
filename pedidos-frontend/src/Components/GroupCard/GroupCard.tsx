@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import calcularMinutosTranscurridos from '../../utils/TiempoTranscurrido';
 import Swal from 'sweetalert2';
 import { useAppDispatch, useAppSelector } from '../../Redux/Store/hooks';
-import { editarGrupoById } from '../../Redux/Actions/GruposActions';
+import { editarGrupoById, obtenerGrupos } from '../../Redux/Actions/GruposActions';
 import { formatDatabaseDateTime, formatLocalDateTime } from '../../utils/FormatearFechaHora';
 import calcularMinutosHastaCierre from '../../utils/TiempoHastaCierre';
 import { fetchCadetes } from '../../Redux/Actions/CadetesActions';
@@ -24,17 +24,29 @@ const GroupCard: React.FC<GroupCardProps> = ({ group }) => {
 const [tiempo, setTiempo] = useState(0);
 const [tiempoTotal, setTiempoTotal] = useState(0);
 const [pedidosActivos, setPedidosActivos] = useState<Pedido[]>([]);
+const [params, setParams] = useState({maxPedidos: 0,maxEspera:0 });
 const dispatch = useAppDispatch();
-    const cadetes = useAppSelector((state:any) => state.cadetes.cadetes);
-    const parametros = useAppSelector((state:any) => state.params.allParams);
-    
+const cadetes = useAppSelector((state:any) => state.cadetes.cadetes);
+const parametros = useAppSelector((state:any) => state.params.allParams);
+const grupos = useAppSelector((state:any) => state.grupos.grupos);
 // console.log(group.id, "pedidosActivos", pedidosActivos);
 useEffect(() => {
   if(group){
     const pedidos = group.pedidos?.filter( p => p.estado.id !== 4);
     setPedidosActivos(pedidos)
   }
+}, [grupos, group, dispatch]);
+useEffect(() => {
+  if(parametros){
+    const maxPedidos = parametros.find((p:any)=> p.nombre == "MaxPedidosPorGrupo")?.valor
+    const maxEspera = parametros.find((p:any)=> p.nombre == "MaxEsperaPorGrupo")?.valor
+    setParams({maxPedidos: parseInt(maxPedidos) ,maxEspera: parseInt(maxEspera)})
+  }
 }, []);
+
+console.log(group);
+
+// console.log(params);
 
 useEffect(() => {
   dispatch(fetchCadetes())
@@ -45,7 +57,10 @@ useEffect(() => {
     const tiempoTranscurridoTotal = calcularMinutosTranscurridos(group.fecha_hora_creacion);
   setTiempoTotal(tiempoTranscurridoTotal)
   
-}, []);
+}, [grupos, group, dispatch]);
+
+console.log(tiempoTotal);
+console.log(tiempo);
 
 
 const handleCloseGroup = () => {
@@ -64,15 +79,12 @@ const handleCloseGroup = () => {
           text: "No puedes cerrar un grupo sin pedidos"
         });
       }else{
-        if (result.isConfirmed) {
-      
-         const fechaHoraCierre = formatDatabaseDateTime();
-      
-      const response = dispatch(editarGrupoById(group.id, {fecha_hora_cierre:fechaHoraCierre, id_estado: 2}))
-      console.log("response al cerrar el grupo",response);
-      
+        if (result.isConfirmed) {      
+         const fechaHoraCierre = formatDatabaseDateTime();      
+      dispatch(editarGrupoById(group.id, {fecha_hora_cierre:fechaHoraCierre, id_estado: 2}))
+      // dispatch(obtenerGrupos())
+      // console.log("response al cerrar el grupo",response);      
       Swal.fire('¡Grupo cerrado!', '', 'success');
-     
     }
       }
     
@@ -139,15 +151,14 @@ const handleSendGroup = () => {
       group.pedidos?.forEach(pedido => {
     dispatch(actualizarPedidoById(pedido.id, pedidoEdit)); // actuaizo pedido
   });
-      Swal.fire('¡Grupo cerrado!', '', 'success');
+      Swal.fire('¡Grupo enviado!', '', 'success');
     }
     }
-    
   });
 };
   
-console.log(group, pedidosActivos?.length);
-console.log("tiepmo y max ped",tiempoTotal, parametros[1].valor.split(' ')[0]);
+// console.log(group, pedidosActivos?.length);
+// console.log("tiepmo y max ped",tiempoTotal, parametros[1].valor.split(' ')[0]);
 
   return (
     <div className={`group-card ${group.estado.id == 1 ? 'open' : 'closed'}`}>
@@ -188,7 +199,7 @@ console.log("tiepmo y max ped",tiempoTotal, parametros[1].valor.split(' ')[0]);
       
       </div>
      
-<div className='maxEspera' > <span className={`espera ${ pedidosActivos?.length &&  group.estado.id !== 3 && tiempoTotal > parametros[1]?.valor?.split(' ').MaxPedidosPorGrupo ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> </div>
+<div className='maxEspera' > <span className={`espera ${ pedidosActivos?.length && group.estado.nombre !== "Enviado" && tiempoTotal > params.maxEspera ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> </div>
 
     </div>
   );

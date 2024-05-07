@@ -25,11 +25,9 @@ const Dashboard = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(traerParametros())
-}, []);
-useEffect(() => {
-dispatch(obtenerGrupos())
-}, [showPedidoModal]);
+  }, []);
   useEffect(() => {
+    dispatch(obtenerGrupos())
     dispatch(obtenerZonas())
   }, [showPedidoModal]);
 
@@ -43,8 +41,6 @@ dispatch(obtenerGrupos())
 
   const createNewGroup = () => {
   }
-  
-
 
   const toggleShowOnlyOpenGroups = () => {
     setShowOnlyOpenGroups(!showOnlyOpenGroups);

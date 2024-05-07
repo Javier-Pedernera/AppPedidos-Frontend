@@ -24,6 +24,7 @@ import { GrupoGet } from '../../Models/GrupoGet';
 
 import { crearPedido } from '../../Redux/Actions/PedidosActions';
 import { formatDatabaseDateTime, formatLocalDateTime } from '../../utils/FormatearFechaHora';
+import ZonesList from '../ZonesList/ZonesList';
 interface CustomLayer extends L.Layer {
     _layer_id?: any;
 }
@@ -37,14 +38,13 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     const zonas: Zona[] = useAppSelector((state: any) => state.zonas.zonas);
     const parametros: ParamsModel[] = useAppSelector((state: any) => state.params.allParams);
     const grupos: GrupoGet[] = useAppSelector((state: any) => state.grupos.grupos);
-    // console.log("grupos", grupos);
-    // console.log("parametros", parametros);
     const [inputs, setInputs] = useState({
         direccion: '',
         nombre: '',
         pedido: '',
         telefono: ''
     });
+    const [params, setParams] = useState({maxPedidos: 0,maxEspera:0 });
     const [loading, setloading] = useState(false);
     const [direccionPop, setdireccionPop] = useState('');
     const [latitud, setLatitud] = useState(0);
@@ -56,8 +56,18 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     const [posiblesZonasPedido, setposiblesZonasPedido] = useState<ZonaLocal[]>([]);
     const [camposVacios, setCamposVacios] = useState(true);
     console.log("posibles zonas para ese pedido ", posiblesZonasPedido);
-    // console.log(zonas);
-
+    // console.log("params en pedidomodal",params);
+    useEffect(() => {
+        if(parametros){
+          const maxPedidos = parametros.find((p:any)=> p.nombre == "MaxPedidosPorGrupo")
+          const maxEspera = parametros.find((p:any)=> p.nombre == "MaxEsperaPorGrupo")
+          if(maxPedidos && maxEspera){
+                setParams({maxPedidos: parseInt(maxPedidos.valor) ,maxEspera: parseInt(maxEspera.valor)})
+          }
+          
+        }
+      }, []);
+      //////////////////////////////////////////////////
     useEffect(() => {
         if (zonas.length) {
             const zoneLayer = zonas.map(zone => {
@@ -67,13 +77,10 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                 const id = zone.id;
                 return { layer, properties, nombre, id };
             });
-
             setZonesLayers(zoneLayer)
         }
     }, []);
     ////////////////////////////////////////
-
-
 
     const handleInputChange = (event: any) => {
         const { name, value } = event.target;
@@ -83,7 +90,6 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         const algunCampoVacio = nombre.trim() === '' || pedido.trim() === '' || telefono.trim() === '';
         setCamposVacios(algunCampoVacio);
     };
-    console.log("hay camposVacios?", camposVacios);
 
     const handleBuscarClick = async () => {
         try {
@@ -116,13 +122,9 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                     if (!GruposPos.length) {
 
                         const fechaConFuncion = formatDatabaseDateTime()
-                        // console.log("fechaConFuncion",fechaConFuncion);
-                        // const fechaReconvertidaConFuncion = formatLocalDateTime(fechaConFuncion)
-                        // console.log("fechaReconvertidaConFuncion",fechaReconvertidaConFuncion);
-
                         const nuevoGrupo: Grupo = { id_zona: zonasParaPedido[0].id, fecha_hora_creacion: fechaConFuncion, id_estado: 1, id_cadete: null }
                         const resp = await dispatch(crearGrupo(nuevoGrupo)) as GrupoGet;
-                        console.log(resp);
+                        // console.log(resp);
                         setPosiblesGrupos([resp])
                         setGrupoAsignado(resp.id)
                         dispatch(obtenerGrupos())
@@ -162,9 +164,12 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
             telefono: inputs.telefono
         }
         const GrupoCompleto = grupos.find(grupo => grupo.id == grupoAsignado);
-        console.log("GrupoCompleto", GrupoCompleto);
-
-        if (GrupoCompleto && GrupoCompleto?.pedidos.length == parseInt(parametros[0].valor) - 1) {
+        // console.log("grupoAsignado", grupoAsignado);
+        // console.log("GrupoCompleto", GrupoCompleto);
+        // console.log("params.maxPedidos - 1", params.maxPedidos - 1);
+        // console.log("GrupoCompleto?.pedidos.length", GrupoCompleto?.pedidos.length);
+        const pedidos = GrupoCompleto?.pedidos?.filter( p => p.estado.id !== 4);
+        if (GrupoCompleto && pedidos?.length == params.maxPedidos - 1) {
             const fechaCierre = formatDatabaseDateTime()
             dispatch(crearPedido(pedidoNuevo))
             dispatch(editarGrupoById(grupoAsignado, { id_estado: 2, fecha_hora_cierre: fechaCierre }))
@@ -192,7 +197,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     };
 
     const carlosPazCoords: LatLngExpression = [-31.4241, -64.4978];
-    console.log("grupo asignado", grupoAsignado);
+    // console.log("grupo asignado", grupoAsignado);
 
 
     //   icono
@@ -201,7 +206,29 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         iconSize: [30, 30],
         iconAnchor: [15, 30],
     });
-
+    const createCustomIcon = (nombre: number, color: string) => {
+        const labelStyle = {
+          // position: 'absolute',
+          display: "flex",
+          "background-color": 'rgba(43, 43, 43, 0.899)',
+          padding: '0px',
+          width: '30px',
+          height: '30px',
+          "border-radius": '50px',
+          "font-size": '0.7rem',
+          "font-weight": 'bold',
+          color: color,
+          "justify-content": "center",
+          pointerEvents: 'none',
+          "align-items": "center"
+        };
+        const styleString = Object.entries(labelStyle).map(([key, value]) => `${key}:${value}`).join(';');
+        return L.divIcon({
+          className: 'custom-icon',
+          html: `<div style="${styleString}">${nombre}</div>`,
+          iconAnchor: [10, 12],
+        });
+      };
 
     // console.log("inputs",inputs);
 
@@ -217,7 +244,8 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                 }
                 <span className="close" onClick={handleCloseModal}>&times;</span>
                 <h2>Nuevo Pedido</h2>
-                <MapContainer className='mapa' center={[latitud, longitud]} zoom={13} style={{ height: '400px', borderRadius: '10px' }}>
+                <div className='mapList'>
+                    <MapContainer className='mapa' center={[latitud, longitud]} zoom={13} style={{ height: '400px', borderRadius: '10px' }}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     {/* Aquí puedes agregar los polígonos de las zonas */}
                     {zonesLayers?.length && zonesLayers.map((zone, index) => {
@@ -232,7 +260,15 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                                     fillOpacity={0.2}
                                     fillColor='black'
                                 />
-
+                        <Marker
+                      position={zone?.layer.getBounds().getCenter()}
+                      eventHandlers={{
+                        click: () => {
+                          console.log('marker clicked')
+                        },
+                      }}
+                      icon={createCustomIcon(zone.id, zone.properties.color)}
+                    />
                             </div>
                         )
                     })}
@@ -241,6 +277,15 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                     </Marker>
                     <SetViewOnClick coords={latitud ? [latitud, longitud] : carlosPazCoords} />
                 </MapContainer>
+                <div className='listaZ'>
+                    <ZonesList 
+                 zones={zonas} 
+                 zoneEdi={null} 
+                 setEditingZone={null} />
+                </div>
+                
+                </div>
+                
                 <div className="form-container">
                     <div className='input_search'>
                         <div className="search-icon">
@@ -327,6 +372,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                         Guardar
                     </button> */}
                 </div>
+            
             </div>
         </div>
     );

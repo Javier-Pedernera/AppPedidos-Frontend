@@ -5,13 +5,12 @@
     background-size: contain;
     height: 100%;
     // overflow-y: scroll;
-    .titulo_acc{
-      min-width: 210px;
-    }
+    
     h2 {
-      font-size: 1.2em;
+      font-size: 1.3em;
       margin-bottom: 20px;
-      color: #333;
+      color: #434343;
+      margin-left: 30px;
     }
   
    & table {
@@ -22,13 +21,13 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   
       th, td {
-        padding: 12px 12px;
+        padding: 10px 10px;
         border-bottom: 1px solid #ddd;
         // text-align: left;
       }
   
       th {
-        font-size: small;
+        font-size: medium;
         text-align: center;
         background-color: #f5f5f5;
         font-weight: 600;
@@ -40,7 +39,7 @@
       }
       td{
         text-align: center;
-        font-size: 0.7em;
+        font-size: 0.9em;
         font-weight: 500;
         color: #333;
         & input{
@@ -60,7 +59,7 @@
 
         // display: flex;
         text-align: center;
-        max-width: 200px;
+        max-width: 160px;
         // justify-content: space-around;
       }
   
@@ -131,7 +130,7 @@
   }
  
   }
-  .tdBotones{
+  td.tdBotones{
     // display: flex;
     // text-align: center;
     // justify-content: space-between ;
@@ -141,7 +140,7 @@
   .divBtns{
     display: flex;
     min-width: 190px;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 
   .selectGrupo{
@@ -227,4 +226,11 @@
     }
   } 
   }
-  
+.finaliz{
+  font-size: smaller;
+  color: #333333d3;
+  text-align: center;
+}
+th.titulo_acc{
+  max-width: 200px;
+}

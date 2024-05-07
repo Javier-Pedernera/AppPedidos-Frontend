@@ -4,22 +4,25 @@ import Zona from '../../Models/Zona';
 
 interface ZonesListProps {
   zones: Zona[];
-  zoneEdi: string
-  setEditingZone: any; 
+  zoneEdi: string | null;
+  setEditingZone: any | null; 
 }
 
 const ZonesList: React.FC<ZonesListProps> = ({ zones, zoneEdi, setEditingZone }) => {
   const [selectedZone, setSelectedZone] = useState<number | null>(null);
-console.log("todas",zones,"zona editando", zoneEdi, "setzonaediting",setEditingZone);
+// console.log("todas",zones,"zona editando", zoneEdi, "setzonaediting",setEditingZone);
 
   useEffect(() => {
-    setSelectedZone(parseInt(zoneEdi))
+    setSelectedZone(parseInt(zoneEdi? zoneEdi : ''))
   }, [zoneEdi]);
 
   const handleZoneClick = (zoneId: number) => {
-    const zoneIdStr = zoneId.toString()
+    if( setEditingZone){
+      const zoneIdStr = zoneId.toString()
     setSelectedZone(zoneId);
     setEditingZone(zoneIdStr);
+    }
+    
   };
 
   return (
