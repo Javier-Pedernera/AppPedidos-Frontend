@@ -38,10 +38,10 @@ const Dashboard = () => {
   const handleClosePedidoModal = () => {
     setShowPedidoModal(false);
   };
-console.log("grupos filtrados o no",filteredGroups);
+// console.log("grupos filtrados o no",filteredGroups);
 
-  const createNewGroup = () => {
-  }
+  // const createNewGroup = () => {
+  // }
 
   const toggleShowOnlyOpenGroups = () => {
     setShowOnlyOpenGroups(!showOnlyOpenGroups);
@@ -49,11 +49,11 @@ console.log("grupos filtrados o no",filteredGroups);
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <CustomButton2 onClick={createNewGroup}
+        {/* <CustomButton2 onClick={createNewGroup}
           titulo="crear grupo"
           color1="var(--greenSoft-color)"
           color2="var(--greenSoft-color)"
-          disabled={false} />
+          disabled={false} /> */}
         <CustomButton2 onClick={handleCrearPedido}
           titulo="crear pedido"
           color1="var(--primary-color)"

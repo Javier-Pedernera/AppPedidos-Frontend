@@ -40,7 +40,7 @@ const Cadetes = () => {
           dispatch(eliminarCadete(id));
           Swal.fire(
             'Eliminado',
-            'El parámetro ha sido eliminado.',
+            'El cadete ha sido eliminado.',
             'success'
           );
         }

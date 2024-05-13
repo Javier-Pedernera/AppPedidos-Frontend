@@ -40,7 +40,7 @@ const Sidebar: React.FC = () => {
       setRoutes([
         {
           path: "/dashboard",
-          name: "PanelGeneral",
+          name: "Panel General",
           style: "panelicono"
         },
         {

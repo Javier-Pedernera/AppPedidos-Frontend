@@ -26,7 +26,7 @@ const [tiempoTotal, setTiempoTotal] = useState(0);
 const [pedidosActivos, setPedidosActivos] = useState<Pedido[]>([]);
 const [params, setParams] = useState({maxPedidos: 0,maxEspera:0 });
 const dispatch = useAppDispatch();
-const cadetes = useAppSelector((state:any) => state.cadetes.cadetes);
+const cadetes = useAppSelector((state:any) => state.cadetes.cadetes).filter((cadete:any) => cadete.activo == true);
 const parametros = useAppSelector((state:any) => state.params.allParams);
 const grupos = useAppSelector((state:any) => state.grupos.grupos);
 // console.log(group.id, "pedidosActivos", pedidosActivos);
@@ -43,11 +43,6 @@ useEffect(() => {
     setParams({maxPedidos: parseInt(maxPedidos) ,maxEspera: parseInt(maxEspera)})
   }
 }, []);
-
-// console.log(group);
-
-// console.log(params);
-
 useEffect(() => {
   dispatch(fetchCadetes())
 
@@ -83,7 +78,6 @@ const handleCloseGroup = () => {
          const fechaHoraCierre = formatDatabaseDateTime();      
       dispatch(editarGrupoById(group.id, {fecha_hora_cierre:fechaHoraCierre, id_estado: 2}))
       // dispatch(obtenerGrupos())
-      // console.log("response al cerrar el grupo",response);      
       Swal.fire('¡Grupo cerrado!', '', 'success');
     }
       }

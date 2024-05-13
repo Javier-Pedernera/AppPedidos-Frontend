@@ -295,18 +295,24 @@
     display: flex;
     justify-content: center;
     width: 95%;
+    align-content: center;
+    align-items: center;
   }
 }
 
 .descriptGrupo {
   width: 90%;
   display: flex;
-
+  
   & p {
     margin-left: 10px;
     font-size: small;
     font-weight: 500;
+    
   }
+&.Gruposeleccionado{
+  color: #00B001;
+}
 
 }
 
