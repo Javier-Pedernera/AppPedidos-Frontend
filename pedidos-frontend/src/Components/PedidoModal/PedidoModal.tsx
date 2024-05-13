@@ -57,6 +57,9 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     const [camposVacios, setCamposVacios] = useState(true);
     console.log("posibles zonas para ese pedido ", posiblesZonasPedido);
     // console.log("params en pedidomodal",params);
+    console.log("posiblesGrupos",posiblesGrupos);
+    console.log("camposVacios",camposVacios);
+    
     useEffect(() => {
         if(parametros){
           const maxPedidos = parametros.find((p:any)=> p.nombre == "MaxPedidosPorGrupo")
@@ -86,10 +89,13 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         const { name, value } = event.target;
         setInputs(inputs => ({ ...inputs, [name]: value }));
 
+        
+    };
+    useEffect(() => {
         const { nombre, pedido, telefono } = inputs;
         const algunCampoVacio = nombre.trim() === '' || pedido.trim() === '' || telefono.trim() === '';
         setCamposVacios(algunCampoVacio);
-    };
+    }, [inputs]);
 
     const handleBuscarClick = async () => {
         try {
@@ -113,6 +119,9 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                 const point = { lat, lng }
 
                 const zonasParaPedido = await encontrarZonasParaPunto(point, zonesLayers)
+
+                // console.log("zonasParaPedido",zonasParaPedido);
+                
 
                 if (zonasParaPedido.length) {
                     setposiblesZonasPedido(zonasParaPedido)
@@ -140,6 +149,17 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                         setGrupoAsignado(grupoConMasPedidos.id)
                         // console.log("asignar grupo segun pedidos");                      
                     }
+                }else{
+                    Swal.fire({
+                        title: "Dirección sin zona",
+                        text: "No se encontró zona creada para la dirección ingresada.",
+                        icon: "warning",
+                    });
+                    setPosiblesGrupos([]);
+                    setGrupoAsignado(0);
+                    setInputs(inputs => ({ ...inputs, direccion: '' }));
+                    setdireccionPop('');
+                    return
                 }
             } else {
                 console.error('No se encontraron resultados para la dirección ingresada.');
@@ -164,10 +184,6 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
             telefono: inputs.telefono
         }
         const GrupoCompleto = grupos.find(grupo => grupo.id == grupoAsignado);
-        // console.log("grupoAsignado", grupoAsignado);
-        // console.log("GrupoCompleto", GrupoCompleto);
-        // console.log("params.maxPedidos - 1", params.maxPedidos - 1);
-        // console.log("GrupoCompleto?.pedidos.length", GrupoCompleto?.pedidos.length);
         const pedidos = GrupoCompleto?.pedidos?.filter( p => p.estado.id !== 4);
         if (GrupoCompleto && pedidos?.length == params.maxPedidos - 1) {
             const fechaCierre = formatDatabaseDateTime()
@@ -180,7 +196,6 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         }
         onClose();
     };
-
     const handleCloseModal = () => {
         setShowModal(false);
         onClose();
@@ -320,7 +335,6 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             placeholder="Teléfono"
                             className='TelInput'
                         />
-
                     </div>
 
                     <div className='divbtnAsign'>
@@ -344,8 +358,8 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                                             onChange={handleCheckboxChange}
                                         />
                                     </div>
-                                    <div className='descriptGrupo'>
-                                        <p>Id: {grupo.id}</p>
+                                    <div className={`descriptGrupo ${grupoAsignado == grupo.id? "Gruposeleccionado":""}`}>
+                                        <p>Zona: {grupo.zona.nombre}</p>
                                         <p>Creado: {formatLocalDateTime(grupo.fecha_hora_creacion)}</p>
                                         <p>Pedidos: {grupo.pedidos ? grupo.pedidos.length : 0} </p>
                                     </div>
@@ -353,7 +367,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             ))}
                         </div>
                         <button
-                            disabled={latitud == 0}
+                            disabled={latitud == 0 || camposVacios}
                             type="button"
                             onClick={handleGuardar}
                             className={`btnAsingnar ${latitud == 0 || camposVacios ? 'inactivo' : ''}`}

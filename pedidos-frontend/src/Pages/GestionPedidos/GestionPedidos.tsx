@@ -7,6 +7,8 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { obtenerGrupos } from "../../Redux/Actions/GruposActions";
 import { obtenerZonas } from "../../Redux/Actions/ZonasActions";
 import DetallePedido from "../../Components/DetallePedido/detallepedido";
+import Swal from "sweetalert2";
+import PedidoDescripcion from "../../Components/PedidoDescripcion/PedidoDescripcion";
 
 
 const GestionPedidos = () => {
@@ -22,9 +24,12 @@ const GestionPedidos = () => {
   // const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
   const [edicionPedido, setEdicionPedido] = useState<number | null>(null);
   const [descripcionPedido, setDescripcionPedido] = useState<string>("");
+  const [detallesPedido, setdetallesPedido] = useState<any>({});
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalDescripcionOpen, setModalDescripcionOpen] = useState<boolean>(false);
   const [grupoSeleccionado, setGrupoSeleccionado] = useState<number |undefined> ( undefined );
-
+  console.log(pedidos);
+  
   const [filtros, setFiltros] = useState<{ grupo: string, fechaDesde: string, fechaHasta: string, zona: string, estado: string }>({
     grupo: '',
     fechaDesde: '',
@@ -32,17 +37,18 @@ const GestionPedidos = () => {
     zona: '',
     estado: ''
   });
-  console.log("pedidos", pedidos);
+  // console.log("pedidos", pedidos);
   // Función para abrir el modal
   const handleVerDetallePedido = (descripcion: string) => {
     setDescripcionPedido(descripcion);
     setModalOpen(true);
   };
-console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == "Abierto"));
+// console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == "Abierto"));
 
   // Función para cerrar el modal
   const handleCloseModal = () => {
     setModalOpen(false);
+    setModalDescripcionOpen(false);
   };
   useEffect(() => {
     if (pedidos.length) {
@@ -63,8 +69,6 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
     dispatch(obtenerPedidos());
     dispatch(obtenerGrupos())
   }, [dispatch, modalOpen]);
-  // console.log(pedidos);
-  // console.log(pedidoSeleccionado);
 
   // Función para manejar la edición de un pedido
   const handleEditarPedido = (pedidoId: any) => {
@@ -72,20 +76,36 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
     setEdicionPedido(pedidoId);
 
   };
-  // Función para manejar la cancelación de un pedido
+  // Función para manejar cómo cancelar un pedido
   const handleCancelarPedido = (pedidoId: any, estadoPedido: any) => {
-    // console.log(pedidoId, typeof(estadoPedido.id), grupo.id);
-    // console.log(grupos);
     // si deseo abrir el grupo nuevamente
     // const grupoDelpedido = grupos.find((grupoIter: any)=> grupoIter.id == grupo.id)
     // console.log("grupoDelpedido",grupoDelpedido);
-
     if (estadoPedido.id !== 3) {
       const pedidoCancelado = {
         id_estado: 4,
         id_grupo: null
       }
-      dispatch(actualizarPedidoById(pedidoId, pedidoCancelado))
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Deseas cancelar el pedido?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'var(--secundary-color)',
+        cancelButtonColor: 'var(--primary-color)',
+        confirmButtonText: 'Sí, cancelar pedido',
+        cancelButtonText: 'No cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(actualizarPedidoById(pedidoId, pedidoCancelado))
+          Swal.fire(
+            'Cancelado',
+            'El pedido fue cancelado!',
+            'success'
+          );
+        }
+      });
+      
 
       // if(grupoDelpedido.fecha_hora_cierre){
       // const grupoSinPedido = {
@@ -117,7 +137,7 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
     }
   };
   // console.log(pedidoEditado);
-  console.log(grupoSeleccionado);
+  // console.log(grupoSeleccionado);
   
   // Función para manejar la confirmación de la edición de un pedido
   const handleConfirmarEdicion = (pedidoID: any) => {
@@ -181,20 +201,25 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
       estado: ''
     })
   }
+  const handleDescripcionPedido = (pedido:Pedido) => {
+    setModalDescripcionOpen(!modalDescripcionOpen)
+    setdetallesPedido(pedido)
+  }
+  
   // console.log("edicion pedido", edicionPedido);
 
   return (
     <div className="gestion-pedidos">
       <h2>Gestión de Pedidos</h2>
       {!edicionPedido ? <div className="filtros">
-      <div className="campofiltro">
-        <label>Fecha Desde</label>
-        <input type="date" value={filtros.fechaDesde} onChange={(e) => handleFiltroChange(e, 'fechaDesde')} />
-      </div>
-      <div className="campofiltro">
-        <label>Fecha Hasta</label>
-        <input type="date" value={filtros.fechaHasta} onChange={(e) => handleFiltroChange(e, 'fechaHasta')} />
-      </div>
+        <div className="campofiltro">
+          <label>Fecha Desde</label>
+          <input type="date" value={filtros.fechaDesde} onChange={(e) => handleFiltroChange(e, 'fechaDesde')} />
+        </div>
+        <div className="campofiltro">
+          <label>Fecha Hasta</label>
+          <input type="date" value={filtros.fechaHasta} onChange={(e) => handleFiltroChange(e, 'fechaHasta')} />
+        </div>
         <div className="campofiltro">
           <label className={filtros.estado !== '' ? "selecc" : ""}>Estado</label>
           <select value={filtros.estado} onChange={(e) => handleFiltroChange(e, 'estado')}>
@@ -226,7 +251,7 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
 
         <div className="btnlimpDiv">
           <button onClick={() => handleLimpiarFiltros()} className={`btnLimpiar /div>
-        ${filtros.grupo !== '' || filtros.fechaDesde !== ''|| filtros.fechaHasta !== '' || filtros.zona !== '' || filtros.estado !== '' ? "mostrar" : ""}`}>Limpiar filtros</button>
+        ${filtros.grupo !== '' || filtros.fechaDesde !== '' || filtros.fechaHasta !== '' || filtros.zona !== '' || filtros.estado !== '' ? "mostrar" : ""}`}>Limpiar filtros</button>
         </div>
       </div> : <div className="filtros"></div>}
 
@@ -289,41 +314,42 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
 
               <td>{pedido.estado.nombre}</td>
               <td>
-  {edicionPedido === pedido.id ? (
-    <div className="grupoSelect">
-      <label>Grupo:</label>
-      <select value={grupoSeleccionado}  onChange={(e) => handleEditInputChange(e, 'grupo')}>
-        <option value="">Seleccionar grupo</option>
-        {gruposSelect.filter((g:any)=> g.estado.nombre === "Abierto").length? gruposSelect.filter((g:any)=> g.estado.nombre == "Abierto").map((grupo: any) => (
-          <option key={grupo.id} value={grupo.id}>
-            {grupo.id}/ {grupo.zona.nombre}
-          </option>
-        )): <p>No hay grupos abiertos</p> }
-      </select>
-    </div>
-  ) : (
-    // Mostrar nombre del grupo y zona si no se está editando
-    <span>
-      {pedido.grupo.id} / {pedido.grupo.zona.nombre}
-    </span>
-  )}
-</td>
-              {/* <td>{pedido.grupo.id} / {pedido.grupo.zona.nombre}</td> */}
-
+                {edicionPedido === pedido.id ? (
+                  <div className="grupoSelect">
+                    <label>Grupo:</label>
+                    <select value={grupoSeleccionado} onChange={(e) => handleEditInputChange(e, 'grupo')}>
+                      <option value="">Seleccionar grupo</option>
+                      {gruposSelect.filter((g: any) => g.estado.nombre === "Abierto").length ? gruposSelect.filter((g: any) => g.estado.nombre == "Abierto").map((grupo: any) => (
+                        <option key={grupo.id} value={grupo.id}>
+                          {grupo.id}/ {grupo.zona.nombre}
+                        </option>
+                      )) : <p>No hay grupos abiertos</p>}
+                    </select>
+                  </div>
+                ) : (
+                  // Mostrar nombre del grupo y zona si no se está editando
+                  <span>
+                    {pedido.grupo.id} / {pedido.grupo.zona.nombre}
+                  </span>
+                )}
+              </td>
               <td className="tdBotones">
-                <div className="divBtns">
+                <div className={edicionPedido ? "divBtnsEdit" : "divBtns"}>
+                  {edicionPedido ? <div></div> : <button onClick={() =>handleDescripcionPedido(pedido)} className="verBtn">Ver +</button>
+                  }
                   {edicionPedido && edicionPedido == pedido.id ? (
-                    <div className="divBtns">
+                    <div className="divBtnsEdit">
                       <button onClick={() => handleConfirmarEdicion(pedido.id)} className="guardarBtn">Guardar</button>
                       <button onClick={() => handleCancelarEdicion()} className="CancelarCambiosBtn">No guardar</button>
                     </div>
                   ) : (
-                       pedido.estado.nombre !== "Abierto"? <div className="finaliz"> pedido finalizado</div> :  <button
+                    pedido.estado.nombre !== "Abierto" ? <div className="finaliz"> pedido finalizado</div> : <button
                       onClick={() => handleEditarPedido(pedido.id)} className={`editarBtn ${edicionPedido && edicionPedido !== pedido.id ? "noeditable" : ""}`}
                       disabled={edicionPedido !== null && edicionPedido !== pedido.id}
                     >Editar</button>
-                    
+
                   )}
+
                   {/* Preguntar si para cancelar un pedido es necesario que el grupo  no este ccerrado */}
                   {pedido.estado.id == 1 && <button disabled={edicionPedido !== null} onClick={() => handleCancelarPedido(pedido.id, pedido.estado)}
                     className={`cancelarBtn ${edicionPedido ? "nocancelable" : ""}`}
@@ -339,6 +365,14 @@ console.log("grupos abiertos", gruposSelect.filter((g:any)=> g.estado.nombre == 
           <div className="detallePedido">
             <DetallePedido
               descripcion={descripcionPedido}
+              onClose={handleCloseModal}
+            />
+          </div>
+        )}
+        {modalDescripcionOpen && (
+          <div className="detallePedido">
+            <PedidoDescripcion
+              pedido={detallesPedido}
               onClose={handleCloseModal}
             />
           </div>

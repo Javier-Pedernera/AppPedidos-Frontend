@@ -15,7 +15,7 @@
   
    & table {
       // min-height: 100%;
-      width: 95%;
+      width: 98%;
       border-collapse: collapse;
       background-color: #ffffffd8;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -59,7 +59,7 @@
 
         // display: flex;
         text-align: center;
-        max-width: 160px;
+        // max-width: 160px;
         // justify-content: space-around;
       }
   
@@ -70,6 +70,7 @@
         color: #fff;
         border-radius: 4px;
         transition: background-color 0.3s;
+
         &.cancelarBtn{
           background-color: var(--primary-color);
           margin-left: 10px;
@@ -93,6 +94,13 @@
           &:hover {
             background-color: rgb(231, 224, 0);
           }
+        }
+        &.verBtn{
+          min-width: 50px;  
+          background-color: var(--secundary-color);
+            &:hover {
+              background-color: var(--greenSoft-color);
+            }
         }
         &.guardarBtn{
           min-width: 80px;
@@ -139,10 +147,14 @@
 
   .divBtns{
     display: flex;
-    min-width: 190px;
-    justify-content: space-around;
+    min-width: 260px;
+    justify-content: space-between;
   }
-
+  .divBtnsEdit{
+    display: flex;
+    min-width: 260px;
+    justify-content: center;
+  }
   .selectGrupo{
     width: 100px;
   }
@@ -227,9 +239,11 @@
   } 
   }
 .finaliz{
+  margin-right: 20%;
+  display: flex;
   font-size: smaller;
-  color: #333333d3;
-  text-align: center;
+  color: rgba(51, 51, 51, 0.8274509804);
+  align-items: center;
 }
 th.titulo_acc{
   max-width: 200px;
