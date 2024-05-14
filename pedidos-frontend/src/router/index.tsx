@@ -105,6 +105,11 @@ export const routes: RouteProps[] = [
                         name: "UserProfile"
                     },
                     {
+                        path: "/reportes",
+                        element: lazy(async () => await import("../Pages/Reportes/Reportes.tsx")),
+                        name: "Reportes"
+                    },
+                    {
                         path: "/params",
                         element: lazy(async () => await import("../Pages/Params/Params")),
                         name: "Params"

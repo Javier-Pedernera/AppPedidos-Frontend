@@ -28,7 +28,7 @@ const GestionPedidos = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalDescripcionOpen, setModalDescripcionOpen] = useState<boolean>(false);
   const [grupoSeleccionado, setGrupoSeleccionado] = useState<number |undefined> ( undefined );
-  console.log(pedidos);
+  // console.log(pedidos);
   
   const [filtros, setFiltros] = useState<{ grupo: string, fechaDesde: string, fechaHasta: string, zona: string, estado: string }>({
     grupo: '',
