@@ -4,8 +4,7 @@ import { crearParametros, modificarParametros, traerParametros } from '../../Red
 import { ParamsModel } from '../../Models/Params';
 import '../../scss/components/_Params.scss';
 import Swal from 'sweetalert2';
-import { formatLocalDateTime } from '../../utils/FormatearFechaHora';
-
+// import { formatLocalDateTime } from '../../utils/FormatearFechaHora';
 // parametros disponibles para la app
 const nombresParametros = ['MaxPedidosPorGrupo', 'MaxEsperaPorGrupo', 'Ciudad','EmailInformes', 'horasInformeDiario'];
 

@@ -19,7 +19,7 @@ import 'react-tabs/style/react-tabs.css';
 import '../../scss/components/_reportes.scss';
 import { modificarParametros, traerParametros } from '../../Redux/Actions/ParamsActions';
 import { obtenerPedidos } from '../../Redux/Actions/PedidosActions';
-import { formatDatabaseDateTime, formatLocalDateTime } from '../../utils/FormatearFechaHora';
+import {  formatLocalDateTime } from '../../utils/FormatearFechaHora';
 import { write, utils } from 'xlsx';
 import axios from 'axios';
 
