@@ -4,9 +4,10 @@ import { crearParametros, modificarParametros, traerParametros } from '../../Red
 import { ParamsModel } from '../../Models/Params';
 import '../../scss/components/_Params.scss';
 import Swal from 'sweetalert2';
+import { formatLocalDateTime } from '../../utils/FormatearFechaHora';
 
 // parametros disponibles para la app
-const nombresParametros = ['MaxPedidosPorGrupo', 'MaxEsperaPorGrupo', 'Ciudad'];
+const nombresParametros = ['MaxPedidosPorGrupo', 'MaxEsperaPorGrupo', 'Ciudad','EmailInformes', 'horasInformeDiario'];
 
 const Params = () => {
   const dispatch = useAppDispatch();
@@ -25,8 +26,7 @@ const Params = () => {
     didOpen: (toast) => {
       toast.onmouseenter = Swal.stopTimer;
       toast.onmouseleave = Swal.resumeTimer;
-    }
-  });
+    }});
 
 console.log("nombresDisponibles",  nombresDisponibles );
 console.log(nombreSeleccionado);
@@ -112,12 +112,22 @@ useEffect(() => {
             <tbody>
               {params.map((parametro: ParamsModel) => (
                 <tr key={parametro.id}>
-                  <td>{parametro.nombre}</td>
+                  <td>
+                  {parametro.nombre == "Ciudad" ? "Ciudad":"" }
+                  {parametro.nombre == "MaxEsperaPorGrupo" ? "Tiempo de espera max. por grupo":"" }
+                  {parametro.nombre == "MaxPedidosPorGrupo" ? "Pedidos max. por grupo":"" }
+                  {parametro.nombre == "EmailInformes" ? "Email para informes":"" }
+                  {parametro.nombre == "horasInformeDiario" ? "Horario de informes diarios":"" }
+                  {parametro.nombre == "ultimoInforme" ? "Fecha del último informe":"" }                     
+                    </td>
                   <td>
                   {paramEdit?.id == parametro.id ? (
-                      <input type="text" value={valorParametro} onChange={(e) => setValorParametro(e.target.value)} />
+                      <input placeholder={`valor ${parametro.nombre == "horasInformeDiario"? "en formato hh:mm":"" }${parametro.nombre == "MaxEsperaPorGrupo"? "en minutos":"" }`} 
+                      type="text" 
+                      value={valorParametro} 
+                      onChange={(e) => setValorParametro(e.target.value)} />
                     ) : (
-                      parametro.valor
+                      `${parametro.nombre !== "ultimoInforme"? parametro.valor : parametro.valor  } ${parametro.nombre == "MaxEsperaPorGrupo"? "min":"" } ${parametro.nombre == "horasInformeDiario"? "hs":"" } `
                     )}
                     </td>
                   <td>
@@ -128,7 +138,9 @@ useEffect(() => {
                       </div>
                      
                     ) : (
-                      <button className='btnParams' onClick={() => setParamEdit({ id: parametro.id, valor: parametro.valor })}>Editar</button>
+                      parametro.nombre !== "ultimoInforme" ?
+                        <button className='btnParams' onClick={() => setParamEdit({ id: parametro.id, valor: parametro.valor })}>Editar</button>:
+                        <div></div>
                     )}
                     {/* <button className='btnParamseliminar' onClick={() => handleEliminarParametro(parametro.id)}>Eliminar</button> */}
                   </td>

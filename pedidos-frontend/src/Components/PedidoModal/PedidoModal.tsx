@@ -44,7 +44,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         pedido: '',
         telefono: ''
     });
-    const [params, setParams] = useState({maxPedidos: 0,maxEspera:0 });
+    const [params, setParams] = useState({maxPedidos: 4,maxEspera:40,ciudad:"carlos Paz" });
     const [loading, setloading] = useState(false);
     const [direccionPop, setdireccionPop] = useState('');
     const [latitud, setLatitud] = useState(0);
@@ -57,17 +57,17 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     const [camposVacios, setCamposVacios] = useState(true);
     console.log("posibles zonas para ese pedido ", posiblesZonasPedido);
     // console.log("params en pedidomodal",params);
-    console.log("posiblesGrupos",posiblesGrupos);
-    console.log("camposVacios",camposVacios);
+    // console.log("posiblesGrupos",posiblesGrupos);
+    // console.log("camposVacios",camposVacios);
     
     useEffect(() => {
         if(parametros){
           const maxPedidos = parametros.find((p:any)=> p.nombre == "MaxPedidosPorGrupo")
           const maxEspera = parametros.find((p:any)=> p.nombre == "MaxEsperaPorGrupo")
-          if(maxPedidos && maxEspera){
-                setParams({maxPedidos: parseInt(maxPedidos.valor) ,maxEspera: parseInt(maxEspera.valor)})
+          const ciudadActual = parametros.find((p:any)=> p.nombre == "Ciudad")
+          if(maxPedidos && maxEspera && ciudadActual){
+                setParams({maxPedidos: parseInt(maxPedidos.valor) ,maxEspera: parseInt(maxEspera.valor),ciudad: ciudadActual.valor})
           }
-          
         }
       }, []);
       //////////////////////////////////////////////////
@@ -102,7 +102,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
             setloading(true)
             const gruposAbiertos = grupos.filter(grupo => grupo.estado.id === 1);
             const apiKey = import.meta.env.VITE_API_KEY_MAPS;
-            const direccionEncoded = encodeURIComponent(`${inputs.direccion}, Carlos Paz`);
+            const direccionEncoded = encodeURIComponent(`${inputs.direccion}, ${params.ciudad}`);
             const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${direccionEncoded}&key=${apiKey}`);
             const data = await response.json();
             if (data.status === "ZERO_RESULTS") {
@@ -185,10 +185,17 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         }
         const GrupoCompleto = grupos.find(grupo => grupo.id == grupoAsignado);
         const pedidos = GrupoCompleto?.pedidos?.filter( p => p.estado.id !== 4);
+        // console.log("grupo completo",GrupoCompleto);
+        // console.log("pedidos",!pedidos?.length);
         if (GrupoCompleto && pedidos?.length == params.maxPedidos - 1) {
             const fechaCierre = formatDatabaseDateTime()
             dispatch(crearPedido(pedidoNuevo))
             dispatch(editarGrupoById(grupoAsignado, { id_estado: 2, fecha_hora_cierre: fechaCierre }))
+            onClose();
+        } else if (GrupoCompleto && !pedidos?.length) {
+            const fechaApertura = formatDatabaseDateTime()
+            dispatch(crearPedido(pedidoNuevo))
+            dispatch(editarGrupoById(grupoAsignado, { fecha_hora_creacion: fechaApertura }))
             onClose();
         } else {
             dispatch(crearPedido(pedidoNuevo))
@@ -309,7 +316,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                                 name="direccion"
                                 value={inputs.direccion}
                                 onChange={handleInputChange}
-                                placeholder="Dirección"
+                                placeholder="*Dirección"
                             />
                             <img onClick={handleBuscarClick} src={buscar} alt="Buscar" />
 
@@ -324,7 +331,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             name="nombre"
                             value={inputs.nombre}
                             onChange={handleInputChange}
-                            placeholder="Nombre"
+                            placeholder="*Nombre"
                             className='NameInput'
                         />
                         <input
@@ -332,7 +339,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             name="telefono"
                             value={inputs.telefono}
                             onChange={handleInputChange}
-                            placeholder="Teléfono"
+                            placeholder="*Teléfono"
                             className='TelInput'
                         />
                     </div>
@@ -342,7 +349,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             name="pedido"
                             value={inputs.pedido}
                             onChange={handleInputChange}
-                            placeholder="Pedido"
+                            placeholder="#Pedido o descripción"
                             className='textpedido'
                         />
 

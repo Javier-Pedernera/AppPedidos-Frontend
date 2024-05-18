@@ -110,6 +110,7 @@
   }
 
   input {
+    width: 50%;
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
@@ -227,7 +228,7 @@
 
   & .NameInput {
     border: 1px solid #ccc;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 5px 5px 5px 5px;
     margin-right: 20px;
     font-size: 0.9em;
   }
@@ -240,7 +241,7 @@
 }
 
 .textpedido {
-  width: 50%;
+  width: 40%;
   flex: 1;
   padding: 10px;
   border-radius: 10px 50px 50px 10px;
@@ -262,15 +263,21 @@
 }
 
 .direccpop {
-  width: 40%;
-  color: #333;
+  display: flex;
+  width: 50%;
+  color: #2c2c2c;
   opacity: 0;
   transition: opacity 0.5s ease;
   display: flex;
   justify-content: center;
-  font-size: small;
+  font-size: medium;
   font-weight: 500;
-  margin-top: 10px;
+  margin-right: 20px;
+  background-color: #9999993a;
+  height: 50px;
+  align-items: center;
+  border-radius: 10px;
+  margin-left: 20px;
 
   &.acivePop {
     opacity: 1;

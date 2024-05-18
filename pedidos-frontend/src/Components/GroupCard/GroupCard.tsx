@@ -54,8 +54,17 @@ useEffect(() => {
   
 }, [grupos, group, dispatch]);
 
-// console.log(tiempoTotal);
+console.log(tiempoTotal);
 // console.log(tiempo);
+
+useEffect(() => {
+  const intervalId = setInterval(() => {
+    const tiempoTranscurridoTotal = calcularMinutosTranscurridos(group.fecha_hora_creacion);
+    setTiempoTotal(tiempoTranscurridoTotal);
+  }, 10000);
+
+  return () => clearInterval(intervalId);
+}, [group.fecha_hora_creacion]);
 
 
 const handleCloseGroup = () => {
@@ -150,18 +159,14 @@ const handleSendGroup = () => {
     }
   });
 };
-  
 // console.log(group, pedidosActivos?.length);
 // console.log("tiepmo y max ped",tiempoTotal, parametros[1].valor.split(' ')[0]);
 
   return (
-    <div className={`group-card ${group.estado.id == 1 ? 'open' : 'closed'}`}>
-
+    <div className={`group-card ${group.estado.id == 1 ? `open ${ pedidosActivos?.length && group.estado.nombre !== "Enviado" && tiempoTotal > params.maxEspera ?"tiempoSuperado":""}`: `closed ${ pedidosActivos?.length && group.estado.nombre == "Cerrado"?"EnviarPedido":""}`}`}>
       <div className='divtitle'>
         <h3>{`Grupo #${group.id}`}</h3>
-        <p>
-  
-</p>
+        <p></p>
         {!group.fecha_hora_cierre && <div className='boxestado'><img src={openBox} className='iconoBox' alt="" /> <span className="valor">{group.estado.nombre}</span></div> }
         { group.fecha_hora_cierre && !group.fecha_hora_envio &&  <div className='boxestado'><img src={closeBox} className='iconoBox' alt="" />
           <span className="valor">{group.estado.nombre}</span></div>}
@@ -193,7 +198,10 @@ const handleSendGroup = () => {
       
       </div>
      
-<div className='maxEspera' > <span className={`espera ${ pedidosActivos?.length && group.estado.nombre !== "Enviado" && tiempoTotal > params.maxEspera ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> </div>
+<div className='maxEspera' > 
+<span className={`espera ${ pedidosActivos?.length && group.estado.nombre == "Cerrado" ? "listoenviar": ""} `}>*Pedido listo para enviar.</span> 
+<span className={`espera ${ pedidosActivos?.length && group.estado.nombre !== "Enviado"&& group.estado.nombre == "Abierto" && tiempoTotal > params.maxEspera ? "superada": ""} `}>*Superó el tiempo máximo de espera.</span> 
+</div>
 
     </div>
   );

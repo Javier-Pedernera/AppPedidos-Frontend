@@ -1,5 +1,3 @@
-// _reportes.scss
-
 .reportes {
     padding: 20px;
 
@@ -11,7 +9,9 @@
     .chart-container,
     .table-container {
         margin-top: 20px;
-
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         h3 {
             text-align: center;
             color: #333;
@@ -22,14 +22,20 @@
         }
 
         table {
-            width: 100%;
+            width: 90%;
             border-collapse: collapse;
             margin-top: 20px;
+            
 
             th, td {
                 border: 1px solid #ddd;
                 padding: 8px;
                 text-align: center;
+                font-weight: 500;
+                // &.tiempoexcedido{
+                //     color: rgb(210, 0, 0);
+                // }
+
             }
 
             th {
@@ -84,6 +90,52 @@
     .react-tabs__tab-panel--selected {
         display: block;
     }
+
+    
 }
-
-
+.buttonsContainer{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 5%;
+    & .btnInfHs{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 80px;
+    }
+}
+.exportarBtn{
+      background-color: rgb(230, 230, 230);
+      color: #282828;
+      border: none;
+      padding: 5px 15px 5px 15px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      &:hover{
+        background-color: #282828;
+        color: #f2f2f2;
+      }
+}
+// .enviarBtn{
+//     background-color: rgb(230, 230, 230);
+//     color: #282828;
+//     border: none;
+//     padding: 5px 15px 5px 15px;
+//     border-radius: 5px;
+//     margin-right: 10px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     cursor: pointer;
+//     font-size: 1rem;
+//       &:hover{
+//         background-color: #282828;
+//         color: #f2f2f2;
+//       }
+// }

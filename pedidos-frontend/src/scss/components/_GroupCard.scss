@@ -8,7 +8,16 @@
   margin-bottom: 20px;
   background-color: var(--tertiary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
+  max-width: 260px;
+  &.closed{
+    &.EnviarPedido{
+    background-color: rgba(192, 213, 192, 0.835);
+    }
+  }
+  &.tiempoSuperado{
+    background-color: rgba(239, 218, 55, 0.888);
+  }
     & p{
       font-size: small;
       // margin-right: 5px;
@@ -105,15 +114,22 @@
     }
   }
   .maxEspera{
-    font-size: 0.7em;
+    font-size: 0.8em;
     color: var(--primary-color);
     margin-top: 5px;
-    font-weight: 400;
+    font-weight: 500;
+    text-align: center;
   }
   .espera{
     display: none;
     margin-top: 10px;
     &.superada{
       display: flex;
+    }
+    &.listoenviar{
+      display: flex;
+      color: var(--secundary-color);
+      text-align: center;
+      justify-content: center;
     }
   }

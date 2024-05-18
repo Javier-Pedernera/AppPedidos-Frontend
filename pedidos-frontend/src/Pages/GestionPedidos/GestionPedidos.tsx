@@ -9,6 +9,7 @@ import { obtenerZonas } from "../../Redux/Actions/ZonasActions";
 import DetallePedido from "../../Components/DetallePedido/detallepedido";
 import Swal from "sweetalert2";
 import PedidoDescripcion from "../../Components/PedidoDescripcion/PedidoDescripcion";
+import { formatLocalDateTime } from "../../utils/FormatearFechaHora";
 
 
 const GestionPedidos = () => {
@@ -168,7 +169,12 @@ const GestionPedidos = () => {
     setEdicionPedido(null)
     // setPedidoSeleccionado(null)
   }
-
+  function formatDateToISO(dateString: string): string {
+    const [day, month, year] = dateString.split('/').map(Number);
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+    return `${year}-${formattedMonth}-${formattedDay}`;
+}
   // Función para filtrar la lista de pedidos
   const handleFiltroChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, filtro: string) => {
     setFiltros({
@@ -177,9 +183,14 @@ const GestionPedidos = () => {
     });
   };
   const filteredPedidos = pedidos.filter((pedido: any) => {
-    const fechaCreacionPedido = new Date(pedido.grupo.fecha_hora_creacion.split('T')[0]);
+    const creacion = formatLocalDateTime(pedido.grupo.fecha_hora_creacion).split(',')[0]
+    const fechaFormateada = formatDateToISO(creacion);
+    const fechaCreacionPedido = new Date(fechaFormateada);
     const fechaDesde = filtros.fechaDesde !== '' ? new Date(filtros.fechaDesde) : null;
     const fechaHasta = filtros.fechaHasta !== '' ? new Date(filtros.fechaHasta) : null;
+    console.log("fechacreacionbase de datos",creacion);
+console.log("fechacreacionbase desde",fechaDesde);
+console.log("fechacreacionbase hasta",fechaHasta);
     return (
       (filtros.grupo === '' || pedido.grupo.id.toString() == filtros.grupo)
       &&
@@ -258,7 +269,7 @@ const GestionPedidos = () => {
       <table>
         <thead>
           <tr>
-            <th>Fecha</th>
+            <th>Fecha y hora</th>
             <th>Cliente</th>
             <th>Dirección</th>
             <th>Teléfono</th>
@@ -272,7 +283,7 @@ const GestionPedidos = () => {
 
           {pedidosMap.length ? pedidosMap.map((pedido: Pedido) => (
             <tr key={pedido.id} className={edicionPedido == pedido.id ? "trEdit" : ""}>
-              <td>{pedido.grupo.fecha_hora_creacion.split('T')[0].split('-').reverse().join('-')}</td>
+              <td>{formatLocalDateTime(pedido.grupo.fecha_hora_creacion)}hs</td>
               <td>
                 {edicionPedido == pedido.id ? (
                   <input
@@ -305,7 +316,7 @@ const GestionPedidos = () => {
 
                 )}
                 {pedido.pedido.length > 10 && edicionPedido !== pedido.id && (
-                  <span className="ver-mas" onClick={(e) => { e.stopPropagation(); handleVerDetallePedido(pedido.pedido); }}>
+                  <span className="ver-mas" onClick={(e) => { e.stopPropagation(); handleVerDetallePedido(pedido.pedido) }}>
                     Ver <AiOutlinePlusCircle />
                   </span>
                 )}

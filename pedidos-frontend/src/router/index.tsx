@@ -75,11 +75,6 @@ export const routes: RouteProps[] = [
                 element: lazy(async () => await import("../Pages/FAQ/FAQPage")),
                 name: "Faq"
             },
-            // {
-            //     path: "/faq",
-            //     element: lazy(async () => await import("../pages/FAQ/Faq")),
-            //     name: "Faq"
-            // },
             {
                 authorization: lazy(async () => await import("../utils/Auth")),
                 children: [

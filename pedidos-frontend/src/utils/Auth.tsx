@@ -8,8 +8,9 @@ interface AuthGuardProps {
 }
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
-
 const token = useAppSelector((state) => state.user.accessToken);
+console.log(token);
+
 // const [isAuthenticated, setisAuthenticated] = useState(false);
 // console.log("token en Authguard",token);
 //   useEffect(() => {
@@ -24,8 +25,6 @@ const token = useAppSelector((state) => state.user.accessToken);
 
     // const isAuthenticated = token?.length;
 // console.log("children en Auth", children);
-
-    
 
   return <>{children}</>;
 };
