@@ -31,12 +31,13 @@ const GestionPedidos = () => {
   const [grupoSeleccionado, setGrupoSeleccionado] = useState<number |undefined> ( undefined );
   // console.log(pedidos);
   
-  const [filtros, setFiltros] = useState<{ grupo: string, fechaDesde: string, fechaHasta: string, zona: string, estado: string }>({
+  const [filtros, setFiltros] = useState<{ grupo: string, fechaDesde: string, fechaHasta: string, zona: string, estado: string, pedido:string }>({
     grupo: '',
     fechaDesde: '',
     fechaHasta: '',
     zona: '',
-    estado: ''
+    estado: '',
+    pedido: ''
   });
   // console.log("pedidos", pedidos);
   // Función para abrir el modal
@@ -58,7 +59,7 @@ const GestionPedidos = () => {
   }, [pedidos]);
   // console.log(gruposSelect);
   useEffect(() => {
-    if (filtros.grupo !== '' || filtros.fechaDesde !== '' || filtros.fechaHasta !== '' || filtros.zona !== '' || filtros.estado !== '') {
+    if (filtros.grupo !== '' || filtros.fechaDesde !== '' || filtros.fechaHasta !== '' || filtros.zona !== '' || filtros.estado !== '' || filtros.pedido !== '') {
       setPedidosMap(filteredPedidos)
     } else {
       setPedidosMap(pedidos)
@@ -188,36 +189,38 @@ const GestionPedidos = () => {
     const fechaCreacionPedido = new Date(fechaFormateada);
     const fechaDesde = filtros.fechaDesde !== '' ? new Date(filtros.fechaDesde) : null;
     const fechaHasta = filtros.fechaHasta !== '' ? new Date(filtros.fechaHasta) : null;
-    console.log("fechacreacionbase de datos",creacion);
-console.log("fechacreacionbase desde",fechaDesde);
-console.log("fechacreacionbase hasta",fechaHasta);
+//     console.log("fechacreacionbase de datos",creacion);
+// console.log("fechacreacionbase desde",fechaDesde);
+// console.log("fechacreacionbase hasta",fechaHasta);
     return (
       (filtros.grupo === '' || pedido.grupo.id.toString() == filtros.grupo)
       &&
       (!fechaDesde || fechaCreacionPedido >= fechaDesde) &&
     (!fechaHasta || fechaCreacionPedido <= fechaHasta) &&
-      // (filtros.fechaDesde === '' || pedido.grupo.fecha_hora_creacion.split('T')[0].split('-').reverse().join('-') > filtros.fechaDesde) &&
-      // (filtros.fechaHasta === '' || pedido.grupo.fecha_hora_creacion.split('T')[0].split('-').reverse().join('-') < filtros.fechaHasta) &&
       (filtros.zona === '' || pedido.grupo.zona.id == filtros.zona)
       &&
-      (filtros.estado === '' || pedido.estado.nombre === filtros.estado)
+      (filtros.estado === '' || pedido.estado.nombre === filtros.estado)&&
+      (filtros.pedido === '' || pedido.pedido.toLowerCase().includes(filtros.pedido.toLowerCase()))
     );
   });
+  console.log(filteredPedidos);
+  
   const handleLimpiarFiltros = () => {
     setFiltros({
       grupo: '',
       fechaDesde: '',
       fechaHasta: '',
       zona: '',
-      estado: ''
+      estado: '',
+      pedido:''
     })
   }
   const handleDescripcionPedido = (pedido:Pedido) => {
     setModalDescripcionOpen(!modalDescripcionOpen)
     setdetallesPedido(pedido)
   }
-  
-  // console.log("edicion pedido", edicionPedido);
+  console.log("pedido en filtros", pedidos);
+  console.log("pedido en filtros", filtros.pedido);
 
   return (
     <div className="gestion-pedidos">
@@ -241,14 +244,23 @@ console.log("fechacreacionbase hasta",fechaHasta);
           </select>
         </div>
         <div className="campofiltro">
-          <label className={filtros.grupo !== '' ? "selecc" : ""}>Grupo</label>
-          <select value={filtros.grupo} onChange={(e) => handleFiltroChange(e, 'grupo')}>
-            <option value={''}> todos </option>
-            {gruposSelect?.map((grupo: any) =>
-              <option value={grupo.id}> {grupo.id} </option>
-            )}
-          </select>
-        </div>
+            <label className={filtros.grupo !== '' ? "selecc" : ""}>Grupo</label>
+            <input
+              type="text"
+              value={filtros.grupo}
+              onChange={(e) => handleFiltroChange(e, 'grupo')}
+              placeholder="Filtrar por grupo"
+            />
+          </div>
+          <div className="campofiltro">
+            <label className={filtros.pedido !== '' ? "selecc" : ""}>Pedido</label>
+            <input
+              type="text"
+              value={filtros.pedido}
+              onChange={(e) => handleFiltroChange(e, 'pedido')}
+              placeholder="Buscar por pedido"
+            />
+          </div>
         <div className="campofiltro">
           <label className={filtros.zona !== '' ? "selecc" : ""}>Zona</label>
           <select value={filtros.zona} onChange={(e) => handleFiltroChange(e, 'zona')}>

@@ -1,6 +1,7 @@
 import React from "react";
 import '../../scss/components/_pedidoDetalle.scss';
 import Pedido from "../../Models/Pedido";
+import { formatLocalDateTime } from "../../utils/FormatearFechaHora";
 
 interface DetallePedidoProps {
     pedido: Pedido;
@@ -40,10 +41,10 @@ const PedidoDescripcion: React.FC<DetallePedidoProps> = ({ pedido, onClose }) =>
               <strong>Cadete:</strong> {pedido.grupo.cadete.nombre? pedido.grupo.cadete.nombre : "-"}
             </div>
             <div className="detalle-pedido-modal__info-item">
-              <strong>Fecha y hora de creación:</strong> {pedido.grupo.fecha_hora_creacion}
+              <strong>Fecha y hora de creación:</strong> {formatLocalDateTime(pedido.grupo.fecha_hora_creacion) }
             </div>
             <div className="detalle-pedido-modal__info-item">
-              <strong>Fecha y hora de envío:</strong> {pedido.grupo.fecha_hora_envio?pedido.grupo.fecha_hora_envio:"-"}
+              <strong>Fecha y hora de envío:</strong> {pedido.grupo.fecha_hora_envio? formatLocalDateTime(pedido.grupo.fecha_hora_envio):"-"}
             </div>
             <div className="detalle-pedido-modal__info-item">
               <strong>Zona:</strong> {pedido.grupo.zona.nombre}

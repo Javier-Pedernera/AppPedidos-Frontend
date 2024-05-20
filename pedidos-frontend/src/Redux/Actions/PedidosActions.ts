@@ -9,8 +9,8 @@ const obtenerPedidos = () => {
     try {
       const response = await axios.get(`${URL}/api/pedidos`);
       const pedidos = response.data;
-
-      dispatch(getAllPedidos(pedidos));
+      const pedidosOrdenados = pedidos.sort((a:any, b:any) => b.id - a.id);
+      dispatch(getAllPedidos(pedidosOrdenados));
     } catch (error) {
       console.error('Error al obtener los pedidos:', error);
     }

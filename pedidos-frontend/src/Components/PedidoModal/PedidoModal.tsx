@@ -92,8 +92,8 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
         
     };
     useEffect(() => {
-        const { nombre, pedido, telefono } = inputs;
-        const algunCampoVacio = nombre.trim() === '' || pedido.trim() === '' || telefono.trim() === '';
+        const { pedido } = inputs;
+        const algunCampoVacio = pedido.trim() === '';
         setCamposVacios(algunCampoVacio);
     }, [inputs]);
 
@@ -119,10 +119,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                 const point = { lat, lng }
 
                 const zonasParaPedido = await encontrarZonasParaPunto(point, zonesLayers)
-
                 // console.log("zonasParaPedido",zonasParaPedido);
-                
-
                 if (zonasParaPedido.length) {
                     setposiblesZonasPedido(zonasParaPedido)
                     const GruposPos = buscarGruposConZonasAsignadas(zonasParaPedido, gruposAbiertos)// revisar esta funcion
@@ -144,10 +141,8 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                                 grupoConMasPedidos = GruposPos[i];
                             }
                         }
-                        // console.log("grupoConMasPedidos", grupoConMasPedidos);
                         setPosiblesGrupos(GruposPos)
-                        setGrupoAsignado(grupoConMasPedidos.id)
-                        // console.log("asignar grupo segun pedidos");                      
+                        setGrupoAsignado(grupoConMasPedidos.id)                 
                     }
                 }else{
                     Swal.fire({
@@ -173,6 +168,16 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
     };
 
     const handleGuardar = () => {
+        const {  pedido } = inputs;
+        if (!pedido.trim()) {
+            Swal.fire({
+                title: "Campos obligatorios vacíos",
+                text: "Por favor, complete todos los campos obligatorios.",
+                icon: "warning",
+            });
+            return; // Detener la función si algún campo obligatorio está vacío
+        }
+
         const pedidoNuevo = {
             id_grupo: grupoAsignado,
             direccion: direccionPop,
@@ -213,14 +218,11 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
 
         return null;
     };
-    // let polig 26 = [[-31.408301, -64.495232], [-31.398043, -64.510686],[-31.406541, -64.53215],[-31.416172, -64.533091],[-31.422026, -64.526052],[-31.428372, -64.505364]]
     const handleCheckboxChange = (event: any) => {
         setGrupoAsignado(event.target.value);
     };
 
     const carlosPazCoords: LatLngExpression = [-31.4241, -64.4978];
-    // console.log("grupo asignado", grupoAsignado);
-
 
     //   icono
     const customIcon = L.icon({
@@ -251,10 +253,6 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
           iconAnchor: [10, 12],
         });
       };
-
-    // console.log("inputs",inputs);
-
-    // console.log("grupos del global",grupos);
     return (
         <div className={`modal ${showModal ? 'show-modal' : 'closed'}`}>
 
@@ -264,12 +262,11 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                         <img src={loaderGeo} className='loaderGeo' alt="Loading..." />
                     </div> : ""
                 }
-                <span className="close" onClick={handleCloseModal}>&times;</span>
+                <span className="closeModal" onClick={handleCloseModal}>&times;</span>
                 <h2>Nuevo Pedido</h2>
                 <div className='mapList'>
                     <MapContainer className='mapa' center={[latitud, longitud]} zoom={13} style={{ height: '400px', borderRadius: '10px' }}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    {/* Aquí puedes agregar los polígonos de las zonas */}
                     {zonesLayers?.length && zonesLayers.map((zone, index) => {
 
                         return (
@@ -305,9 +302,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                  zoneEdi={null} 
                  setEditingZone={null} />
                 </div>
-                
                 </div>
-                
                 <div className="form-container">
                     <div className='input_search'>
                         <div className="search-icon">
@@ -319,7 +314,6 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                                 placeholder="*Dirección"
                             />
                             <img onClick={handleBuscarClick} src={buscar} alt="Buscar" />
-
                         </div>
                         <div className={`direccpop ${direccionPop ? 'acivePop' : ""}`} >Direccion de envío:
                             <div className='direccpop2'>{direccionPop}</div>
@@ -331,7 +325,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             name="nombre"
                             value={inputs.nombre}
                             onChange={handleInputChange}
-                            placeholder="*Nombre"
+                            placeholder="Nombre"
                             className='NameInput'
                         />
                         <input
@@ -339,11 +333,10 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             name="telefono"
                             value={inputs.telefono}
                             onChange={handleInputChange}
-                            placeholder="*Teléfono"
+                            placeholder="Teléfono"
                             className='TelInput'
                         />
                     </div>
-
                     <div className='divbtnAsign'>
                         <textarea
                             name="pedido"
@@ -352,7 +345,6 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             placeholder="#Pedido o descripción"
                             className='textpedido'
                         />
-
                         <div className='GruposPos'>
                             {posiblesGrupos.map((grupo) => (
                                 <label key={grupo.id}>
@@ -382,16 +374,7 @@ const PedidoModal: React.FC<PedidoModalProps> = ({ onClose }) => {
                             Agregar pedido
                             <img className='imagenAñadir' src={añadir} alt="Icono" />
                         </button>
-
                     </div>
-                    {/* <button
-                        disabled={grupoAsignado == null}
-                        type="button"
-                        onClick={handleGuardar}
-                        className={`btnGuardar ${grupoAsignado == 0 ? 'inactivo' : ''}`}
-                    >
-                        Guardar
-                    </button> */}
                 </div>
             
             </div>

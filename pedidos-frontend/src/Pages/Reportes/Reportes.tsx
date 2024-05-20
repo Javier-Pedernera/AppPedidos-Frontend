@@ -45,8 +45,8 @@ const Reportes= () => {
     const emailReport = useAppSelector((state:any) => state.params.allParams).filter((p:any)=> p.nombre == "EmailInformes");
     const horarioDeInforme = useAppSelector((state:any) => state.params.allParams).filter((p:any)=> p.nombre == "horasInformeDiario");
     const ultimoInforme = useAppSelector((state:any) => state.params.allParams).filter((p:any)=> p.nombre == "ultimoInforme");
-    console.log("horarioDeInforme",horarioDeInforme[0]?.valor);
-    console.log("ultimoInforme",ultimoInforme);
+    // console.log("horarioDeInforme",horarioDeInforme[0]?.valor);
+    // console.log("ultimoInforme",ultimoInforme);
     const URL = import.meta.env.VITE_API_URL;
 // formatLocalDateTime(ultimo)
 
@@ -57,22 +57,19 @@ useEffect(() => {
     const intervalId = setInterval(() => {
         const ahora = dayjs();
         const fechaHoraArray = ultimoInforme[0]?.valor.split(/[\s,]+/);
-        const [dia, mes, anio] = fechaHoraArray[0].split('/');
-        const [hora, minutosInf] = fechaHoraArray[1].split(':');
+        const [dia, mes, anio] = fechaHoraArray[0]?.split('/');
+        const [hora, minutosInf] = fechaHoraArray[1]?.split(':');
         const ultimaFechaInforme = dayjs(`${anio}-${mes}-${dia}T${hora}:${minutosInf}`);
-        console.log("ultimaFechaInforme",ultimaFechaInforme);
+        // console.log("ultimaFechaInforme",ultimaFechaInforme);
         
         const [horas, minutos] = horarioDeInforme[0]?.valor.split(':');
         const horarioInforme = dayjs().set('hour', horas).set('minute', minutos);
-        console.log("horario de Informe ",horarioInforme);
-        console.log(ahora.isAfter(horarioInforme, 'minute'));
-         console.log("diferencia horas",ahora.diff(ultimaFechaInforme, 'hour'));
-         console.log("diferencia minutos",ahora.diff(ultimaFechaInforme, 'minute'));
-         console.log("diferencia dia",ahora.diff(ultimaFechaInforme, 'day'));
-         console.log("esta despues del horario del informe?", ahora.isAfter(horarioInforme, 'minute'),ahora.isAfter(horarioInforme, 'hour'));
-          
-
-
+        // console.log("horario de Informe ",horarioInforme);
+        // console.log(ahora.isAfter(horarioInforme, 'minute'));
+        //  console.log("diferencia horas",ahora.diff(ultimaFechaInforme, 'hour'));
+        //  console.log("diferencia minutos",ahora.diff(ultimaFechaInforme, 'minute'));
+        //  console.log("diferencia dia",ahora.diff(ultimaFechaInforme, 'day'));
+        //  console.log("esta despues del horario del informe?", ahora.isAfter(horarioInforme, 'minute'),ahora.isAfter(horarioInforme, 'hour'));
         if (ahora.diff(ultimaFechaInforme, 'day') && ahora.diff(ultimaFechaInforme, 'hour') >= 24 && ahora.diff(ultimaFechaInforme, 'minute') >= 5 && ahora.isAfter(horarioInforme, 'minute') && ahora.isAfter(horarioInforme, 'hour')) {
             console.log("se envia email");
             sendEmail();
@@ -150,22 +147,42 @@ useEffect(() => {
 
     const sendEmail = async () => {
        const tiempoLimitante = dayjs().subtract(24, 'hour');
-       const pedidosUltimas24Horas = pedidos.filter((pedido: any) => {
+       const pedidosUltimas24Horas = await pedidos.filter((pedido: any) => {
         const fechaCreacion = dayjs(pedido.grupo.fecha_hora_creacion);
-        // console.log(tiempoLimitante);
-        // console.log(fechaCreacion);
         return fechaCreacion.isAfter(tiempoLimitante);
     });
+    console.log("antes",pedidosUltimas24Horas);
+    
+    await pedidosUltimas24Horas.sort((a:any, b:any) => {
+        const fechaCreacionA:any = dayjs(a.grupo.fecha_hora_creacion);
+        const fechaCreacionB:any = dayjs(b.grupo.fecha_hora_creacion);
+        return fechaCreacionA - fechaCreacionB;
+    });
+    console.log("despues",pedidosUltimas24Horas);
+    
+    const pedidosTransformados = pedidosUltimas24Horas.map((pedido: any) => ({
+        id: pedido.id,
+        pedido: pedido.pedido,
+        abierto:  formatLocalDateTime(pedido.grupo.fecha_hora_creacion),
+        cerrado: formatLocalDateTime(pedido.grupo.fecha_hora_cierre),
+        enviado: formatLocalDateTime(pedido.grupo.fecha_hora_envio),
+        duración_min: dayjs(pedido.grupo.fecha_hora_envio).diff(dayjs(pedido.grupo.fecha_hora_creacion),'minutes'),
+        estado: pedido.estado.nombre,
+        cliente: pedido.cliente,
+        dirección: pedido.direccion,
+        zona: pedido.grupo.zona.nombre,
+        cadete: pedido.grupo.cadete.nombre,
+    }));
     //    const ultimoInformaformateada = formatLocalDateTime(ultimoInforme[0].valor)
         // console.log("ultimoInformaformateada", ultimoInformaformateada);
-        // console.log("dispatch del parametro");
+        console.log("pedidosTransformados",pedidosTransformados);
 
         const fechaLocal = dayjs().format('D/M/YYYY, H:mm');
         // console.log("fecha a formatear",fechaLocal, typeof fechaLocal);
         await dispatch( modificarParametros(ultimoInforme[0].id, fechaLocal));
         dispatch(traerParametros());
         const wb = utils.book_new();
-        const ws = utils.json_to_sheet(pedidosUltimas24Horas);
+        const ws = utils.json_to_sheet(pedidosTransformados);
         utils.book_append_sheet(wb, ws, 'Pedidos');
         const wbout = write(wb, { bookType: 'xlsx', type: 'array' });
         const excelBlob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -218,9 +235,11 @@ useEffect(() => {
                                 <tr>
                                     <th>ID</th>
                                     <th>Pedido</th>
+                                    <th>Zona</th>
                                     <th>Cliente</th>
                                     <th>Fecha de Creación</th>
                                     <th>Fecha de Envío</th>
+                                    <th>Cadete</th>
                                     <th>Duración (minutos)</th>
                                     <th>Estado</th>
                                 </tr>
@@ -230,9 +249,11 @@ useEffect(() => {
                                     <tr key={pedido.id}>
                                         <td>{pedido.id}</td>
                                         <td>{pedido.pedido}</td>
+                                        <td>{pedido.grupo.zona.nombre }</td>
                                         <td>{pedido.cliente}</td>
                                         <td>{formatLocalDateTime(pedido.grupo.fecha_hora_creacion)}</td>
                                         <td>{formatLocalDateTime(pedido.grupo.fecha_hora_envio)}</td>
+                                        <td>{pedido.grupo.cadete.nombre}</td>
                                         <td className={dayjs(pedido.grupo.fecha_hora_envio).diff(dayjs(pedido.grupo.fecha_hora_creacion), 'minutes') > maxTime[0]?.valor? "tiempoexcedido":""}>{dayjs(pedido.grupo.fecha_hora_envio).diff(dayjs(pedido.grupo.fecha_hora_creacion), 'minutes')}</td>
                                         <td>{pedido.estado.nombre}</td>
                                     </tr>

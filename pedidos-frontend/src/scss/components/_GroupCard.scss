@@ -10,6 +10,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   max-width: 260px;
+  min-width: 250px;
   &.closed{
     &.EnviarPedido{
     background-color: rgba(192, 213, 192, 0.835);

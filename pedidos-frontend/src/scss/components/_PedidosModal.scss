@@ -77,16 +77,16 @@
     }
   }
 
-  .close {
-    color: #aaa;
+  .closeModal {
+    color: #686868;
     float: right;
-    font-size: 28px;
+    font-size: 2.2rem;
     font-weight: bold;
   }
 
-  .close:hover,
-  .close:focus {
-    color: black;
+  .closeModal:hover,
+  .closeModal:focus {
+    color: rgb(197, 6, 6);
     text-decoration: none;
     cursor: pointer;
   }
