@@ -18,7 +18,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import '../../scss/components/_reportes.scss';
 import { modificarParametros, traerParametros } from '../../Redux/Actions/ParamsActions';
-import { obtenerPedidos } from '../../Redux/Actions/PedidosActions';
+// import { obtenerPedidos } from '../../Redux/Actions/PedidosActions';
 import {  formatLocalDateTime } from '../../utils/FormatearFechaHora';
 import { write, utils } from 'xlsx';
 import axios from 'axios';
@@ -50,34 +50,28 @@ const Reportes= () => {
     const URL = import.meta.env.VITE_API_URL;
 // formatLocalDateTime(ultimo)
 
-useEffect(() => {
-    dispatch(obtenerPedidos());
-    dispatch(traerParametros());
+// useEffect(() => {
+//     dispatch(obtenerPedidos());
+//     dispatch(traerParametros());
 
-    const intervalId = setInterval(() => {
-        const ahora = dayjs();
-        const fechaHoraArray = ultimoInforme[0]?.valor.split(/[\s,]+/);
-        const [dia, mes, anio] = fechaHoraArray[0]?.split('/');
-        const [hora, minutosInf] = fechaHoraArray[1]?.split(':');
-        const ultimaFechaInforme = dayjs(`${anio}-${mes}-${dia}T${hora}:${minutosInf}`);
-        // console.log("ultimaFechaInforme",ultimaFechaInforme);
+//     const intervalId = setInterval(() => {
+//         const ahora = dayjs();
+//         const fechaHoraArray = ultimoInforme[0]?.valor.split(/[\s,]+/);
+//         const [dia, mes, anio] = fechaHoraArray[0]?.split('/');
+//         const [hora, minutosInf] = fechaHoraArray[1]?.split(':');
+//         const ultimaFechaInforme = dayjs(`${anio}-${mes}-${dia}T${hora}:${minutosInf}`);
+//         // console.log("ultimaFechaInforme",ultimaFechaInforme);
         
-        const [horas, minutos] = horarioDeInforme[0]?.valor.split(':');
-        const horarioInforme = dayjs().set('hour', horas).set('minute', minutos);
-        // console.log("horario de Informe ",horarioInforme);
-        // console.log(ahora.isAfter(horarioInforme, 'minute'));
-        //  console.log("diferencia horas",ahora.diff(ultimaFechaInforme, 'hour'));
-        //  console.log("diferencia minutos",ahora.diff(ultimaFechaInforme, 'minute'));
-        //  console.log("diferencia dia",ahora.diff(ultimaFechaInforme, 'day'));
-        //  console.log("esta despues del horario del informe?", ahora.isAfter(horarioInforme, 'minute'),ahora.isAfter(horarioInforme, 'hour'));
-        if (ahora.diff(ultimaFechaInforme, 'day') && ahora.diff(ultimaFechaInforme, 'hour') >= 24 && ahora.diff(ultimaFechaInforme, 'minute') >= 5 && ahora.isAfter(horarioInforme, 'minute') && ahora.isAfter(horarioInforme, 'hour')) {
-            console.log("se envia email");
-            sendEmail();
-        }
-    }, 10000);
+//         const [horas, minutos] = horarioDeInforme[0]?.valor.split(':');
+//         const horarioInforme = dayjs().set('hour', horas).set('minute', minutos);
+//         if (ahora.diff(ultimaFechaInforme, 'day') && ahora.diff(ultimaFechaInforme, 'hour') >= 24 && ahora.diff(ultimaFechaInforme, 'minute') >= 5 && ahora.isAfter(horarioInforme, 'minute') && ahora.isAfter(horarioInforme, 'hour')) {
+//             console.log("se envia email");
+//             sendEmail();
+//         }
+//     }, 10000);
 
-    return () => clearInterval(intervalId);
-}, [dispatch]);
+//     return () => clearInterval(intervalId);
+// }, [dispatch]);
 
     useEffect(() => {
         

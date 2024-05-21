@@ -39,25 +39,16 @@ const Login = () => {
 
   const onSubmit = (data: any) => {
 
-    // axios
-    //   .post(`${import.meta.env.VITE_API_URL}/users/login`, data)
-    // console.log(data);
-    // const username = data.email;
-    // const password = data.password;
-    // console.log("username en login", username, "password en login", password);
     dispatch(userLogIn(data, "")).then((resp) => {
-      // console.log(resp?.payload.token)
-      Cookies.set("data", JSON.stringify(resp?.payload.token), { expires: 3 });
-
+      if(resp){
+        Cookies.set("data", JSON.stringify(resp?.payload.token), { expires: 3 })
       Toast.fire({
         icon: "success",
         title: `Bienvenido ${data.email}`,
       }).then(() => {
         navigate("/faq");
       });
-    })
-      .catch((error) => {
-        console.log(error);
+      }else{
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -67,21 +58,13 @@ const Login = () => {
         }).then(() => {
           location.href = "/login";
         });
-      });
+      }
+      
+    })
+     
+        
   };
-  // const ConditionalRedirect = () => {
-  //   const isAuthenticated = useAppSelector(state => state.user.accessToken);
-
-  //   return isAuthenticated ? redirect ("/home") : null;
-  // };
-
-
-  // console.log(userActive);
-  // useEffect(() => {
-  //   if(userActive.accessToken?.length){
-  //     location.href = "/home";
-  //   }
-  // }, [userActive]);
+  
 
   return (
     <>

@@ -154,7 +154,7 @@ const handleSendGroup = () => {
       group.pedidos?.forEach(pedido => {
     dispatch(actualizarPedidoById(pedido.id, pedidoEdit)); // actuaizo pedido
   });
-      Swal.fire('¡Grupo enviado!', '', 'success');
+      Swal.fire('¡Informe diario enviado correctamente!', '', 'success');
     }
     }
   });

@@ -27,8 +27,8 @@ const Params = () => {
       toast.onmouseleave = Swal.resumeTimer;
     }});
 
-console.log("nombresDisponibles",  nombresDisponibles );
-console.log(nombreSeleccionado);
+// console.log("nombresDisponibles",  nombresDisponibles );
+// console.log(nombreSeleccionado);
 
   useEffect(() => {
     dispatch(traerParametros());
@@ -45,7 +45,7 @@ useEffect(() => {
 
   const handleModificarParametro = async () => {
 
-    console.log(valorParametro);
+    // console.log(valorParametro);
      
   const res = await dispatch(modificarParametros(paramEdit?.id, valorParametro))
     if(res?.status == 200){
