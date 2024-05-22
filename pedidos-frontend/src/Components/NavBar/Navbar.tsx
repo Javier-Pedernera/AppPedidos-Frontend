@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
   const dispatch = useAppDispatch()
   const horarioDeInforme = useAppSelector((state:any) => state.params.allParams).filter((p:any)=> p.nombre == "horasInformeDiario");
   const ultimoInforme = useAppSelector((state:any) => state.params.allParams).filter((p:any)=> p.nombre == "ultimoInforme");
-// console.log("hora de informe",horarioDeInforme,"ultimo informe", ultimoInforme);
+console.log("hora de informe",horarioDeInforme,"ultimo informe", ultimoInforme);
 
     useEffect(() => {
         dispatch(traerParametros());
@@ -49,11 +49,16 @@ const Navbar: React.FC = () => {
           const esHoraDeInforme = ahora.isSame(horarioInforme, 'minute');
         //   console.log("esHoraDeInforme",esHoraDeInforme);
           // Verifica si es un dia diferente desde el último informe
-          const esElMismoDia = ahora.isSame(ultimaFechaInforme, 'day');
+        //   const esElMismoDia = ahora.isSame(ultimaFechaInforme, 'day');
+          // si ya paso al minos un minuto de envio de email se puede enviar automaticamente el proximo
+          const controlDeCambioDehorario = ahora.diff(ultimaFechaInforme, 'minute')
         //   console.log("es el mismo dia?",esElMismoDia);
         //   console.log("diferencia horas",ahora.diff(ultimaFechaInforme, 'hour'))
+        //   console.log("diferencia minutos",ahora.diff(ultimaFechaInforme, 'minute'))
         //   console.log("diferencia dia",ahora.diff(ultimaFechaInforme, 'day'))
-          if (esHoraDeInforme && !esElMismoDia) {
+          if (esHoraDeInforme && controlDeCambioDehorario) {
+            console.log("envio  de email");
+            
             useEmailSender(pedidos, emailReport).then(
               (response)=>{
                 // console.log("respuesta de la  funcion enviar email",response);
@@ -67,7 +72,7 @@ const Navbar: React.FC = () => {
       }, 60000);
       return () => clearInterval(intervalId);
     }
-}, [dispatch]);
+}, [dispatch, ultimoInforme]);
 
     useEffect(() => {
         const token = Cookies.get("data");

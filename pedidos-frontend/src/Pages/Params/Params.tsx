@@ -33,7 +33,7 @@ const Params = () => {
   useEffect(() => {
     dispatch(traerParametros());
   }, [dispatch]);
-console.log("a enviar",paramEdit);
+// console.log("a enviar",paramEdit);
 useEffect(() => {
     setNombreSeleccionado(nombresDisponibles[0])
   }, [nombresDisponibles]);
