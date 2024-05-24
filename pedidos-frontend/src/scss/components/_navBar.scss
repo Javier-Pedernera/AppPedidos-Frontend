@@ -18,14 +18,14 @@
     img{
       width: 100%;
       &:hover {
-        cursor: url(../../assets/images/cursor3.png),pointer;
+        cursor: pointer;
     }
     }
     @media (max-width: 500px) {
       width: 50%;
     }
     &:hover {
-    cursor: url(../../assets/images/cursor3.png),pointer;
+    cursor: pointer;
 }
   }
   .navbar-list {
@@ -68,7 +68,7 @@
     font-size: 1.3rem;
     &:hover {
       text-shadow: 0.5px 0.5px 1px white;
-      cursor: url(../../assets/images/cursor3.png),pointer;
+      cursor: pointer;
   }
   }
   .userName{
@@ -76,7 +76,7 @@
     font-size: 1rem;
     &:hover {
       text-shadow: 0.5px 0.5px 2px white;
-      cursor: url(../../assets/images/cursor3.png),pointer;
+      cursor: pointer;
   }
   }
   .divUser{

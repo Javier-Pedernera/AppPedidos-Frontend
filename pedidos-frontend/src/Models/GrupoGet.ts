@@ -1,3 +1,4 @@
+import Pedido from "./Pedido";
 
 export interface GrupoGet {
     id: number;
