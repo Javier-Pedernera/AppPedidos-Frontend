@@ -124,3 +124,13 @@ width: 40%;
     display: flex;
     height: 27px;
   }
+
+ .mensaje-error{
+  color: var(--primary-color);
+ }
+.excede-tiempo{
+  color: var(--primary-color);
+  &.no-excede{
+  color: var(--greenSoft-color);
+}
+}
