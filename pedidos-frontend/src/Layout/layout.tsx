@@ -11,11 +11,8 @@ const Layout = ({ children }: AppLayoutProps) => {
         <div className="Container_layout">
             <Navbar />
             <div className="layout">
-
                 <Sidebar />
                 <div className="childrenLayout">{children}</div>
-
-
             </div>
             <Footer></Footer>
         </div>

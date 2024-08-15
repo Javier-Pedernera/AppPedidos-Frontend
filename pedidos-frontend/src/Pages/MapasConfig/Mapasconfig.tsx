@@ -236,13 +236,13 @@ const MapasConfig = () => {
   /////////     Eliminando zonas     ///////////
 
   const handleDeleted = (e: any) => {
-    console.log("ingresa más de una vez a delete");
+    // console.log("ingresa más de una vez a delete");
     const { layers } = e;
     if (layers) {
       layers.eachLayer((layer: any) => {
         const layerDelete = layer.options.attribution
         dispatch(eliminarZonaById(layerDelete))
-        // handleCancelEditar()
+        handleCancelEditar()
       });
     }
 

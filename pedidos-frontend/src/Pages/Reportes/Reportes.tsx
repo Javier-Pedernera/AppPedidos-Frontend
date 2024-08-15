@@ -91,7 +91,7 @@ const Reportes= () => {
             const duracion = fechaEnvio.diff(fechaCreacion, 'minutes');
             tiempoEntrega.push(duracion);
 
-            const cadete = pedido.grupo.cadete.nombre;
+            const cadete = pedido.grupo.cadete?.nombre;
             if (pedidosPorCadete[cadete]) {
                 pedidosPorCadete[cadete]++;
             } else {
@@ -165,7 +165,7 @@ const Reportes= () => {
         cliente: pedido.cliente,
         dirección: pedido.direccion,
         zona: pedido.grupo.zona.nombre,
-        cadete: pedido.grupo.cadete.nombre,
+        cadete: pedido.grupo.cadete?.nombre,
     }));
     //    const ultimoInformaformateada = formatLocalDateTime(ultimoInforme[0].valor)
         // console.log("ultimoInformaformateada", ultimoInformaformateada);
@@ -247,7 +247,7 @@ const Reportes= () => {
                                         <td>{pedido.cliente}</td>
                                         <td>{formatLocalDateTime(pedido.grupo.fecha_hora_creacion)}</td>
                                         <td>{formatLocalDateTime(pedido.grupo.fecha_hora_envio)}</td>
-                                        <td>{pedido.grupo.cadete.nombre}</td>
+                                        <td>{pedido.grupo.cadete? pedido.grupo.cadete.nombre : 'sin cadete asignado'}</td>
                                         <td className={dayjs(pedido.grupo.fecha_hora_envio).diff(dayjs(pedido.grupo.fecha_hora_creacion), 'minutes') > maxTime[0]?.valor? "tiempoexcedido":""}>{dayjs(pedido.grupo.fecha_hora_envio).diff(dayjs(pedido.grupo.fecha_hora_creacion), 'minutes')}</td>
                                         <td>{pedido.estado.nombre}</td>
                                     </tr>

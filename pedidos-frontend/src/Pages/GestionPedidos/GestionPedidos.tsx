@@ -219,8 +219,8 @@ const GestionPedidos = () => {
     setModalDescripcionOpen(!modalDescripcionOpen)
     setdetallesPedido(pedido)
   }
-  console.log("pedido en filtros", pedidos);
-  console.log("pedido en filtros", filtros.pedido);
+  // console.log("pedido en filtros", pedidos);
+  // console.log("pedido en filtros", filtros.pedido);
 
   return (
     <div className="gestion-pedidos">
@@ -346,14 +346,17 @@ const GestionPedidos = () => {
                         <option key={grupo.id} value={grupo.id}>
                           {grupo.id}/ {grupo.zona.nombre}
                         </option>
-                      )) : <p>No hay grupos abiertos</p>}
+                      )) : <option  value="">No hay otros grupos abiertos</option>}
                     </select>
                   </div>
                 ) : (
                   // Mostrar nombre del grupo y zona si no se está editando
-                  <span>
-                    {pedido.grupo.id} / {pedido.grupo.zona.nombre}
-                  </span>
+                  <div className="divgrupoestado">
+                    <span>
+                      {pedido.grupo.id} / {pedido.grupo.zona.nombre}
+                    </span>
+                      {pedido.grupo.estado.nombre == "Cerrado"? <span className="grupoCerradomsj">Grupo cerrado</span> : ''}
+                  </div>
                 )}
               </td>
               <td className="tdBotones">

@@ -248,3 +248,12 @@
 th.titulo_acc{
   max-width: 200px;
 }
+.divgrupoestado{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.grupoCerradomsj{
+  font-size: 12px;
+  color: var(--primary-color);
+}

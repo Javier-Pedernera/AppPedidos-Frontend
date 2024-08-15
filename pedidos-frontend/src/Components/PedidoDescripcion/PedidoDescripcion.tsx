@@ -9,7 +9,7 @@ interface DetallePedidoProps {
 }
 
 const PedidoDescripcion: React.FC<DetallePedidoProps> = ({ pedido, onClose }) => {
-    console.log(pedido);
+    console.log("pedido seleccionado",pedido);
     
     return (
       <div className="detalle-pedido-modal__overlay">
@@ -38,7 +38,7 @@ const PedidoDescripcion: React.FC<DetallePedidoProps> = ({ pedido, onClose }) =>
               <strong>Estado:</strong> {pedido.estado.nombre}
             </div>
             <div className="detalle-pedido-modal__info-item">
-              <strong>Cadete:</strong> {pedido.grupo.cadete.nombre? pedido.grupo.cadete.nombre : "-"}
+              <strong>Cadete:</strong> {pedido.grupo.cadete? pedido.grupo.cadete.nombre : "-"}
             </div>
             <div className="detalle-pedido-modal__info-item">
               <strong>Fecha y hora de creación:</strong> {formatLocalDateTime(pedido.grupo.fecha_hora_creacion) }
